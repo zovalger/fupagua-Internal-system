@@ -12,7 +12,7 @@ const conectToDataBase = async () => {
 		await db.authenticate();
 		console.log("conexion exitosa");
 
-		await db.sync({ force: true }); // actualiza las columnas de las tablas pero borra la base de datos
+		await db.sync({ alter: true }); 
 
 		app.listen(PORT);
 

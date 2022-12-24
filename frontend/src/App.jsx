@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 
+// import { HomePage,HomePage2 } from "./pages/index";
+
 function App() {
   return (
     <div className="App">
