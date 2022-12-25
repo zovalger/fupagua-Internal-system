@@ -11,7 +11,8 @@ const { NODE_ENV } = require("./config");
 // 										importacion de rutas
 // ****************************************************************************
 
-// const productRoutes = require("./routes/productRoutes.js");
+const representativeRoute = require("./routes/representative.route");
+const patientRoute = require("./routes/patient.route");
 
 const app = express();
 
@@ -26,7 +27,9 @@ app.use(cookieParser());
 // ****************************************************************************
 // 										rutas para la api
 // ****************************************************************************
-// app.use('/api/products', productRoutes)
+
+app.use("/api/representative", representativeRoute);
+app.use("/api/patient", patientRoute);
 // app.use('/api/users', userRoutes)
 // app.use('/api/orders', orderRoutes)
 // app.use('/api/upload', uploadRoutes)

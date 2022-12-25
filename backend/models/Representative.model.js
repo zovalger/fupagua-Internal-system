@@ -1,7 +1,8 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db");
+const Patient = require("./Patient.model");
 
-const patient = db.define("patient", {
+const Representative = db.define("Representative", {
 	name: { type: DataTypes.STRING, allowNull: false },
 
 	ci: { type: DataTypes.STRING, unique: true, allowNull: false },
@@ -15,7 +16,7 @@ const patient = db.define("patient", {
 	phoneNumber: { type: DataTypes.STRING, allowNull: false },
 });
 
+Representative.belongsToMany(Patient, { through: "PatientRepresentative" });
+Patient.belongsToMany(Representative, { through: "PatientRepresentative" });
 
-
-
-module.exports = patient;
+module.exports = Representative;
