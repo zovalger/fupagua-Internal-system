@@ -25,7 +25,7 @@ router.post("/", createPatient);
 
 // modificar datos
 router.put("/:id", updatePatient);
-router.post("/:id/join-to/:patientId", jointPatientWithRepresentative);
+router.post("/:id/join-to/:representativeId", jointPatientWithRepresentative);
 router.delete("/:id", patientMoveToTrash);
 
 module.exports = router;
