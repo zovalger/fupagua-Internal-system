@@ -13,6 +13,8 @@ const Patient = db.define(
 		dateBirth: DataTypes.DATE,
 
 		school: DataTypes.STRING,
+
+		// status: DataTypes.CHAR, // a: active d:delete
 	},
 	{
 		setterMethods: {

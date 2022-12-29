@@ -13,8 +13,11 @@ const Representative = db.define("Representative", {
 
 	email: { type: DataTypes.STRING, unique: true },
 
+	// status: DataTypes.CHAR, // a: active d:delete
+
 	phoneNumber: { type: DataTypes.STRING, allowNull: false },
 });
+
 
 Representative.belongsToMany(Patient, { through: "PatientRepresentative" });
 Patient.belongsToMany(Representative, { through: "PatientRepresentative" });

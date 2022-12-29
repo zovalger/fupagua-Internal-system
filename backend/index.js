@@ -12,7 +12,7 @@ const conectToDataBase = async () => {
 		await db.authenticate();
 		console.log("conexion exitosa");
 
-		await db.sync({ alter: true }); 
+		await db.sync({ alter: true, force: false });
 
 		app.listen(PORT);
 

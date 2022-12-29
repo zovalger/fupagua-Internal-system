@@ -10,11 +10,13 @@ const {
 	representativeMoveToTrash,
 	updateRepresentative,
 	deleteRepresentativeInTrash,
+	unjointRepresentativeWithPatient,
+	deleteRepresentative,
 } = require("../controllers/representative.route.controller");
 
 // datos eliminados
-router.get("/trash", getRepresentativeInTrash);
-router.delete("/trash/:id", deleteRepresentativeInTrash);
+// router.get("/trash", getRepresentativeInTrash);
+// router.delete("/trash/:id", deleteRepresentativeInTrash);
 
 // obtener datos
 router.get("/", getRepresentatives);
@@ -25,7 +27,10 @@ router.post("/", createRepresentative);
 
 // modificar datos
 router.put("/:id", updateRepresentative);
-router.post("/:id/join-to/:patientId", jointRepresentativeWithPatient);
-router.delete("/:id", representativeMoveToTrash);
+router.put("/:id/join-to/:patientId", jointRepresentativeWithPatient);
+router.put("/:id/unjoin-to/:patientId", unjointRepresentativeWithPatient);
+
+
+router.delete("/:id", deleteRepresentative);
 
 module.exports = router;

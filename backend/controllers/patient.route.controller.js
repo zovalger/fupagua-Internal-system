@@ -73,13 +73,38 @@ const jointPatientWithRepresentative = async (req, res) => {
 
 	await patient.addRepresentatives(representative);
 
-	console.log(patient.getRepresentatives());
-
-	res.send("was made a join");
+	res.status(200).json({ message: "was make a join" });
 };
 
-const patientMoveToTrash = (req, res) => {
+const unjointPatientWithRepresentative = async (req, res) => {
+	const { id, representativeId } = req.params;
+
+	const patient = await Patient.findByPk(id);
+
+	const representative = await Representative.findByPk(representativeId);
+
+	await patient.removeRepresentatives(representative);
+
+	res.status(200).json({ message: "was destroy a join" });
+};
+
+const deletePatient = async (req, res) => {
+	const { id } = req.params;
+
+	const patient = await Patient.findByPk(id);
+
+	console.log(await patient.destroy());
+
 	res.send("a Patient move to trash");
+};
+
+const patientMoveToTrash = async (req, res) => {
+	// const { id } = req.params;
+	// const patient = await Patient.findByPk(id);
+	// await patient.set({
+	// 	status: "d",
+	// });
+	// res.send("a Patient move to trash");
 };
 
 const getPatientInTrash = (req, res) => {
@@ -96,7 +121,9 @@ module.exports = {
 	getPatient,
 	updatePatient,
 	jointPatientWithRepresentative,
+	unjointPatientWithRepresentative,
 	patientMoveToTrash,
+	deletePatient,
 	getPatientInTrash,
 	deletePatientInTrash,
 };
