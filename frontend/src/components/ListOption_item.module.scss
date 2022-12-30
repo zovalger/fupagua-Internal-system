@@ -1,0 +1,30 @@
+.container {
+display: flex;
+// justify-content: ce;
+align-items: center;
+
+	&:active{
+		background-color: #0003;
+	}
+}
+
+.icon {
+	display: inline-flex;
+
+	justify-content: center;
+	align-items: center;
+	width: 3rem;
+	height: 3rem;
+	flex-shrink: 0;
+
+	// text-align: center;
+	// background: green;
+	// padding: 1rem;
+
+	// font-size: large;
+}
+
+.text{
+
+	padding-right: 1rem;
+}

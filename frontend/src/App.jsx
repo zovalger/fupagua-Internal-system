@@ -1,28 +1,61 @@
-import logo from './logo.svg';
-import './App.css';
-
 // import { HomePage,HomePage2 } from "./pages/index";
 
+import AsidePanelOptions from "./components/AsidePanelOptions";
+import NavBar from "./components/NavBar";
+
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-     
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<div className="App">
+
+			<div className="spacework">
+				<NavBar />
+				<div className="container">
+					<p>
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
+						adipisci placeat, magni est expedita officia quisquam nobis
+						aspernatur voluptatum soluta obcaecati modi impedit porro possimus,
+						itaque harum asperiores accusantium voluptate.
+					</p>		<p>
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
+							adipisci placeat, magni est expedita officia quisquam nobis
+							aspernatur voluptatum soluta obcaecati modi impedit porro
+							possimus, itaque harum asperiores accusantium voluptate.
+						</p>		<p>
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
+							adipisci placeat, magni est expedita officia quisquam nobis
+							aspernatur voluptatum soluta obcaecati modi impedit porro
+							possimus, itaque harum asperiores accusantium voluptate.
+						</p>
+					<p>
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
+						adipisci placeat, magni est expedita officia quisquam nobis
+						aspernatur voluptatum soluta obcaecati modi impedit porro possimus,
+						itaque harum asperiores accusantium voluptate.
+					</p>
+					<p>
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
+						adipisci placeat, magni est expedita officia quisquam nobis
+						aspernatur voluptatum soluta obcaecati modi impedit porro possimus,
+						itaque harum asperiores accusantium voluptate.
+					</p>
+					<p>
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
+						adipisci placeat, magni est expedita officia quisquam nobis
+						aspernatur voluptatum soluta obcaecati modi impedit porro possimus,
+						itaque harum asperiores accusantium voluptate.
+					</p>
+					<p>
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
+						adipisci placeat, magni est expedita officia quisquam nobis
+						aspernatur voluptatum soluta obcaecati modi impedit porro possimus,
+						itaque harum asperiores accusantium voluptate.
+					</p>
+				</div>
+			</div>
+			<AsidePanelOptions />
+
+		</div>
+	);
 }
 
 export default App;
