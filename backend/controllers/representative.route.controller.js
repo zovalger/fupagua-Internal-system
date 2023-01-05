@@ -1,11 +1,22 @@
+const { Op } = require("sequelize");
 const Patient = require("../models/Patient.model");
 const Representative = require("../models/Representative.model");
 
 // Representative
 
 const getRepresentatives = async (req, res) => {
+	const { name, ci } = req.query;
+
+	const where = {};
+
+	if (name) where.name = { [Op.substring]: name };
+	if (ci) where.ci =  { [Op.substring]: ci };
+
 	try {
-		const representative = await Representative.findAll();
+		const representative = await Representative.findAll({
+			where,
+			include: { model: Patient },
+		});
 		return res.json(representative);
 	} catch (error) {
 		res.status(500).send(error);

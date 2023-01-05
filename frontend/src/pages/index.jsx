@@ -1,2 +1,3 @@
-// export {HomePage} from './HomePage'
-// export {HomePage2} from './HomePage2'
+export { HomePage } from "./HomePage";
+export { People } from "./People";
+export { Agenda } from "./Agenda";

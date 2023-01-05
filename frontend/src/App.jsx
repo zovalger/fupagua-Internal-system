@@ -1,60 +1,30 @@
-// import { HomePage,HomePage2 } from "./pages/index";
+import { Routes, Route } from "react-router-dom";
+import { AppDataProvider } from "./context/AppContext";
+
+import { HomePage, People, Agenda } from "./pages";
 
 import AsidePanelOptions from "./components/AsidePanelOptions";
-import NavBar from "./components/NavBar";
+import "./App.scss";
+import { PeopleNew } from "./pages/PeopleNew";
 
 function App() {
 	return (
-		<div className="App">
+		<AppDataProvider>
+			<div className="App">
+				<AsidePanelOptions />
 
-			<div className="spacework">
-				<NavBar />
-				<div className="container">
-					<p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-						adipisci placeat, magni est expedita officia quisquam nobis
-						aspernatur voluptatum soluta obcaecati modi impedit porro possimus,
-						itaque harum asperiores accusantium voluptate.
-					</p>		<p>
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-							adipisci placeat, magni est expedita officia quisquam nobis
-							aspernatur voluptatum soluta obcaecati modi impedit porro
-							possimus, itaque harum asperiores accusantium voluptate.
-						</p>		<p>
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-							adipisci placeat, magni est expedita officia quisquam nobis
-							aspernatur voluptatum soluta obcaecati modi impedit porro
-							possimus, itaque harum asperiores accusantium voluptate.
-						</p>
-					<p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-						adipisci placeat, magni est expedita officia quisquam nobis
-						aspernatur voluptatum soluta obcaecati modi impedit porro possimus,
-						itaque harum asperiores accusantium voluptate.
-					</p>
-					<p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-						adipisci placeat, magni est expedita officia quisquam nobis
-						aspernatur voluptatum soluta obcaecati modi impedit porro possimus,
-						itaque harum asperiores accusantium voluptate.
-					</p>
-					<p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-						adipisci placeat, magni est expedita officia quisquam nobis
-						aspernatur voluptatum soluta obcaecati modi impedit porro possimus,
-						itaque harum asperiores accusantium voluptate.
-					</p>
-					<p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-						adipisci placeat, magni est expedita officia quisquam nobis
-						aspernatur voluptatum soluta obcaecati modi impedit porro possimus,
-						itaque harum asperiores accusantium voluptate.
-					</p>
+				<div className="SectionApp">
+					<Routes>
+						<Route path="/" element={<HomePage />} />
+						<Route path="/agenda" element={<Agenda />} />
+						{/* <Route path="/People" element={<People />} />
+						<Route path="/People/new" element={<PeopleNew />} /> */}
+						{/* <Route path="/:id" element={<PostForm />} />
+					<Route path="*" element={<NotFoundPage />} /> */}
+					</Routes>
 				</div>
 			</div>
-			<AsidePanelOptions />
-
-		</div>
+		</AppDataProvider>
 	);
 }
 

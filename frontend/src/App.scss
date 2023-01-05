@@ -1,0 +1,37 @@
+.App {
+	display: inline-flex;
+
+	height: 100vh;
+	width: 100vw;
+	// flex-direction: column;
+	position: relative;
+
+	overflow: hidden;
+
+	/* sco */
+	/* text-align: center; */
+}
+
+.SectionApp {
+	display: inline-flex;
+	overflow: hidden;
+	// height: 100%;
+
+
+	// background: green;
+	// overflow-y: auto;
+	flex-grow: 1;
+	flex-direction: column;
+
+
+}
+
+.spacework{
+
+	// display: inline-flex;
+	overflow: hidden;
+	overflow-y: auto;
+	flex-grow: 1;
+	// flex-direction: column;
+}
+
