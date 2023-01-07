@@ -1,0 +1,28 @@
+.container {
+	display: flex;
+
+	align-items: center;
+
+  
+	textarea {
+		border: none;
+	}
+}
+
+
+
+.icon{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 2rem;
+}
+
+.text{
+  font-size: 14px;}
+// div {
+//  display: flex;
+//  justify-content: center;
+//  align-items: center;
+//  width: 2rem;
+// }

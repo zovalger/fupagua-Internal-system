@@ -1,11 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import { AppDataProvider } from "./context/AppContext";
 
-import { HomePage, People, Agenda } from "./pages";
+import { HomePage, People, Agenda, AgendaActivity } from "./pages";
 
 import AsidePanelOptions from "./components/AsidePanelOptions";
 import "./App.scss";
-import { PeopleNew } from "./pages/PeopleNew";
 
 function App() {
 	return (
@@ -17,6 +16,7 @@ function App() {
 					<Routes>
 						<Route path="/" element={<HomePage />} />
 						<Route path="/agenda" element={<Agenda />} />
+						<Route path="/agenda/:id" element={<AgendaActivity />} />
 						{/* <Route path="/People" element={<People />} />
 						<Route path="/People/new" element={<PeopleNew />} /> */}
 						{/* <Route path="/:id" element={<PostForm />} />

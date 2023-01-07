@@ -1,11 +1,28 @@
 .container{
-  background-color: aqua;
+  background-color: rgb(163, 255, 255);
+  border-radius: 1rem;
+  margin-bottom: .5rem;
+
+  padding: 1rem;
 }
 
 .title{
 
+  font-weight: 500;
+  font-size: 18px;
+
 }
 
 .description{
+  margin-top: .2rem;
+  font-size: 15px;
+
   
+}
+
+
+.hours{
+  font-weight: 300;
+  font-size: 14px;
+  text-align: right;
 }

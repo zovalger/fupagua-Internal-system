@@ -1,0 +1,19 @@
+.container {
+	display: flex;
+
+	align-items: center;
+
+	textarea {
+		border: none;
+		flex-grow: 1;
+    height: 4rem;
+		// height: max-content;
+	}
+}
+
+.icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 2rem;
+}
