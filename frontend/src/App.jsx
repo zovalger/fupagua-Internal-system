@@ -16,6 +16,7 @@ function App() {
 					<Routes>
 						<Route path="/" element={<HomePage />} />
 						<Route path="/agenda" element={<Agenda />} />
+						<Route path="/agenda/nueva-actividad" element={<AgendaActivity create={true}/>} />
 						<Route path="/agenda/:id" element={<AgendaActivity />} />
 						{/* <Route path="/People" element={<People />} />
 						<Route path="/People/new" element={<PeopleNew />} /> */}

@@ -16,23 +16,32 @@ export const AppDataProvider = ({ children }) => {
 	const [appData, setAppData] = useState({
 		representativeData: [],
 	});
+	const [ActivitiesList, setActivitiesList] = useState([]);
+
 	// const [representativeData, setRepresentativeData] = useState([]);
 
-	const refreshRepresentatives = async () => {
-		const res = await getRepresentativeRequest();
-
-		console.log(res);
-		appData.representativeData = res.data;
-
-		console.log(appData);
+	const ActivityModule = {
+		getActivities: () => {
+			console.log("modulo de actividades funcionando");
+		},
 	};
+
+	// const refreshRepresentatives = async () => {
+	// 	const res = await getRepresentativeRequest();
+
+	// 	console.log(res);
+	// 	appData.representativeData = res.data;
+
+	// 	console.log(appData);
+	// };
 
 	return (
 		<AppDataContext.Provider
 			value={{
 				// cosas para pasar
 				appData,
-				refreshRepresentatives,
+				ActivityModule,
+				ActivitiesList,
 				// getRepresentativeRequest,
 				// getRepresentativesRequest,
 			}}

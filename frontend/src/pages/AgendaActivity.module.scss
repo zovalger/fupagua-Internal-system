@@ -1,8 +1,9 @@
 .container {
 	padding: 1rem;
 	padding-bottom: 4rem;
+	
 
-	& > div {
+	& > form > div {
 		background-color: white;
 		border-radius: 1rem;
 		margin-bottom: 0.5rem;
