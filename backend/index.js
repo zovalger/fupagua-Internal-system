@@ -20,6 +20,8 @@ const conectToDataBase = async () => {
 	} catch (error) {
 		throw new Error(`conexion fallida a la base de datos \n ${error}`);
 	}
+	
 };
+
 
 conectToDataBase();

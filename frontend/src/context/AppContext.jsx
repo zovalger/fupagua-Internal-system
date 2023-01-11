@@ -33,6 +33,15 @@ export const AppDataProvider = ({ children }) => {
 		// console.log(appDataState);
 	};
 
+	// const refreshRepresentatives = async () => {
+	// 	const res = await getRepresentativeRequest();
+
+	// 	console.log(res);
+	// 	appData.representativeData = res.data;
+
+	// 	console.log(appData);
+	// };
+
 	return (
 		<AppDataContext.Provider
 			value={{

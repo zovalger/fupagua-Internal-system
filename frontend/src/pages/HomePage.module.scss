@@ -1,0 +1,22 @@
+.container {
+	padding: 1rem;
+	padding-bottom: 4rem;
+
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.secciones {
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+	flex-wrap: wrap;
+
+	button {
+		width: 7rem;
+		height: 5rem;
+		border: none;
+		border-radius: 10px;
+		margin-bottom: 1rem;
+	}
+}

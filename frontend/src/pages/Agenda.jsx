@@ -1,27 +1,31 @@
-import styles from "../components/Agenda/Agenda.module.scss";
+import styles from "./Agenda.module.scss";
 import Activity from "../components/Agenda/Activity";
 import DateSelectorAgenda from "../components/Agenda/DateSelector/DateSelectorAgenda";
 import { RxHamburgerMenu } from "react-icons/rx";
 import Nav from "../components/common/Nav";
-import { Link } from "react-router-dom";
 import { useAppData } from "../context/AppContext";
-
-const a = [
-	{
-		id: 2,
-		title: "actividades administrativas",
-		description:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, ipsam a assumenda eius incidunt ea, velit provident quis dignissimos voluptates asperiores qui molestias, quae tempora magni dolorum officiis sequi architecto!",
-	},
-	{
-		id: 1,
-		title: "fiesta",
-		description: "Lorem ipsum dolor sit amet consectetitecto!",
-	},
-];
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getActivitiesRequest } from "../api/activities";
 
 export function Agenda() {
+	const [activities, setActivities] = useState([]);
 	const { toggleAsideActive } = useAppData();
+
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		const fillList = async () => {
+			const res = await getActivitiesRequest();
+			console.log(res);
+			setActivities(res.data);
+		};
+
+		fillList();
+	}, []);
+
+	console.log(activities);
+
 	return (
 		<>
 			<Nav
@@ -31,11 +35,11 @@ export function Agenda() {
 			/>
 
 			<div className={styles.container}>
-				<DateSelectorAgenda />
+				{/* <DateSelectorAgenda /> */}
 
 				<h3>hoy</h3>
 
-				{a.map((value) => {
+				{activities.map((value) => {
 					return (
 						<Link to={`/agenda/${value.id}`} key={value.id}>
 							<Activity data={value} />
@@ -43,7 +47,14 @@ export function Agenda() {
 					);
 				})}
 
-				<button className={styles.addBtn}>+</button>
+				<button
+					className={styles.addBtn}
+					onClick={() => {
+						navigate("/agenda/nueva-actividad");
+					}}
+				>
+					+
+				</button>
 			</div>
 		</>
 	);

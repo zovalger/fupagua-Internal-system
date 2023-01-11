@@ -7,13 +7,7 @@ export default function Nav({ leftIcon, leftFuctionOnClick, title, rightButtons 
 			<button onClick={leftFuctionOnClick}>{leftIcon}</button>
 			<div className={styles.title}>{title}</div>
 
-			<div className={styles.rightButtons}>
-				{rightButtons
-					? rightButtons.map((value, index) => (
-							<button key={index}>{value}</button>
-					  ))
-					: ""}
-			</div>
+			<div className={styles.rightButtons}>{rightButtons}</div>
 		</nav>
 	);
 }

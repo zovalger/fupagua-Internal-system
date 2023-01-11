@@ -1,29 +1,33 @@
-import NavBar from "../components/NavBar";
 import { AiOutlineMenu, AiOutlinePlus } from "react-icons/ai";
-
-import NavInPage from "../components/NavInPage";
+import { RxHamburgerMenu } from "react-icons/rx";
 import Person from "../components/Person";
 import { Link } from "react-router-dom";
 import { useAppData } from "../context/AppContext";
+import Nav from "../components/common/Nav";
 
 export function People() {
 	const { appData } = useAppData();
 
 	return (
 		<>
-			<NavInPage>
-				<button className="btn">
-					<AiOutlineMenu />
-				</button>
-
-				<span>personas</span>
-
-				<Link to={"/people/new"}>
-					<button className="btn">
-						<AiOutlinePlus />
-					</button>
-				</Link>
-			</NavInPage>
+			<Nav
+				leftIcon={
+					<Link to="/agenda">
+						<RxHamburgerMenu />
+					</Link>
+				}
+				title={"personas"}
+				rightButtons={
+					<>
+						<button>
+							<AiOutlinePlus />
+						</button>
+						<Link to={"/people/new"}>
+							<button className="btn"></button>
+						</Link>
+					</>
+				}
+			/>
 
 			<div className="spacework">
 				<div className="container mt-3">
