@@ -13,25 +13,35 @@ export const useAppData = () => {
 };
 
 export const AppDataProvider = ({ children }) => {
-	const [appData, setAppData] = useState({
+	const [appDataState, setAppData] = useState({
 		representativeData: [],
 	});
+
+	// panel lateral de opciones
+	const [asidePanelActive, setAsidePanelActive] = useState(true);
+	const toggleAsideActive = (e) => {
+		
+		setAsidePanelActive(!asidePanelActive);
+	};
+
 	// const [representativeData, setRepresentativeData] = useState([]);
 
 	const refreshRepresentatives = async () => {
-		const res = await getRepresentativeRequest();
-
-		console.log(res);
-		appData.representativeData = res.data;
-
-		console.log(appData);
+		// const res = await getRepresentativeRequest();
+		// console.log(res);
+		// appDataState.representativeData = res.data;
+		// console.log(appDataState);
 	};
 
 	return (
 		<AppDataContext.Provider
 			value={{
-				// cosas para pasar
-				appData,
+				// panel lateral de opciones
+				asidePanelActive,
+				toggleAsideActive,
+
+				appDataState,
+
 				refreshRepresentatives,
 				// getRepresentativeRequest,
 				// getRepresentativesRequest,

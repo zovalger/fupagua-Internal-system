@@ -1,9 +1,10 @@
 import styles from "./Nav.module.scss";
 
-export default function Nav({ leftIcon, title, rightButtons }) {
+export default function Nav({ leftIcon, leftFuctionOnClick, title, rightButtons }) {
 	return (
 		<nav className={styles.container}>
-			<button>{leftIcon}</button>
+
+			<button onClick={leftFuctionOnClick}>{leftIcon}</button>
 			<div className={styles.title}>{title}</div>
 
 			<div className={styles.rightButtons}>

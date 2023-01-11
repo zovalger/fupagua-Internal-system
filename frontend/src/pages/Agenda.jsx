@@ -4,6 +4,7 @@ import DateSelectorAgenda from "../components/Agenda/DateSelector/DateSelectorAg
 import { RxHamburgerMenu } from "react-icons/rx";
 import Nav from "../components/common/Nav";
 import { Link } from "react-router-dom";
+import { useAppData } from "../context/AppContext";
 
 const a = [
 	{
@@ -20,9 +21,14 @@ const a = [
 ];
 
 export function Agenda() {
+	const { toggleAsideActive } = useAppData();
 	return (
 		<>
-			<Nav leftIcon={<RxHamburgerMenu />} title={"agenda"} />
+			<Nav
+				leftIcon={<RxHamburgerMenu />}
+				leftFuctionOnClick={toggleAsideActive}
+				title={"agenda"}
+			/>
 
 			<div className={styles.container}>
 				<DateSelectorAgenda />

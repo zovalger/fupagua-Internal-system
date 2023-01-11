@@ -3,15 +3,14 @@ import { AppDataProvider } from "./context/AppContext";
 
 import { HomePage, People, Agenda, AgendaActivity } from "./pages";
 
-import AsidePanelOptions from "./components/AsidePanelOptions";
+import AsidePanelOptions from "./components/common/AsidePanelOption/AsidePanelOptions";
 import "./App.scss";
+
 
 function App() {
 	return (
 		<AppDataProvider>
 			<div className="App">
-				<AsidePanelOptions />
-
 				<div className="SectionApp">
 					<Routes>
 						<Route path="/" element={<HomePage />} />
@@ -23,6 +22,8 @@ function App() {
 					<Route path="*" element={<NotFoundPage />} /> */}
 					</Routes>
 				</div>
+
+				<AsidePanelOptions />
 			</div>
 		</AppDataProvider>
 	);
