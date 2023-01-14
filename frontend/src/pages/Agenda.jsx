@@ -1,4 +1,4 @@
-import styles from "./Agenda.module.scss";
+import styles from "./styles/Agenda.module.scss";
 import Activity from "../components/Agenda/Activity";
 import DateSelectorAgenda from "../components/Agenda/DateSelector/DateSelectorAgenda";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -37,7 +37,7 @@ export function Agenda() {
 			<div className={styles.container}>
 				{/* <DateSelectorAgenda /> */}
 
-				<h3>hoy</h3>
+				<h3>todas las actividades</h3>
 
 				{activities.map((value) => {
 					return (

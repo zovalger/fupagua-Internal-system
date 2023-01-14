@@ -1,11 +1,18 @@
 import { Routes, Route } from "react-router-dom";
 import { AppDataProvider } from "./context/AppContext";
 
-import { HomePage, People, Agenda, AgendaActivity } from "./pages";
+import {
+	HomePage,
+	People,
+	Agenda,
+	AgendaActivity,
+	Biblioteca,
+	BibliotecaAddBook,
+	BibliotecaBook,
+} from "./pages";
 
 import AsidePanelOptions from "./components/common/AsidePanelOption/AsidePanelOptions";
 import "./App.scss";
-
 
 function App() {
 	return (
@@ -15,8 +22,24 @@ function App() {
 					<Routes>
 						<Route path="/" element={<HomePage />} />
 						<Route path="/agenda" element={<Agenda />} />
-						<Route path="/agenda/nueva-actividad" element={<AgendaActivity create={true}/>} />
+						<Route
+							path="/agenda/nueva-actividad"
+							element={<AgendaActivity create={true} />}
+						/>
 						<Route path="/agenda/:id" element={<AgendaActivity />} />
+
+						{/* **************************************************************************
+																							biblioteca
+						************************************************************************** */}
+
+						<Route path="/biblioteca" element={<Biblioteca />} />
+						<Route
+							path="/biblioteca/nuevo_libro"
+							element={<BibliotecaAddBook />}
+						/>
+						<Route path="/biblioteca/editar/:id" element={<BibliotecaBook />} />
+						<Route path="/biblioteca/:id" element={<BibliotecaBook />} />
+
 						{/* <Route path="/People" element={<People />} />
 						<Route path="/People/new" element={<PeopleNew />} /> */}
 						{/* <Route path="/:id" element={<PostForm />} />

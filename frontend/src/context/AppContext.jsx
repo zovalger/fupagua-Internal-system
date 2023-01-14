@@ -18,7 +18,7 @@ export const AppDataProvider = ({ children }) => {
 	});
 
 	// panel lateral de opciones
-	const [asidePanelActive, setAsidePanelActive] = useState(true);
+	const [asidePanelActive, setAsidePanelActive] = useState(false);
 	const toggleAsideActive = (e) => {
 		
 		setAsidePanelActive(!asidePanelActive);

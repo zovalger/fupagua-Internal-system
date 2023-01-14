@@ -1,4 +1,4 @@
-import styles from "./AgendaActivity.module.scss";
+import styles from "./styles/AgendaActivity.module.scss";
 import { BiChevronLeft, BiTrash } from "react-icons/bi";
 import Nav from "../components/common/Nav";
 import ActivityTitleDate from "../components/Agenda/ActivityEdit/ActivityTitleDate";
