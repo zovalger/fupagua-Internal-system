@@ -24,7 +24,6 @@ export function Agenda() {
 		fillList();
 	}, []);
 
-	console.log(activities);
 
 	return (
 		<>

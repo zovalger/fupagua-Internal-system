@@ -7,7 +7,7 @@ import {
 	Agenda,
 	AgendaActivity,
 	Biblioteca,
-	BibliotecaAddBook,
+	BibliotecaFormBook,
 	BibliotecaBook,
 } from "./pages";
 
@@ -35,9 +35,12 @@ function App() {
 						<Route path="/biblioteca" element={<Biblioteca />} />
 						<Route
 							path="/biblioteca/nuevo_libro"
-							element={<BibliotecaAddBook />}
+							element={<BibliotecaFormBook create={true} />}
 						/>
-						<Route path="/biblioteca/editar/:id" element={<BibliotecaBook />} />
+						<Route
+							path="/biblioteca/editar/:id"
+							element={<BibliotecaFormBook />}
+						/>
 						<Route path="/biblioteca/:id" element={<BibliotecaBook />} />
 
 						{/* <Route path="/People" element={<People />} />

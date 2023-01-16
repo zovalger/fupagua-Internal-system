@@ -1,45 +1,73 @@
 import styles from "./styles/BibliotecaAddBook.module.scss";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Nav from "../components/common/Nav";
 import { BiChevronLeft, BiTrash } from "react-icons/bi";
 
 import { useAppData } from "../context/AppContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toInputDate } from "../utility";
 
-export function BibliotecaAddBook({ create }) {
-	const { toggleAsideActive } = useAppData();
+import {
+	createBookRequest,
+	getBookRequest,
+	updateBookRequest,
+} from "../api/books";
+
+export function BibliotecaFormBook({ create }) {
 	const navigate = useNavigate();
+	const params = useParams();
 
 	const [content, setContent] = useState({
 		title: "",
 		description: "",
 		autor: "",
-		editionDate: "",
+		editionDate: Date.now(),
 		city: "",
 		editors: "",
 		materia: "",
 		cota: "",
-		height: "",
-		width: "",
-		numberCopies: "",
-		numberPages: "",
+		height: 0,
+		width: 0,
+		numberCopies: 1,
+		numberPages: 1,
 		collection: "",
 	});
+
+	useEffect(() => {
+		// si estamos en el modo crear no se ejecuta, si no buscamos los datos del registro
+		if (create) return;
+
+		const fillInputs = async () => {
+			const res = await getBookRequest(params.id);
+			// console.log(res);
+
+			const data = res.data;
+
+			const { editionDate } = res.data;
+
+			data.editionDate = toInputDate(new Date(editionDate));
+
+			setContent(data);
+		};
+
+		fillInputs();
+	}, []);
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
 
-		const { title, description } = content,
-			paylot = content;
+		// const { title, description } = content;
 
-		const res = create;
-		// ? await createActivityRequest(paylot)
-		// : await updateActivityRequest(params.id, paylot);
+		const paylot = content;
+
+		const res = create
+			? await createBookRequest(paylot)
+			: await updateBookRequest(params.id, paylot);
 
 		console.log(res);
 
-		// navigate("/biblioteca");
+		navigate("/biblioteca");
 	};
 
 	const onInputChange = ({ target: { name, value } }) => {
@@ -71,102 +99,147 @@ export function BibliotecaAddBook({ create }) {
 				<form className={styles.Form} onSubmit={onSubmit}>
 					{/* <label>
 						imagen
-						<input onInputChange={onInputChange}type="file" name="img" />
+						<input onChange={onInputChange}type="file" name="img" />
 					</label> */}
 
 					<label>
 						titulo
-						<input onInputChange={onInputChange} type="text" name="title" />
+						<input
+							onChange={onInputChange}
+							type="text"
+							name="title"
+							value={content.title}
+						/>
 					</label>
 
 					<label>
 						descripcion
-						<input
-							onInputChange={onInputChange}
+						<textarea
+							onChange={onInputChange}
+							name="description"
+							cols="30"
+							rows="10"
+						>
+							{content.description}
+						</textarea>
+						{/* <input
+							onChange={onInputChange}
 							type="text"
 							name="description"
-						/>
+							value={content.description}
+						/> */}
 					</label>
 
 					<label>
 						Autor
 						<input
-							onInputChange={onInputChange}
+							onChange={onInputChange}
 							type="text"
 							name="autor"
 							list="autors"
+							value={content.autor}
 						/>
 					</label>
 
 					<label>
 						fecha de edicion
 						<input
-							onInputChange={onInputChange}
+							onChange={onInputChange}
 							type="date"
 							name="editionDate"
+							value={content.editionDate}
 						/>
 					</label>
 
 					<label>
 						Ciudad
-						<input onInputChange={onInputChange} type="text" name="city" />
+						<input
+							onChange={onInputChange}
+							type="text"
+							name="city"
+							value={content.city}
+						/>
 					</label>
 
 					<label>
 						editores
-						<input onInputChange={onInputChange} type="text" name="editors" />
+						<input
+							onChange={onInputChange}
+							type="text"
+							name="editors"
+							value={content.editors}
+						/>
 					</label>
 
 					<label>
 						materia
 						<input
-							onInputChange={onInputChange}
+							onChange={onInputChange}
 							type="text"
 							name="materia"
 							list="materia"
+							value={content.materia}
 						/>
 					</label>
 
 					<label>
 						Cota
-						<input onInputChange={onInputChange} type="text" name="cota" />
+						<input
+							onChange={onInputChange}
+							type="text"
+							name="cota"
+							value={content.cota}
+						/>
 					</label>
 
 					<label>
 						altura
-						<input onInputChange={onInputChange} type="number" name="height" />
+						<input
+							onChange={onInputChange}
+							type="number"
+							name="height"
+							value={content.height}
+						/>
 					</label>
 
 					<label>
 						anchura
-						<input onInputChange={onInputChange} type="number" name="width" />
+						<input
+							onChange={onInputChange}
+							type="number"
+							name="width"
+							value={content.width}
+						/>
 					</label>
 
 					<label>
 						numero de ejemplares
 						<input
-							onInputChange={onInputChange}
+							onChange={onInputChange}
 							type="number"
 							name="numberCopies"
+							value={content.numberCopies}
 						/>
 					</label>
 
 					<label>
 						numero de paginas
 						<input
-							onInputChange={onInputChange}
+							onChange={onInputChange}
 							type="number"
 							name="numberPages"
+							value={content.numberPages}
 						/>
 					</label>
 
 					<label>
 						coleccion
 						<input
-							onInputChange={onInputChange}
+							onChange={onInputChange}
 							type="text"
 							name="collection"
 							list="collection"
+							value={content.collection}
 						/>
 					</label>
 

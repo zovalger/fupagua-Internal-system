@@ -14,6 +14,7 @@ const { NODE_ENV } = require("./config");
 const representativeRoute = require("./routes/representative.route");
 const patientRoute = require("./routes/patient.route");
 const activityRoute = require("./routes/activity.route");
+const bookRoute = require("./routes/book.route");
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(cookieParser());
 app.use("/api/representative", representativeRoute);
 app.use("/api/patient", patientRoute);
 app.use("/api/activity", activityRoute);
+app.use("/api/book", bookRoute);
 // app.use('/api/users', userRoutes)
 // app.use('/api/orders', orderRoutes)
 // app.use('/api/upload', uploadRoutes)

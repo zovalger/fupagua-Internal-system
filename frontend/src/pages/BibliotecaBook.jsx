@@ -1,13 +1,41 @@
 import styles from "./styles/BibliotecaAddBook.module.scss";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Nav from "../components/common/Nav";
 import { BiChevronLeft, BiTrash } from "react-icons/bi";
 
 import { useAppData } from "../context/AppContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getBookRequest } from "../api/books";
 
-export function BibliotecaBook({ create }) {
+export function BibliotecaBook() {
+	const params = useParams();
+	const [book, setBook] = useState({
+		title: "",
+		description: "",
+		autor: "",
+		editionDate: Date.now(),
+		city: "",
+		editors: "",
+		materia: "",
+		cota: "",
+		height: 0,
+		width: 0,
+		numberCopies: 1,
+		numberPages: 1,
+		collection: "",
+	});
+
+	useEffect(() => {
+		const getBook = async () => {
+			const res = await getBookRequest(params.id);
+			console.log(res);
+			setBook(res.data);
+		};
+
+		getBook();
+	}, []);
+
 	return (
 		<>
 			<Nav
@@ -17,45 +45,49 @@ export function BibliotecaBook({ create }) {
 					</Link>
 				}
 				// leftFuctionOnClick={toggleAsideActive}
-				title={"anadir libro"}
-				// rightButtons={
-				// 	<button>
-				// 		<AiOutlinePlus />
-				// 	</button>
-				// }
+				title={"vista previa"}
+				rightButtons={
+					<Link to={`/biblioteca/editar/${params.id}`}>
+						<button>editar</button>
+					</Link>
+				}
 			/>
 
 			<div className={styles.container}>
-				<h3>titulo</h3>
+				<h3>{book.title}</h3>
 				<div>
-					<strong>descripcion:</strong> Lorem ipsum dolor sit amet consectetur
-					adipisicing elit. Accusamus dolore quis unde adipisci voluptatum,
-					necessitatibus neque ut perferendis odio. Adipisci quaerat eveniet id
-					natus, ut veniam quidem illo aliquam obcaecati.
+					<strong>descripcion:</strong> {book.description}
 				</div>
 				<div>
-					<strong>autor:</strong> Lorem, ipsum dolor.
+					<strong>autor:</strong> {book.autor}
 				</div>
 				<div>
-					<strong>fecha de edicion:</strong> Lorem, ipsum.
+					<strong>fecha de edicion:</strong> {new Date(book.editionDate).toLocaleDateString()}
 				</div>
 				<div>
-					<strong>materia:</strong> Lorem.
+					<strong>materia:</strong> {book.materia}
 				</div>
 				<div>
-					<strong>numero de ejemplares:</strong> 2
+					<strong>numero de ejemplares:</strong> {book.numberCopies}
 				</div>
 				<div>
-					<strong>cota:</strong> g153
+					<strong>cota:</strong> {book.cota}
 				</div>
 				<div>
-					<strong>dimensiones:</strong> 15 cm X 30 cm
+					<strong>dimensiones:</strong> {`${book.width} cm X ${book.height} cm`}
 				</div>
 				<div>
-					<strong>Numero de paginas:</strong> 300
+					<strong>Numero de paginas:</strong> {book.numberPages}
 				</div>
 				<div>
-					<strong>datos adicinales:</strong> Lorem ipsum dolor sit amet.
+					<strong>datos adicinales:</strong>{" "}
+					{
+						<>
+							<div>{book.city} </div>
+							<div>{book.editors} </div>
+							<div>{book.collection} </div>
+						</>
+					}
 				</div>
 			</div>
 		</>

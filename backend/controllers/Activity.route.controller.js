@@ -58,18 +58,11 @@ const getActivity = async (req, res) => {
 
 const updateActivity = async (req, res) => {
 	const { id } = req.params;
-	const { title, description, dateStart, dateEnd, status } = req.body;
 
 	try {
 		const activity = await Activity.findByPk(id);
 
-		if (title) activity.title = title;
-		if (description) activity.description = description;
-		if (dateStart) activity.dateStart = dateStart;
-		if (dateEnd) activity.dateEnd = dateEnd;
-		if (status) activity.status = status;
-
-		await activity.save();
+		await activity.update(req.body);
 
 		return res.json(activity);
 	} catch (error) {
