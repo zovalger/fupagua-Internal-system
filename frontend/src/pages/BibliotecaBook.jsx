@@ -46,7 +46,7 @@ export function BibliotecaBook() {
 					</Link>
 				}
 				// leftFuctionOnClick={toggleAsideActive}
-				title={"vista previa"}
+				title={"Vista previa"}
 				rightButtons={
 					<Link to={`/biblioteca/editar/${params.id}`}>
 						<button>
@@ -63,15 +63,19 @@ export function BibliotecaBook() {
 					<strong>Descripción:</strong> {book.description}
 				</div>
 
+				<div>
+					<strong>Cota:</strong> {book.cota}
+				</div>
+
 				{book.autor ? (
 					<div>
-						<strong>Autor:</strong> {book.autor}
+						<strong>Autor: </strong> {book.autor}
 					</div>
 				) : null}
 
 				{book.editionDate ? (
 					<div>
-						<strong>Fecha de edición:</strong>
+						<strong>Fecha de edición: </strong>
 						{new Date(book.editionDate).toLocaleDateString()}
 					</div>
 				) : null}
@@ -81,10 +85,6 @@ export function BibliotecaBook() {
 						<strong>Materia:</strong> {book.materia}
 					</div>
 				) : null}
-
-				<div>
-					<strong>Cota:</strong> {book.cota}
-				</div>
 
 				{typeof book.numberCopies === "number" ? (
 					<div>
