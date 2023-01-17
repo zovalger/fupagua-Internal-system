@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const Book = require("../models/Book.model");
 
 // Book
@@ -16,16 +17,39 @@ const createBook = async (req, res) => {
 };
 
 const getBooks = async (req, res) => {
-	// const { name, ci } = req.query;
+	const { textToQuery } = req.query;
+	let where = {};
 
-	// const where = {};
+	if (textToQuery) {
+		console.log(textToQuery);
+		const words = textToQuery.trim().split(" ");
+
+		console.log(words);
+
+		where = {
+			[Op.or]: [
+				{ title: { [Op.substring]: textToQuery } },
+				{ description: { [Op.substring]: textToQuery } },
+			],
+		};
+	}
+
+	// for (const key in req.query) {
+	// 	if (Object.hasOwnProperty.call(req.query, key)) {
+	// 		const value = req.query[key];
+
+	// 		where[key] = { [Op.substring]: value };
+	// 	}
+	// }
+
+	console.log(where);
 
 	// if (name) where.name = { [Op.substring]: name };
 	// if (ci) where.ci = { [Op.substring]: ci };
 
 	try {
 		const book = await Book.findAll({
-			// where,
+			where,
 		});
 		return res.json(book);
 	} catch (error) {
@@ -69,6 +93,11 @@ const deleteBook = async (req, res) => {
 
 	try {
 		const book = await Book.findByPk(id);
+
+		if (!book)
+			return res.status(404).json({
+				message: "libro no encontrado",
+			});
 
 		console.log(await book.destroy());
 

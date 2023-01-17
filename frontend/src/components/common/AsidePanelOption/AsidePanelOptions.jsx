@@ -1,6 +1,8 @@
 import styles from "./AsidePanelOptions.module.scss";
-import { AiOutlineMenu } from "react-icons/ai";
-import { BsFillPeopleFill, BsCalendar2Week } from "react-icons/bs";
+
+import { IoLibraryOutline,IoHomeOutline } from "react-icons/io5";
+import { BsCalendarWeek,  } from "react-icons/bs";
+
 import { RxHamburgerMenu } from "react-icons/rx";
 
 import ListOptionItem from "./ListOption_item";
@@ -24,21 +26,21 @@ function AsidePanelOptions() {
 
 				<ListOptionItem
 					url={"/"}
-					icon={<BsCalendar2Week />}
+					icon={<IoHomeOutline />}
 					text="inicio"
 					onClick={toggleAsideActive}
 				/>
 
 				<ListOptionItem
 					url={"/agenda"}
-					icon={<BsCalendar2Week />}
+					icon={<BsCalendarWeek />}
 					text="Agenda"
 					onClick={toggleAsideActive}
 				/>
 
 				<ListOptionItem
 					url={"/biblioteca"}
-					icon={<BsCalendar2Week />}
+					icon={<IoLibraryOutline />}
 					text="Biblioteca"
 					onClick={toggleAsideActive}
 				/>

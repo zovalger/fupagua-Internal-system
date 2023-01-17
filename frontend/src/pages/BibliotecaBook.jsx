@@ -1,8 +1,9 @@
-import styles from "./styles/BibliotecaAddBook.module.scss";
+import styles from "./styles/BibliotecaBook.module.scss";
 
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Nav from "../components/common/Nav";
 import { BiChevronLeft, BiTrash } from "react-icons/bi";
+import { MdOutlineEdit } from "react-icons/md";
 
 import { useAppData } from "../context/AppContext";
 import { useEffect, useState } from "react";
@@ -48,47 +49,86 @@ export function BibliotecaBook() {
 				title={"vista previa"}
 				rightButtons={
 					<Link to={`/biblioteca/editar/${params.id}`}>
-						<button>editar</button>
+						<button>
+							<MdOutlineEdit />
+						</button>
 					</Link>
 				}
 			/>
 
 			<div className={styles.container}>
 				<h3>{book.title}</h3>
+
 				<div>
-					<strong>descripcion:</strong> {book.description}
+					<strong>Descripción:</strong> {book.description}
 				</div>
+
+				{book.autor ? (
+					<div>
+						<strong>Autor:</strong> {book.autor}
+					</div>
+				) : null}
+
+				{book.editionDate ? (
+					<div>
+						<strong>Fecha de edición:</strong>
+						{new Date(book.editionDate).toLocaleDateString()}
+					</div>
+				) : null}
+
+				{book.materia ? (
+					<div>
+						<strong>Materia:</strong> {book.materia}
+					</div>
+				) : null}
+
 				<div>
-					<strong>autor:</strong> {book.autor}
+					<strong>Cota:</strong> {book.cota}
 				</div>
-				<div>
-					<strong>fecha de edicion:</strong> {new Date(book.editionDate).toLocaleDateString()}
-				</div>
-				<div>
-					<strong>materia:</strong> {book.materia}
-				</div>
-				<div>
-					<strong>numero de ejemplares:</strong> {book.numberCopies}
-				</div>
-				<div>
-					<strong>cota:</strong> {book.cota}
-				</div>
-				<div>
-					<strong>dimensiones:</strong> {`${book.width} cm X ${book.height} cm`}
-				</div>
-				<div>
-					<strong>Numero de paginas:</strong> {book.numberPages}
-				</div>
-				<div>
-					<strong>datos adicinales:</strong>{" "}
-					{
-						<>
-							<div>{book.city} </div>
-							<div>{book.editors} </div>
-							<div>{book.collection} </div>
-						</>
-					}
-				</div>
+
+				{typeof book.numberCopies === "number" ? (
+					<div>
+						<strong>Número de ejemplares:</strong> {book.numberCopies}
+					</div>
+				) : null}
+
+				{typeof book.numberCopiesAvailable === "number" ? (
+					<div>
+						<strong>Ejemplares disponibles:</strong>{" "}
+						{book.numberCopiesAvailable}
+					</div>
+				) : null}
+
+				{book.width ? (
+					<div>
+						<strong>Dimensiones:</strong>{" "}
+						{`${book.width} cm X ${book.height} cm`}
+					</div>
+				) : null}
+
+				{typeof book.numberPages === "number" ? (
+					<div>
+						<strong>Número de paginas:</strong> {book.numberPages}
+					</div>
+				) : null}
+
+				{book.city ? (
+					<div>
+						<strong>Ciudad:</strong> {book.city}
+					</div>
+				) : null}
+
+				{book.editors ? (
+					<div>
+						<strong>Editores:</strong> {book.editors}
+					</div>
+				) : null}
+
+				{book.collection ? (
+					<div>
+						<strong>Colección:</strong> {book.collection}
+					</div>
+				) : null}
 			</div>
 		</>
 	);

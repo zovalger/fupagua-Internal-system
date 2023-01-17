@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { AppDataProvider } from "./context/AppContext";
+import { Toaster } from "react-hot-toast";
 
 import {
 	HomePage,
@@ -17,6 +18,7 @@ import "./App.scss";
 function App() {
 	return (
 		<AppDataProvider>
+			<Toaster />
 			<div className="App">
 				<div className="SectionApp">
 					<Routes>

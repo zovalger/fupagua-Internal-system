@@ -1,4 +1,4 @@
-import styles from "./styles/BibliotecaAddBook.module.scss";
+import styles from "./styles/BibliotecaFormBook.module.scss";
 
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Nav from "../components/common/Nav";
@@ -10,9 +10,11 @@ import { toInputDate } from "../utility";
 
 import {
 	createBookRequest,
+	deleteBookRequest,
 	getBookRequest,
 	updateBookRequest,
 } from "../api/books";
+import toast from "react-hot-toast";
 
 export function BibliotecaFormBook({ create }) {
 	const navigate = useNavigate();
@@ -22,7 +24,7 @@ export function BibliotecaFormBook({ create }) {
 		title: "",
 		description: "",
 		autor: "",
-		editionDate: Date.now(),
+		editionDate: "",
 		city: "",
 		editors: "",
 		materia: "",
@@ -30,7 +32,7 @@ export function BibliotecaFormBook({ create }) {
 		height: 0,
 		width: 0,
 		numberCopies: 1,
-		numberPages: 1,
+		numberPages: 0,
 		collection: "",
 	});
 
@@ -59,23 +61,53 @@ export function BibliotecaFormBook({ create }) {
 
 		// const { title, description } = content;
 
+		const { editionDate } = content;
+
 		const paylot = content;
+
+		if (!editionDate) paylot.editionDate = undefined;
 
 		const res = create
 			? await createBookRequest(paylot)
 			: await updateBookRequest(params.id, paylot);
 
 		console.log(res);
+		if (res.status === 200) {
+			const message = create ? "Nuevo libro añadido" : "cambios guardados";
 
-		navigate("/biblioteca");
+			toast.success(message);
+			navigate("/biblioteca");
+		}
 	};
 
 	const onInputChange = ({ target: { name, value } }) => {
 		console.log(name, value);
+
 		setContent({
 			...content,
 			[name]: value,
 		});
+	};
+
+	const deleteBook = async () => {
+		try {
+			const res = await deleteBookRequest(params.id);
+
+			console.log(res);
+
+			// if (res.status === 404) return toast.error(res.data.message);
+
+			toast.success("libro eliminado");
+			// await toast.promise();
+
+			navigate("/biblioteca");
+		} catch (error) {
+			console.log(error);
+			const { response: res } = error;
+
+			if (res.status === 404)
+				return toast.error(res.data.message, { duration: 2000 });
+		}
 	};
 
 	return (
@@ -87,12 +119,14 @@ export function BibliotecaFormBook({ create }) {
 					</Link>
 				}
 				// leftFuctionOnClick={toggleAsideActive}
-				title={"anadir libro"}
-				// rightButtons={
-				// 	<button>
-				// 		<AiOutlinePlus />
-				// 	</button>
-				// }
+				title={create ? "Añadir libro" : "Editar libro"}
+				rightButtons={
+					!create ? (
+						<button onClick={deleteBook}>
+							<BiTrash />
+						</button>
+					) : null
+				}
 			/>
 
 			<div className={styles.container}>
@@ -109,6 +143,8 @@ export function BibliotecaFormBook({ create }) {
 							type="text"
 							name="title"
 							value={content.title}
+							required
+							autoComplete="none"
 						/>
 					</label>
 
@@ -119,8 +155,11 @@ export function BibliotecaFormBook({ create }) {
 							name="description"
 							cols="30"
 							rows="10"
+							value={content.description}
+							required
+							autoComplete="none"
 						>
-							{content.description}
+							{/* {content.description ? content.description : ""} */}
 						</textarea>
 						{/* <input
 							onChange={onInputChange}
@@ -158,6 +197,7 @@ export function BibliotecaFormBook({ create }) {
 							type="text"
 							name="city"
 							value={content.city}
+							autoComplete="none"
 						/>
 					</label>
 
@@ -168,6 +208,7 @@ export function BibliotecaFormBook({ create }) {
 							type="text"
 							name="editors"
 							value={content.editors}
+							autoComplete="none"
 						/>
 					</label>
 
@@ -189,6 +230,7 @@ export function BibliotecaFormBook({ create }) {
 							type="text"
 							name="cota"
 							value={content.cota}
+							autoComplete="none"
 						/>
 					</label>
 
@@ -199,6 +241,7 @@ export function BibliotecaFormBook({ create }) {
 							type="number"
 							name="height"
 							value={content.height}
+							autoComplete="none"
 						/>
 					</label>
 
@@ -209,6 +252,7 @@ export function BibliotecaFormBook({ create }) {
 							type="number"
 							name="width"
 							value={content.width}
+							autoComplete="none"
 						/>
 					</label>
 
@@ -219,6 +263,7 @@ export function BibliotecaFormBook({ create }) {
 							type="number"
 							name="numberCopies"
 							value={content.numberCopies}
+							autoComplete="none"
 						/>
 					</label>
 
@@ -229,6 +274,7 @@ export function BibliotecaFormBook({ create }) {
 							type="number"
 							name="numberPages"
 							value={content.numberPages}
+							autoComplete="none"
 						/>
 					</label>
 
@@ -240,6 +286,7 @@ export function BibliotecaFormBook({ create }) {
 							name="collection"
 							list="collection"
 							value={content.collection}
+							autoComplete="none"
 						/>
 					</label>
 
