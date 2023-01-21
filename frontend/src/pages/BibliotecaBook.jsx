@@ -56,7 +56,7 @@ export function BibliotecaBook() {
 					</Link>
 				}
 				// leftFuctionOnClick={toggleAsideActive}
-				title={"vista previa"}
+				title={"Vista previa"}
 				rightButtons={
 					<Link to={`/biblioteca/editar/${params.id}`}>
 						<button>

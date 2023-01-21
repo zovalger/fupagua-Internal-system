@@ -15,6 +15,7 @@ import {
 } from "../api/activities";
 
 import { toInputDate } from "../utility";
+import { toast } from "react-hot-toast";
 
 export function AgendaActivity({ create }) {
 	const navigate = useNavigate();
@@ -31,8 +32,6 @@ export function AgendaActivity({ create }) {
 	const [editing, setEditing] = useState(false);
 
 	const params = useParams();
-
-
 
 	useEffect(() => {
 		// si estamos en el modo crear no se ejecuta, si no buscamos los datos del registro
@@ -75,6 +74,12 @@ export function AgendaActivity({ create }) {
 
 		console.log(res);
 
+		if (res.status === 200) {
+			const message = create ? "Actividad añadida" : "cambios guardados";
+
+			toast.success(message);
+		}
+
 		navigate("/agenda");
 	};
 
@@ -92,6 +97,8 @@ export function AgendaActivity({ create }) {
 		const res = await deleteActivityRequest(params.id);
 
 		console.log(res);
+					toast.success("Actividad eliminada");
+
 		navigate("/agenda");
 	};
 
@@ -103,7 +110,7 @@ export function AgendaActivity({ create }) {
 						<BiChevronLeft />
 					</Link>
 				}
-				title={"edicion de actividad"}
+				title={"Edicion de actividad"}
 				rightButtons={
 					<button onClick={deleteActivity}>
 						<BiTrash />
@@ -130,7 +137,10 @@ export function AgendaActivity({ create }) {
 					{/* <ActivityPatient /> */}
 
 					<div className={styles.formControls}>
-						<button>cancelar</button>
+						<button type="button" onClick={() => navigate("/agenda")}>
+							cancelar
+						</button>
+
 						<button>guardar</button>
 					</div>
 				</form>

@@ -318,15 +318,22 @@ export function BibliotecaFormBook({ create }) {
 					</datalist>
 
 					<datalist id="materia">
-						<option value="ciencia" />
-						<option value="otra ciencia" />
-						<option value="ficcion" />
+						<option value="Obras generales" />
+						<option value="Filosofía y psicología" />
+						<option value="Religión" />
+						<option value="Ciencias sociales" />
+						<option value="Lenguaje" />
+						<option value="Ciencias naturales" />
+						<option value="Tecnología y ciencias de la salud" />
+						<option value="Arte y deportes " />
+						<option value="Literatura" />
+						<option value="Geografía e historia" />
 					</datalist>
 
 					<datalist id="collection">
-						<option value="enciclopedia" />
+						{/* <option value="enciclopedia" />
 						<option value="historia universal" />
-						<option value="agatha christie" />
+						<option value="agatha christie" /> */}
 					</datalist>
 				</form>
 			</div>

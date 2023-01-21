@@ -19,6 +19,7 @@ export default function ActivityTitleDate({
 				value={title}
 				name="title"
 				onChange={onInputChange}
+				required
 			/>
 			<div className={styles.timeSelector}>
 				<span>Inicio</span>

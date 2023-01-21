@@ -30,7 +30,7 @@ export function Agenda() {
 			<Nav
 				leftIcon={<RxHamburgerMenu />}
 				leftFuctionOnClick={toggleAsideActive}
-				title={"agenda"}
+				title={"Agenda"}
 			/>
 
 			<div className={styles.container}>
