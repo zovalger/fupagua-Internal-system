@@ -17,22 +17,35 @@ const createBook = async (req, res) => {
 };
 
 const getBooks = async (req, res) => {
-	const { textToQuery } = req.query;
-	let where = {};
+	const { or, sortBy, direction, title, description, subtitle, cota, autor } =
+		req.query;
 
-	if (textToQuery) {
-		console.log(textToQuery);
-		const words = textToQuery.trim().split(" ");
+	let query = {};
+	const datos = [];
 
-		console.log(words);
+	if (title) datos.push({ title: { [Op.substring]: title } });
+	if (description) datos.push({ description: { [Op.substring]: description } });
+	if (subtitle) datos.push({ subtitle: { [Op.substring]: subtitle } });
+	if (cota) datos.push({ cota: { [Op.substring]: cota } });
+	if (autor) datos.push({ autor: { [Op.substring]: autor } });
 
-		where = {
-			[Op.or]: [
-				{ title: { [Op.substring]: textToQuery } },
-				{ description: { [Op.substring]: textToQuery } },
-			],
-		};
-	}
+	console.log(datos);
+
+	query = {
+		[Op[or ? "or" : "and"]]: datos,
+	};
+
+	// query = {
+	// 	[Op[or ? "or" : "and"]]: [
+	// 		{ title: { [Op.substring]: title } },
+	// 		{ description: { [Op.substring]: description } },
+	// 		{ subtitle: { [Op.substring]: subtitle } },
+	// 		{ cota: { [Op.substring]: cota } },
+	// 		{ autor: { [Op.substring]: autor } },
+	// 	],
+	// };
+
+	const where = query;
 
 	// for (const key in req.query) {
 	// 	if (Object.hasOwnProperty.call(req.query, key)) {
@@ -41,8 +54,6 @@ const getBooks = async (req, res) => {
 	// 		where[key] = { [Op.substring]: value };
 	// 	}
 	// }
-
-	console.log(where);
 
 	// if (name) where.name = { [Op.substring]: name };
 	// if (ci) where.ci = { [Op.substring]: ci };

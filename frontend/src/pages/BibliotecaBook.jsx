@@ -37,6 +37,16 @@ export function BibliotecaBook() {
 		getBook();
 	}, []);
 
+	const Campo = ({ title, children, validation }) => (
+		<>
+			{validation !== undefined && validation ? (
+				<div>
+					<strong>{title}:</strong> {children}
+				</div>
+			) : null}
+		</>
+	);
+
 	return (
 		<>
 			<Nav
@@ -59,76 +69,68 @@ export function BibliotecaBook() {
 			<div className={styles.container}>
 				<h3>{book.title}</h3>
 
-				<div>
-					<strong>Descripción:</strong> {book.description}
-				</div>
+				<h4>{book.subtitle}</h4>
 
-				{book.autor ? (
-					<div>
-						<strong>Autor:</strong> {book.autor}
-					</div>
-				) : null}
+				<Campo title="Descripción">{book.description}</Campo>
 
-				{book.editionDate ? (
-					<div>
-						<strong>Fecha de edición:</strong>
-						{new Date(book.editionDate).toLocaleDateString()}
-					</div>
-				) : null}
+				<Campo title="Autor" validation={book.autor}>
+					{book.autor}
+				</Campo>
 
-				{book.materia ? (
-					<div>
-						<strong>Materia:</strong> {book.materia}
-					</div>
-				) : null}
+				<Campo title="Cota">{book.cota}</Campo>
 
-				<div>
-					<strong>Cota:</strong> {book.cota}
-				</div>
+				<Campo title="Fecha de edición" validation={book.editionDate}>
+					{book.editionDate}
+				</Campo>
 
-				{typeof book.numberCopies === "number" ? (
-					<div>
-						<strong>Número de ejemplares:</strong> {book.numberCopies}
-					</div>
-				) : null}
+				<Campo title="Ciudad" validation={book.city}>
+					{book.city}
+				</Campo>
 
-				{typeof book.numberCopiesAvailable === "number" ? (
-					<div>
-						<strong>Ejemplares disponibles:</strong>{" "}
-						{book.numberCopiesAvailable}
-					</div>
-				) : null}
+				<Campo title="Editores" validation={book.editors}>
+					{book.editors}
+				</Campo>
 
-				{book.width ? (
-					<div>
-						<strong>Dimensiones:</strong>{" "}
-						{`${book.width} cm X ${book.height} cm`}
-					</div>
-				) : null}
+				<Campo title="Materia" validation={book.materia}>
+					{book.materia}
+				</Campo>
 
-				{typeof book.numberPages === "number" ? (
-					<div>
-						<strong>Número de paginas:</strong> {book.numberPages}
-					</div>
-				) : null}
+				<Campo title="Altura" validation={book.height > 0}>
+					{book.height} cm
+				</Campo>
 
-				{book.city ? (
-					<div>
-						<strong>Ciudad:</strong> {book.city}
-					</div>
-				) : null}
+				<Campo title="Colección" validation={book.Colección}>
+					{book.Colección}
+				</Campo>
 
-				{book.editors ? (
-					<div>
-						<strong>Editores:</strong> {book.editors}
-					</div>
-				) : null}
+				<Campo title="tipo de adquisicion" validation={book.typeAdquisition}>
+					{book.typeAdquisition}
+				</Campo>
 
-				{book.collection ? (
-					<div>
-						<strong>Colección:</strong> {book.collection}
-					</div>
-				) : null}
+				<Campo title="observaciones" validation={book.observations}>
+					{book.observations}
+				</Campo>
+
+				<Campo
+					title="Número de paginas"
+					validation={typeof book.numberPages === "number"}
+				>
+					{book.numberPages}
+				</Campo>
+
+				<Campo
+					title="Número de ejemplares"
+					validation={typeof book.numberCopies === "number"}
+				>
+					{book.numberCopies}
+				</Campo>
+
+				<Campo
+					title="Ejemplares disponibles"
+					validation={typeof book.numberCopiesAvailable === "number"}
+				>
+					{book.numberCopiesAvailable} 
+				</Campo>
 			</div>
 		</>
 	);

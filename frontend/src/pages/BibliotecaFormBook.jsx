@@ -22,18 +22,22 @@ export function BibliotecaFormBook({ create }) {
 
 	const [content, setContent] = useState({
 		title: "",
+		subtitle: "",
 		description: "",
 		autor: "",
-		editionDate: "",
+		cota: "",
+		editionDate: null,
 		city: "",
 		editors: "",
 		materia: "",
-		cota: "",
-		height: 0,
-		width: 0,
-		numberCopies: 1,
-		numberPages: 0,
+		height: null,
+		// width: 0,
+		typeAdquisition: "",
+		observations: "",
 		collection: "",
+
+		numberCopies: 1,
+		numberPages: null,
 	});
 
 	useEffect(() => {
@@ -42,15 +46,8 @@ export function BibliotecaFormBook({ create }) {
 
 		const fillInputs = async () => {
 			const res = await getBookRequest(params.id);
-			// console.log(res);
 
-			const data = res.data;
-
-			const { editionDate } = res.data;
-
-			data.editionDate = toInputDate(new Date(editionDate));
-
-			setContent(data);
+			setContent(res.data);
 		};
 
 		fillInputs();
@@ -59,13 +56,9 @@ export function BibliotecaFormBook({ create }) {
 	const onSubmit = async (e) => {
 		e.preventDefault();
 
-		// const { title, description } = content;
-
-		const { editionDate } = content;
-
 		const paylot = content;
 
-		if (!editionDate) paylot.editionDate = undefined;
+		// if (!editionDate) paylot.editionDate = undefined;
 
 		const res = create
 			? await createBookRequest(paylot)
@@ -149,6 +142,17 @@ export function BibliotecaFormBook({ create }) {
 					</label>
 
 					<label>
+						subtitulo
+						<input
+							onChange={onInputChange}
+							type="text"
+							name="subtitle"
+							value={content.subtitle}
+							autoComplete="none"
+						/>
+					</label>
+
+					<label>
 						descripcion
 						<textarea
 							onChange={onInputChange}
@@ -158,15 +162,8 @@ export function BibliotecaFormBook({ create }) {
 							value={content.description}
 							required
 							autoComplete="none"
-						>
-							{/* {content.description ? content.description : ""} */}
-						</textarea>
-						{/* <input
-							onChange={onInputChange}
-							type="text"
-							name="description"
-							value={content.description}
-						/> */}
+							maxLength={500}
+						></textarea>
 					</label>
 
 					<label>
@@ -181,10 +178,21 @@ export function BibliotecaFormBook({ create }) {
 					</label>
 
 					<label>
-						fecha de edicion
+						Cota
 						<input
 							onChange={onInputChange}
-							type="date"
+							type="text"
+							name="cota"
+							value={content.cota}
+							autoComplete="none"
+						/>
+					</label>
+
+					<label>
+						Fecha de edicion
+						<input
+							onChange={onInputChange}
+							type="number"
 							name="editionDate"
 							value={content.editionDate}
 						/>
@@ -202,7 +210,7 @@ export function BibliotecaFormBook({ create }) {
 					</label>
 
 					<label>
-						editores
+						Editores
 						<input
 							onChange={onInputChange}
 							type="text"
@@ -213,7 +221,7 @@ export function BibliotecaFormBook({ create }) {
 					</label>
 
 					<label>
-						materia
+						Materia
 						<input
 							onChange={onInputChange}
 							type="text"
@@ -224,18 +232,7 @@ export function BibliotecaFormBook({ create }) {
 					</label>
 
 					<label>
-						Cota
-						<input
-							onChange={onInputChange}
-							type="text"
-							name="cota"
-							value={content.cota}
-							autoComplete="none"
-						/>
-					</label>
-
-					<label>
-						altura
+						Altura
 						<input
 							onChange={onInputChange}
 							type="number"
@@ -245,7 +242,7 @@ export function BibliotecaFormBook({ create }) {
 						/>
 					</label>
 
-					<label>
+					{/* <label>
 						anchura
 						<input
 							onChange={onInputChange}
@@ -254,10 +251,10 @@ export function BibliotecaFormBook({ create }) {
 							value={content.width}
 							autoComplete="none"
 						/>
-					</label>
+					</label> */}
 
 					<label>
-						numero de ejemplares
+						Numero de ejemplares
 						<input
 							onChange={onInputChange}
 							type="number"
@@ -268,13 +265,35 @@ export function BibliotecaFormBook({ create }) {
 					</label>
 
 					<label>
-						numero de paginas
+						Numero de paginas
 						<input
 							onChange={onInputChange}
 							type="number"
 							name="numberPages"
 							value={content.numberPages}
 							autoComplete="none"
+						/>
+					</label>
+
+					<label>
+						Tipo adquisición
+						<input
+							onChange={onInputChange}
+							type="text"
+							name="typeAdquisition"
+							value={content.typeAdquisition}
+							// autoComplete="none"
+						/>
+					</label>
+
+					<label>
+						Observaciones
+						<input
+							onChange={onInputChange}
+							type="text"
+							name="observations"
+							value={content.observations}
+							// autoComplete="none"
 						/>
 					</label>
 

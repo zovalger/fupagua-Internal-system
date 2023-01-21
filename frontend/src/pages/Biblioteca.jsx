@@ -10,15 +10,16 @@ import Book from "../components/Biblioteca/Book";
 import { useEffect, useState } from "react";
 import { getBooksRequest } from "../api/books";
 import toast from "react-hot-toast";
+import SearchingForm from "../components/Biblioteca/SearchingForm";
 
 export function Biblioteca() {
 	const [books, setBooks] = useState([]);
 	const [booksQuery, setBooksQuery] = useState([]);
-	const [query, setQuery] = useState({ textToQuery: "" });
 	const [inQuery, setInQuery] = useState(false);
 	const { toggleAsideActive } = useAppData();
 
 	const navigate = useNavigate();
+
 
 	useEffect(() => {
 		const fillList = async () => {
@@ -30,9 +31,9 @@ export function Biblioteca() {
 		fillList();
 	}, []);
 
-	const makeQuery = async (e) => {
+	const getListOfBooks = async (query) => {
 		try {
-			e.preventDefault();
+			// e.preventDefault();
 			const res = await getBooksRequest(query);
 			const { data } = res;
 			console.log(res);
@@ -51,16 +52,18 @@ export function Biblioteca() {
 		}
 	};
 
-	const onInputChange = ({ target: { name, value } }) => {
-		if (value.length <= 0) setInQuery(false);
 
-		console.log(name, value);
-		setQuery({
-			...query,
-			[name]: value,
-		});
-	};
-
+	const llenarLista = (book) => (
+		<Link to={`./${book.id}`} key={book.id}>
+			<Book
+				title={book.title}
+				subtitle={book.subtitle}
+				autor={book.autor}
+				description={book.description}
+				imgURL={""}
+			/>
+		</Link>
+	);
 	return (
 		<>
 			<Nav
@@ -68,6 +71,7 @@ export function Biblioteca() {
 				leftFuctionOnClick={toggleAsideActive}
 				title={"Biblioteca"}
 				rightButtons={
+					
 					<Link to={"/biblioteca/nuevo_libro"}>
 						<button>
 							<AiOutlinePlus />
@@ -82,19 +86,7 @@ export function Biblioteca() {
 				
 			*********************************************************************/}
 
-			<form className={styles.searchForm} onSubmit={makeQuery}>
-				<div className={styles.searchInput}>
-					<input
-						name="textToQuery"
-						type="search"
-						onChange={onInputChange}
-						autoComplete="none"
-					/>
-					<button>
-						<AiOutlineSearch />
-					</button>
-				</div>
-			</form>
+			<SearchingForm  getListOfBooks={getListOfBooks} />
 
 			<div className={styles.container}>
 				<div className={styles.books}>
@@ -104,16 +96,8 @@ export function Biblioteca() {
 											hay almenos un elemento en mostrado 
 					*********************************************************************/}
 					{inQuery && booksQuery.length > 0
-						? booksQuery.map((book) => (
-								<Link to={`./${book.id}`} key={book.id}>
-									<Book title={book.title} description={book.description} />
-								</Link>
-						  ))
-						: books.map((book) => (
-								<Link to={`./${book.id}`} key={book.id}>
-									<Book title={book.title} description={book.description} />
-								</Link>
-						  ))}
+						? booksQuery.map(llenarLista)
+						: books.map(llenarLista)}
 				</div>
 			</div>
 		</>

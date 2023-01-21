@@ -5,22 +5,30 @@ const Book = db.define(
 	"book",
 	{
 		title: { type: DataTypes.STRING, allowNull: false },
-		description: DataTypes.STRING,
+		subtitle: DataTypes.STRING,
 
+		description: DataTypes.STRING(500),
+		cota: DataTypes.STRING,
 		autor: DataTypes.STRING,
-		editionDate: DataTypes.DATE,
+		editionDate: DataTypes.INTEGER,
 
 		city: DataTypes.STRING,
 		editors: DataTypes.STRING,
+
 		materia: DataTypes.STRING,
 
-		cota: DataTypes.STRING,
-
-		width: DataTypes.INTEGER,
 		height: DataTypes.INTEGER,
-		numberCopies: DataTypes.INTEGER,
-		// numberCopiesAviables:DataTypes.INTEGER,
+		// width: DataTypes.INTEGER,
+
+		numberCopies: { type: DataTypes.INTEGER, defaultValue: 1 },
+		numberCopiesAvailable: { type: DataTypes.INTEGER, defaultValue: 1 },
+		
+		
 		numberPages: DataTypes.INTEGER,
+
+		typeAdquisition: DataTypes.STRING,
+		observations: DataTypes.STRING,
+
 		collection: DataTypes.STRING,
 	},
 	{
