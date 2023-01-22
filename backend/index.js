@@ -4,15 +4,19 @@
 // ****************************************************************************
 
 const app = require("./app");
-const { PORT } = require("./config");
+const { PORT, NODE_ENV } = require("./config");
 const db = require("./db");
+const Seed = require("./utils/seed");
 
 const conectToDataBase = async () => {
 	try {
 		await db.authenticate();
-		console.log("conexion exitosa");
+		console.log("conexion exitosa a la base de datos");
 
-		await db.sync({ alter: true, force: false });
+		if (NODE_ENV === "development") {
+			await db.sync({ alter: true, force: true });
+			await Seed();
+		}
 
 		app.listen(PORT);
 

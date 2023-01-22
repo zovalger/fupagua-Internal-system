@@ -86,10 +86,11 @@ export function Biblioteca() {
 				
 			*********************************************************************/}
 
-			<SearchingForm  getListOfBooks={getListOfBooks} />
 
 			<div className={styles.container}>
 				<div className={styles.books}>
+				<SearchingForm  getListOfBooks={getListOfBooks} />
+
 					{/*********************************************************************
 									muestra el contenido de la busqueda solo si
 											hay algun valor en el formulario de busqueda

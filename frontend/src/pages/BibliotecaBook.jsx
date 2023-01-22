@@ -37,9 +37,9 @@ export function BibliotecaBook() {
 		getBook();
 	}, []);
 
-	const Campo = ({ title, children, validation }) => (
+	const Campo = ({ title, children, validation = null }) => (
 		<>
-			{validation !== undefined && validation ? (
+			{validation !== null && validation ? (
 				<div>
 					<strong>{title}:</strong> {children}
 				</div>
@@ -77,7 +77,9 @@ export function BibliotecaBook() {
 					{book.autor}
 				</Campo>
 
-				<Campo title="Cota">{book.cota}</Campo>
+				<Campo title="Cota" validation={book.cota}>
+					{book.cota}
+				</Campo>
 
 				<Campo title="Fecha de edición" validation={book.editionDate}>
 					{book.editionDate}
@@ -129,7 +131,7 @@ export function BibliotecaBook() {
 					title="Ejemplares disponibles"
 					validation={typeof book.numberCopiesAvailable === "number"}
 				>
-					{book.numberCopiesAvailable} 
+					{book.numberCopiesAvailable}
 				</Campo>
 			</div>
 		</>
