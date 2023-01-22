@@ -17,8 +17,16 @@ const createBook = async (req, res) => {
 };
 
 const getBooks = async (req, res) => {
-	const { or, sortBy, direction, title, description, subtitle, cota, autor } =
-		req.query;
+	const {
+		or,
+		sortBy = "title",
+		direction = "ASC",
+		title,
+		description,
+		subtitle,
+		cota,
+		autor,
+	} = req.query;
 
 	let query = {};
 	const datos = [];
@@ -35,32 +43,12 @@ const getBooks = async (req, res) => {
 		[Op[or ? "or" : "and"]]: datos,
 	};
 
-	// query = {
-	// 	[Op[or ? "or" : "and"]]: [
-	// 		{ title: { [Op.substring]: title } },
-	// 		{ description: { [Op.substring]: description } },
-	// 		{ subtitle: { [Op.substring]: subtitle } },
-	// 		{ cota: { [Op.substring]: cota } },
-	// 		{ autor: { [Op.substring]: autor } },
-	// 	],
-	// };
-
 	const where = query;
-
-	// for (const key in req.query) {
-	// 	if (Object.hasOwnProperty.call(req.query, key)) {
-	// 		const value = req.query[key];
-
-	// 		where[key] = { [Op.substring]: value };
-	// 	}
-	// }
-
-	// if (name) where.name = { [Op.substring]: name };
-	// if (ci) where.ci = { [Op.substring]: ci };
 
 	try {
 		const book = await Book.findAll({
 			where,
+			order: [[sortBy, direction]],
 		});
 		return res.json(book);
 	} catch (error) {

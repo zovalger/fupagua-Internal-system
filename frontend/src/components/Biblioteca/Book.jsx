@@ -1,6 +1,6 @@
 import styles from "./Book.module.scss";
 
-export default function Book({ title, subtitle, autor, description, imgURL }) {
+export default function Book({ title, subtitle, autor, description,cota, imgURL }) {
 	return (
 		<div className={styles.container}>
 			<div className={styles.imgContainer}>
@@ -11,6 +11,7 @@ export default function Book({ title, subtitle, autor, description, imgURL }) {
 				<div className={styles.subtitle}> {subtitle}</div>
 				<div className={styles.autor}>Autor: {autor}</div>
 				<div className={styles.description}>{description}</div>
+				<div className={styles.autor}>cota: {cota}</div>
 			</div>
 		</div>
 	);

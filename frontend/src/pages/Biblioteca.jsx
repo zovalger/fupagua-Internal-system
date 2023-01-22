@@ -20,7 +20,6 @@ export function Biblioteca() {
 
 	const navigate = useNavigate();
 
-
 	useEffect(() => {
 		const fillList = async () => {
 			const res = await getBooksRequest();
@@ -52,7 +51,6 @@ export function Biblioteca() {
 		}
 	};
 
-
 	const llenarLista = (book) => (
 		<Link to={`./${book.id}`} key={book.id}>
 			<Book
@@ -60,6 +58,7 @@ export function Biblioteca() {
 				subtitle={book.subtitle}
 				autor={book.autor}
 				description={book.description}
+				cota={book.cota}
 				imgURL={""}
 			/>
 		</Link>
@@ -71,7 +70,6 @@ export function Biblioteca() {
 				leftFuctionOnClick={toggleAsideActive}
 				title={"Biblioteca"}
 				rightButtons={
-					
 					<Link to={"/biblioteca/nuevo_libro"}>
 						<button>
 							<AiOutlinePlus />
@@ -86,10 +84,12 @@ export function Biblioteca() {
 				
 			*********************************************************************/}
 
-
 			<div className={styles.container}>
 				<div className={styles.books}>
-				<SearchingForm  getListOfBooks={getListOfBooks} />
+					<SearchingForm
+						getListOfBooks={getListOfBooks}
+						cancelQuery={() => setInQuery(false)}
+					/>
 
 					{/*********************************************************************
 									muestra el contenido de la busqueda solo si

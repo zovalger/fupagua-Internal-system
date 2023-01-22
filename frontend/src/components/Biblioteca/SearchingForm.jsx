@@ -3,9 +3,12 @@ import { AiOutlineSearch } from "react-icons/ai";
 
 import styles from "./SearchingForm.module.scss";
 
-export default function SearchingForm({ getListOfBooks }) {
+export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 	const [query, setQuery] = useState({ title: "" });
-	const [avanzado, setAvanzado] = useState(true);
+
+	const [avanzado, setAvanzado] = useState(false);
+	const [direction, setDirection] = useState("ASC");
+	const [sortBy, setSortBy] = useState("title");
 
 	const onsubmit = (e) => {
 		e.preventDefault();
@@ -26,6 +29,10 @@ export default function SearchingForm({ getListOfBooks }) {
 			req.subtitle = query.title;
 			req.or = true;
 		}
+
+		req.sortBy = sortBy;
+		req.direction = direction;
+
 		console.log(req);
 
 		getListOfBooks(req);
@@ -41,27 +48,31 @@ export default function SearchingForm({ getListOfBooks }) {
 		});
 	};
 
-	const InputLabel = ({ name, placeholder, value }) => (
-		<label>
-			{placeholder}
-			<input
-				name={name}
-				type="text"
-				placeholder={placeholder}
-				onChange={onInputChange}
-				autoComplete="none"
-				value={value}
-			/>
-		</label>
-	);
-
 	const AvanzadeMode = () => {
 		setAvanzado(!avanzado);
 		console.log(!avanzado ? "busqueda avanzada activada" : "busqueda simple");
 	};
 	const ascDESC = () => {
-		setAvanzado(!avanzado);
-		console.log(!avanzado ? "busqueda avanzada activada" : "busqueda simple");
+		setDirection(direction === "ASC" ? "DESC" : "ASC");
+	};
+
+	const SortByOnChange = ({ target: { value } }) => {
+		setSortBy(value);
+	};
+
+	const dropQuery = () => {
+		const q = {};
+
+		for (const key in query) {
+			if (Object.hasOwnProperty.call(query, key)) {
+				// const valor = query[key];
+				q[key] = "";
+			}
+		}
+
+		setQuery(q);
+
+		cancelQuery();
 	};
 
 	return (
@@ -69,22 +80,28 @@ export default function SearchingForm({ getListOfBooks }) {
 			<input
 				name="title"
 				type="search"
-				placeholder="buscar / subtitulo"
+				placeholder={!avanzado ? "buscar" : "titulo"}
 				onChange={onInputChange}
 				autoComplete="none"
+				value={query.title}
 			/>
+			<button type="button" onClick={dropQuery}>
+				X
+			</button>
 			<button type="button" onClick={AvanzadeMode}>
 				busqueda avanzada
 			</button>
 
-			<select name="sortBy" onChange={onInputChange}>
+			<select name="sortBy" onChange={SortByOnChange} value={sortBy}>
 				<option value="title">titulo</option>
 				<option value="subtitle">subtitulo</option>
 				<option value="description">descripcion</option>
 				<option value="cota">cota</option>
 				<option value="autor">autor</option>
 			</select>
-			{/* <button type="button" onClick={ascDesc}></button> */}
+			<button type="button" onClick={ascDESC}>
+				{direction}
+			</button>
 
 			<input
 				name="subtitle"
@@ -92,6 +109,7 @@ export default function SearchingForm({ getListOfBooks }) {
 				placeholder="subtitle"
 				onChange={onInputChange}
 				autoComplete="none"
+				value={query.subtitle}
 			/>
 			<input
 				name="description"
@@ -99,6 +117,7 @@ export default function SearchingForm({ getListOfBooks }) {
 				placeholder="description"
 				onChange={onInputChange}
 				autoComplete="none"
+				value={query.description}
 			/>
 			<input
 				name="cota"
@@ -106,6 +125,7 @@ export default function SearchingForm({ getListOfBooks }) {
 				placeholder="cota"
 				onChange={onInputChange}
 				autoComplete="none"
+				value={query.cota}
 			/>
 			<input
 				name="autor"
@@ -113,6 +133,7 @@ export default function SearchingForm({ getListOfBooks }) {
 				placeholder="autor"
 				onChange={onInputChange}
 				autoComplete="none"
+				value={query.autor}
 			/>
 
 			<button>

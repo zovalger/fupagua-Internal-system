@@ -2,7 +2,9 @@ const Book = require("../models/Book.model");
 const DataSeed = require("./dataSet");
 
 const Seed = async () => {
-	await Book.bulkCreate(DataSeed);
+	console.log("datos de prueba insertados");
+
+	await Book.bulkCreate(DataSeed.books);
 };
 
 module.exports = Seed;
