@@ -39,11 +39,9 @@ const getBooks = async (req, res) => {
 
 	console.log(datos);
 
-	query = {
-		[Op[or ? "or" : "and"]]: datos,
-	};
+	const where = {};
 
-	const where = query;
+	if (datos.length > 0) where[Op[or ? "or" : "and"]] = datos;
 
 	try {
 		const book = await Book.findAll({
