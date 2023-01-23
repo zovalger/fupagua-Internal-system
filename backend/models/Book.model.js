@@ -8,28 +8,32 @@ const Book = db.define(
 		subtitle: DataTypes.STRING,
 
 		description: DataTypes.STRING(500),
-		cota: DataTypes.STRING,
-		autor: DataTypes.STRING,
-		editionDate: DataTypes.INTEGER,
+		cota: { type: DataTypes.STRING, defaultValue: "" },
+		autor: { type: DataTypes.STRING, defaultValue: "" },
+		editionDate: { type: DataTypes.INTEGER, defaultValue: 1900 },
 
-		city: DataTypes.STRING,
-		editors: DataTypes.STRING,
+		city: { type: DataTypes.STRING, defaultValue: "" },
+		editors: { type: DataTypes.STRING, defaultValue: "" },
 
-		materia: DataTypes.STRING,
+		materia: { type: DataTypes.STRING, defaultValue: "" },
 
-		height: DataTypes.INTEGER,
+		height: { type: DataTypes.INTEGER, defaultValue: 0 },
 		// width: DataTypes.INTEGER,
 
 		numberCopies: { type: DataTypes.INTEGER, defaultValue: 1 },
 		numberCopiesAvailable: { type: DataTypes.INTEGER, defaultValue: 1 },
-		
-		
-		numberPages: DataTypes.INTEGER,
 
-		typeAdquisition: DataTypes.STRING,
-		observations: DataTypes.STRING,
+		numberPages: { type: DataTypes.INTEGER, defaultValue: 1 },
 
-		collection: DataTypes.STRING,
+		typeAdquisition: { type: DataTypes.STRING, defaultValue: "" },
+		observations: { type: DataTypes.STRING, defaultValue: "" },
+
+		collection: { type: DataTypes.STRING, defaultValue: "" },
+
+		img_public_id: { type: DataTypes.STRING, defaultValue: "" },
+		img_cloudinary_url: { type: DataTypes.STRING, defaultValue: "" },
+		img_local_url: { type: DataTypes.STRING, defaultValue: "" },
+		img_format: { type: DataTypes.STRING, defaultValue: "" },
 	},
 	{
 		setterMethods: {

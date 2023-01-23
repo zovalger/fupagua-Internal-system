@@ -59,7 +59,7 @@ export function Biblioteca() {
 				autor={book.autor}
 				description={book.description}
 				cota={book.cota}
-				imgURL={""}
+				img_cloudinary_url={book.img_cloudinary_url}
 			/>
 		</Link>
 	);

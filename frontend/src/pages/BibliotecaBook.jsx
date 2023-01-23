@@ -67,6 +67,10 @@ export function BibliotecaBook() {
 			/>
 
 			<div className={styles.container}>
+				<div>
+					{" "}
+					<img src={book.img_cloudinary_url} alt="imagen de libro" />
+				</div>
 				<h3>{book.title}</h3>
 
 				<h4>{book.subtitle}</h4>

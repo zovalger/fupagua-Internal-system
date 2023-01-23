@@ -1,5 +1,6 @@
 const createError = require("http-errors");
 const express = require("express");
+const fileUpload = require("express-fileupload");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -25,6 +26,7 @@ if (NODE_ENV === "development") app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(fileUpload({ useTempFiles: true, tempFileDir: "./uploads" }));
 
 // ****************************************************************************
 // 										rutas para la api

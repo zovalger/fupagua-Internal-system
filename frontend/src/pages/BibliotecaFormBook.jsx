@@ -26,18 +26,19 @@ export function BibliotecaFormBook({ create }) {
 		description: "",
 		autor: "",
 		cota: "",
-		editionDate: null,
+		editionDate: 1900,
 		city: "",
 		editors: "",
 		materia: "",
-		height: null,
+		height: 0,
 		// width: 0,
 		typeAdquisition: "",
 		observations: "",
 		collection: "",
 
 		numberCopies: 1,
-		numberPages: null,
+		numberPages: 1,
+		img: "",
 	});
 
 	useEffect(() => {
@@ -53,12 +54,21 @@ export function BibliotecaFormBook({ create }) {
 		fillInputs();
 	}, []);
 
-	const onSubmit = async (e) => {
+	const onSubmit = async (e, v) => {
 		e.preventDefault();
+		// console.log(e);
+
+		// console.log(content);
 
 		const paylot = content;
+		// for (const key in content) {
+		// 	if (Object.hasOwnProperty.call(content, key)) {
+		// 		const element = content[key];
+		// 		if (element) paylot[key] = element;
+		// 	}
+		// }
 
-		// if (!editionDate) paylot.editionDate = undefined;
+		console.log(paylot);
 
 		const res = create
 			? await createBookRequest(paylot)
@@ -123,11 +133,26 @@ export function BibliotecaFormBook({ create }) {
 			/>
 
 			<div className={styles.container}>
-				<form className={styles.Form} onSubmit={onSubmit}>
-					{/* <label>
+				<form className={styles.Form} onSubmit={onSubmit} method="post">
+					{content.img_cloudinary_url ? (
+						<div>
+							<img src={content.img_cloudinary_url} alt="" />
+						</div>
+					) : (
+						""
+					)}
+					<label>
 						imagen
-						<input onChange={onInputChange}type="file" name="img" />
-					</label> */}
+						<input
+							onChange={(e) => {
+								setContent({ ...content, img: e.target.files[0] });
+								// onInputChange
+							}}
+							type="file"
+							name="img"
+							accept="image/*"
+						/>
+					</label>
 
 					<label>
 						titulo

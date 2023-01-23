@@ -1,10 +1,20 @@
 import styles from "./Book.module.scss";
 
-export default function Book({ title, subtitle, autor, description,cota, imgURL }) {
+export default function Book({
+	title,
+	subtitle,
+	autor,
+	description,
+	cota,
+	img_cloudinary_url,
+}) {
 	return (
 		<div className={styles.container}>
 			<div className={styles.imgContainer}>
-				<img src={imgURL ? imgURL : "/bookExample.jpg"} alt="" />
+				<img
+					src={img_cloudinary_url ? img_cloudinary_url : ""}
+					alt=""
+				/>
 			</div>
 			<div className={styles.text}>
 				<div className={styles.title}>{title}</div>

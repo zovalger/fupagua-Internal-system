@@ -1,13 +1,40 @@
 const { Op } = require("sequelize");
+const { uploadImage, deleteImage } = require("../libs/cloudinary");
 const Book = require("../models/Book.model");
 
 // Book
 
 const createBook = async (req, res) => {
-	// const { title, description, dateStart, dateEnd, status } = req.body;
+	const { img } = req.files;
+	const data = req.body;
 
 	try {
-		const book = await Book.create(req.body);
+		// primero guardar los datos del libro
+		const book = await Book.create(data);
+
+		// luego subir la imagen a cloudinary
+
+		if (img) {
+			const { tempFilePath } = img;
+
+			book.img_local_url = tempFilePath;
+
+			try {
+				const result = await uploadImage(tempFilePath);
+				console.log(result);
+
+				const { public_id, url, secure_url, format } = result;
+
+				book.img_public_id = public_id;
+				book.img_cloudinary_url = secure_url;
+				book.img_format = format;
+			} catch (error) {
+				console.log("error al subir imagen");
+				console.log(error);
+			}
+
+			await book.save();
+		}
 
 		return res.json(book);
 	} catch (error) {
@@ -72,11 +99,54 @@ const getBook = async (req, res) => {
 
 const updateBook = async (req, res) => {
 	const { id } = req.params;
+	// const { img } = req.files;
+	const data = req.body;
 
 	try {
 		const book = await Book.findByPk(id);
 
 		await book.update(req.body);
+
+		// ver si tiene imagen primero
+
+		if (req.files?.img) {
+			const { img } = req.files;
+			const { tempFilePath } = img;
+
+			// eliminar la imagen anterior
+			if (book.img_local_url) {
+				const { img_public_id, img_cloudinary_url, img_format } = book;
+
+				book.img_public_id = "";
+				book.img_cloudinary_url = "";
+				book.img_format = "";
+
+				book.img_local_url = tempFilePath;
+				try {
+					await deleteImage(img_public_id);
+				} catch (error) {
+					console.log("error al tratar de eliminar la imagen en cloudinary");
+					console.log(error);
+				}
+			}
+
+			// subir la nueva imagen
+			try {
+				const result = await uploadImage(tempFilePath);
+				console.log(result);
+
+				const { public_id, url, secure_url, format } = result;
+
+				book.img_public_id = public_id;
+				book.img_cloudinary_url = secure_url;
+				book.img_format = format;
+			} catch (error) {
+				console.log("error al subir imagen");
+				console.log(error);
+			}
+
+			await book.save();
+		}
 
 		return res.json(book);
 	} catch (error) {
@@ -96,6 +166,20 @@ const deleteBook = async (req, res) => {
 				message: "libro no encontrado",
 			});
 
+		const { img_public_id } = book;
+		// eliminar la imagen
+		if (img_public_id) {
+			try {
+				console.log(await deleteImage(img_public_id));
+			} catch (error) {
+				console.log("error al tratar de eliminar la imagen en cloudinary");
+				console.log(error);
+			}
+		}
+
+		// ver si tiene imagen primero
+
+		// deleteImage(id)
 		console.log(await book.destroy());
 
 		res.send("a Book move to trash");
