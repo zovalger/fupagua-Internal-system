@@ -8,6 +8,7 @@ import { MdOutlineEdit } from "react-icons/md";
 import { useAppData } from "../context/AppContext";
 import { useEffect, useState } from "react";
 import { getBookRequest } from "../api/books";
+import toast from "react-hot-toast";
 
 export function BibliotecaBook() {
 	const params = useParams();
@@ -29,7 +30,14 @@ export function BibliotecaBook() {
 
 	useEffect(() => {
 		const getBook = async () => {
+			const toastId = toast.loading("cargando datos", {
+				id: "refreshDataBiblioteca",
+			});
+
 			const res = await getBookRequest(params.id);
+
+			toast.dismiss(toastId);
+			
 			console.log(res);
 			setBook(res.data);
 		};

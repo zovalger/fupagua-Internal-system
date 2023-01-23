@@ -20,7 +20,7 @@ export function BibliotecaFormBook({ create }) {
 	const navigate = useNavigate();
 	const params = useParams();
 
-	const [content, setContent] = useState({
+	const [bookData, setBookData] = useState({
 		title: "",
 		subtitle: "",
 		description: "",
@@ -31,7 +31,7 @@ export function BibliotecaFormBook({ create }) {
 		editors: "",
 		materia: "",
 		height: 0,
-		// width: 0,
+
 		typeAdquisition: "",
 		observations: "",
 		collection: "",
@@ -41,6 +41,8 @@ export function BibliotecaFormBook({ create }) {
 		img: "",
 	});
 
+	const [isSubmiting, setIsSubmitin] = useState(false);
+
 	useEffect(() => {
 		// si estamos en el modo crear no se ejecuta, si no buscamos los datos del registro
 		if (create) return;
@@ -48,7 +50,7 @@ export function BibliotecaFormBook({ create }) {
 		const fillInputs = async () => {
 			const res = await getBookRequest(params.id);
 
-			setContent(res.data);
+			setBookData(res.data);
 		};
 
 		fillInputs();
@@ -56,54 +58,66 @@ export function BibliotecaFormBook({ create }) {
 
 	const onSubmit = async (e, v) => {
 		e.preventDefault();
-		// console.log(e);
+		if (isSubmiting) return;
 
-		// console.log(content);
+		setIsSubmitin(true);
 
-		const paylot = content;
-		// for (const key in content) {
-		// 	if (Object.hasOwnProperty.call(content, key)) {
-		// 		const element = content[key];
-		// 		if (element) paylot[key] = element;
-		// 	}
-		// }
+		const paylot = bookData;
 
 		console.log(paylot);
 
-		const res = create
-			? await createBookRequest(paylot)
-			: await updateBookRequest(params.id, paylot);
+		try {
+			const myPromise = create
+				? createBookRequest(paylot)
+				: updateBookRequest(params.id, paylot);
 
-		console.log(res);
-		if (res.status === 200) {
-			const message = create ? "Nuevo libro añadido" : "cambios guardados";
+			console.log(myPromise);
 
-			toast.success(message);
-			navigate("/biblioteca");
+			toast.promise(myPromise, {
+				loading: "guardando",
+				success: (res) => {
+					console.log(res);
+
+					setTimeout(() => {
+						navigate("/biblioteca");
+					}, 1000);
+					return create ? "Nuevo libro añadido" : "cambios guardados";
+				},
+				error: (err) => `This just happened: ${err.toString()}`,
+			});
+		} catch (error) {
+			setIsSubmitin(false);
+			console.log(error);
 		}
 	};
 
 	const onInputChange = ({ target: { name, value } }) => {
 		console.log(name, value);
 
-		setContent({
-			...content,
+		setBookData({
+			...bookData,
 			[name]: value,
 		});
 	};
 
 	const deleteBook = async () => {
 		try {
-			const res = await deleteBookRequest(params.id);
+			// const d = confirm("esta seguro de elminar el libro?");
 
-			console.log(res);
+			const myPromise = deleteBookRequest(params.id);
 
-			// if (res.status === 404) return toast.error(res.data.message);
-
-			toast.success("libro eliminado");
-			// await toast.promise();
-
-			navigate("/biblioteca");
+			toast.promise(myPromise, {
+				loading: "eliminando",
+				success: (res) => {
+					console.log(res);
+					setTimeout(() => {
+						navigate("/biblioteca");
+					}, 1000);
+					// navigate("/biblioteca");
+					return "libro eliminado";
+				},
+				error: (err) => `This just happened: ${err.toString()}`,
+			});
 		} catch (error) {
 			console.log(error);
 			const { response: res } = error;
@@ -123,20 +137,16 @@ export function BibliotecaFormBook({ create }) {
 				}
 				// leftFuctionOnClick={toggleAsideActive}
 				title={create ? "Añadir libro" : "Editar libro"}
-				rightButtons={
-					!create ? (
-						<button onClick={deleteBook}>
-							<BiTrash />
-						</button>
-					) : null
-				}
+				// rightButtons={
+
+				// }
 			/>
 
 			<div className={styles.container}>
 				<form className={styles.Form} onSubmit={onSubmit} method="post">
-					{content.img_cloudinary_url ? (
+					{bookData.img_cloudinary_url ? (
 						<div>
-							<img src={content.img_cloudinary_url} alt="" />
+							<img src={bookData.img_cloudinary_url} alt="" />
 						</div>
 					) : (
 						""
@@ -145,7 +155,7 @@ export function BibliotecaFormBook({ create }) {
 						imagen
 						<input
 							onChange={(e) => {
-								setContent({ ...content, img: e.target.files[0] });
+								setBookData({ ...bookData, img: e.target.files[0] });
 								// onInputChange
 							}}
 							type="file"
@@ -160,7 +170,7 @@ export function BibliotecaFormBook({ create }) {
 							onChange={onInputChange}
 							type="text"
 							name="title"
-							value={content.title}
+							value={bookData.title}
 							required
 							autoComplete="none"
 						/>
@@ -172,7 +182,7 @@ export function BibliotecaFormBook({ create }) {
 							onChange={onInputChange}
 							type="text"
 							name="subtitle"
-							value={content.subtitle}
+							value={bookData.subtitle}
 							autoComplete="none"
 						/>
 					</label>
@@ -184,7 +194,7 @@ export function BibliotecaFormBook({ create }) {
 							name="description"
 							cols="30"
 							rows="10"
-							value={content.description}
+							value={bookData.description}
 							required
 							autoComplete="none"
 							maxLength={500}
@@ -198,7 +208,7 @@ export function BibliotecaFormBook({ create }) {
 							type="text"
 							name="autor"
 							list="autors"
-							value={content.autor}
+							value={bookData.autor}
 						/>
 					</label>
 
@@ -208,7 +218,7 @@ export function BibliotecaFormBook({ create }) {
 							onChange={onInputChange}
 							type="text"
 							name="cota"
-							value={content.cota}
+							value={bookData.cota}
 							autoComplete="none"
 						/>
 					</label>
@@ -219,7 +229,7 @@ export function BibliotecaFormBook({ create }) {
 							onChange={onInputChange}
 							type="number"
 							name="editionDate"
-							value={content.editionDate}
+							value={bookData.editionDate}
 						/>
 					</label>
 
@@ -229,7 +239,7 @@ export function BibliotecaFormBook({ create }) {
 							onChange={onInputChange}
 							type="text"
 							name="city"
-							value={content.city}
+							value={bookData.city}
 							autoComplete="none"
 						/>
 					</label>
@@ -240,7 +250,7 @@ export function BibliotecaFormBook({ create }) {
 							onChange={onInputChange}
 							type="text"
 							name="editors"
-							value={content.editors}
+							value={bookData.editors}
 							autoComplete="none"
 						/>
 					</label>
@@ -252,7 +262,7 @@ export function BibliotecaFormBook({ create }) {
 							type="text"
 							name="materia"
 							list="materia"
-							value={content.materia}
+							value={bookData.materia}
 						/>
 					</label>
 
@@ -262,7 +272,7 @@ export function BibliotecaFormBook({ create }) {
 							onChange={onInputChange}
 							type="number"
 							name="height"
-							value={content.height}
+							value={bookData.height}
 							autoComplete="none"
 						/>
 					</label>
@@ -284,7 +294,7 @@ export function BibliotecaFormBook({ create }) {
 							onChange={onInputChange}
 							type="number"
 							name="numberCopies"
-							value={content.numberCopies}
+							value={bookData.numberCopies}
 							autoComplete="none"
 						/>
 					</label>
@@ -295,7 +305,7 @@ export function BibliotecaFormBook({ create }) {
 							onChange={onInputChange}
 							type="number"
 							name="numberPages"
-							value={content.numberPages}
+							value={bookData.numberPages}
 							autoComplete="none"
 						/>
 					</label>
@@ -306,7 +316,7 @@ export function BibliotecaFormBook({ create }) {
 							onChange={onInputChange}
 							type="text"
 							name="typeAdquisition"
-							value={content.typeAdquisition}
+							value={bookData.typeAdquisition}
 							// autoComplete="none"
 						/>
 					</label>
@@ -317,7 +327,8 @@ export function BibliotecaFormBook({ create }) {
 							onChange={onInputChange}
 							type="text"
 							name="observations"
-							value={content.observations}
+							value={bookData.observations}
+
 							// autoComplete="none"
 						/>
 					</label>
@@ -329,13 +340,20 @@ export function BibliotecaFormBook({ create }) {
 							type="text"
 							name="collection"
 							list="collection"
-							value={content.collection}
+							value={bookData.collection}
 							autoComplete="none"
 						/>
 					</label>
 
 					<button>Guardar</button>
 
+					{!create ? (
+						<button onClick={deleteBook} type="button">
+							<BiTrash />
+						</button>
+					) : null}
+
+					
 					<datalist id="autors">
 						<option value="gabriel garcia marques" />
 						<option value="antonio lobera" />

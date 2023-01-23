@@ -3,7 +3,11 @@ import styles from "./styles/Biblioteca.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import Nav from "../components/common/Nav";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { AiOutlinePlus, AiOutlineSearch } from "react-icons/ai";
+import {
+	AiOutlinePlus,
+	AiOutlineSearch,
+	AiOutlineReload,
+} from "react-icons/ai";
 
 import { useAppData } from "../context/AppContext";
 import Book from "../components/Biblioteca/Book";
@@ -20,28 +24,71 @@ export function Biblioteca() {
 
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		const fillList = async () => {
-			const res = await getBooksRequest();
-			console.log(res);
-			setBooks(res.data);
-		};
+	const refreshData = async () => {
+		const myPromise = getBooksRequest();
 
-		fillList();
+		toast.promise(
+			myPromise,
+			{
+				id: "refreshDataBiblioteca",
+				loading: "cargando datos",
+				success: (res) => {
+					console.log(res);
+					setBooks(res.data);
+				},
+				error: (err) => `This just happened: ${err.toString()}`,
+			},
+			{
+				success: {
+					duration: 10,
+				},
+			}
+		);
+	};
+
+	useEffect(() => {
+		refreshData();
 	}, []);
 
 	const getListOfBooks = async (query) => {
 		try {
+			const myPromise = getBooksRequest(query);
+
 			// e.preventDefault();
-			const res = await getBooksRequest(query);
-			const { data } = res;
-			console.log(res);
 
-			if (data.length <= 0)
-				return toast.error("No coincide ningun libro", { duration: 2500 });
+			toast.promise(
+				myPromise,
+				{
+					id: "refreshDataBiblioteca",
+					loading: "cargando datos",
+					success: (res) => {
+						console.log(res);
+						setInQuery(true);
+						setBooksQuery(res.data);
+						if (res.data.length <= 0)
+							return toast.error("No coincide ningun libro", {
+								duration: 2500,
+							});
+					},
+					error: (err) => `This just happened: ${err.toString()}`,
+				},
+				{
+					success: {
+						duration: 10,
+					},
+				}
+			);
 
-			setInQuery(true);
-			setBooksQuery(res.data);
+			// // e.preventDefault();
+			// const res = await getBooksRequest(query);
+			// const { data } = res;
+			// console.log(res);
+
+			// if (data.length <= 0)
+			// 	return toast.error("No coincide ningun libro", { duration: 2500 });
+
+			// setInQuery(true);
+			// setBooksQuery(res.data);
 		} catch (error) {
 			console.log(error);
 			const { response: res } = error;
@@ -70,11 +117,17 @@ export function Biblioteca() {
 				leftFuctionOnClick={toggleAsideActive}
 				title={"Biblioteca"}
 				rightButtons={
-					<Link to={"/biblioteca/nuevo_libro"}>
-						<button>
-							<AiOutlinePlus />
+					<>
+						<button onClick={refreshData}>
+							<AiOutlineReload />
 						</button>
-					</Link>
+
+						<Link to={"/biblioteca/nuevo_libro"}>
+							<button>
+								<AiOutlinePlus />
+							</button>
+						</Link>
+					</>
 				}
 			/>
 
