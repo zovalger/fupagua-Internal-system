@@ -17,21 +17,23 @@
 	width: 5rem;
 	height: 7rem;
 	flex-shrink: 0;
+	overflow: hidden;
 
-	// display: flex;
+	display: flex;
 
-	// align-items: center;
-	// justify-content: center;
+	align-items: center;
+	justify-content: center;
 
+	border-radius: 0.2rem;
 	img {
-		border-radius: 0.2rem;
-		object-fit: fill;
-		height: 100%;
-		width: auto;
+		object-fit: cover;
+		height: auto;
+		width: 100%;
 	}
 }
 
 .text {
+	margin-left: .3rem;
 	flex-grow: 1;
 }
 

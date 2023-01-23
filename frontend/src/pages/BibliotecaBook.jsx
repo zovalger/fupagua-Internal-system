@@ -37,7 +37,7 @@ export function BibliotecaBook() {
 			const res = await getBookRequest(params.id);
 
 			toast.dismiss(toastId);
-			
+
 			console.log(res);
 			setBook(res.data);
 		};
@@ -83,7 +83,9 @@ export function BibliotecaBook() {
 
 				<h4>{book.subtitle}</h4>
 
-				<Campo title="Descripción">{book.description}</Campo>
+				<Campo title="Descripción" validation={book.description}>
+					{book.description}
+				</Campo>
 
 				<Campo title="Autor" validation={book.autor}>
 					{book.autor}
