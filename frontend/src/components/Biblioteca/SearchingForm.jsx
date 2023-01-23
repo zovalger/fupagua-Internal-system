@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { AiOutlineSearch } from "react-icons/ai";
+import {
+	AiOutlineSearch,
+	AiOutlineSortAscending,
+	AiOutlineSortDescending,
+	AiOutlineClose,
+	AiFillCaretUp,
+	AiFillCaretDown,
+} from "react-icons/ai";
 
 import styles from "./SearchingForm.module.scss";
 
@@ -10,6 +17,7 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 	const [direction, setDirection] = useState("ASC");
 	const [sortBy, setSortBy] = useState("title");
 
+	console.log(avanzado);
 	const onsubmit = (e) => {
 		e.preventDefault();
 
@@ -76,67 +84,93 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 	};
 
 	return (
-		<form className={styles.searchForm} onSubmit={onsubmit}>
-			<input
-				name="title"
-				type="search"
-				placeholder={!avanzado ? "buscar" : "titulo"}
-				onChange={onInputChange}
-				autoComplete="none"
-				value={query.title}
-			/>
-			<button type="button" onClick={dropQuery}>
-				X
-			</button>
-			<button type="button" onClick={AvanzadeMode}>
-				busqueda avanzada
-			</button>
+		<form className={styles.container} onSubmit={onsubmit}>
+			<div>
+				<div>{!avanzado ? "buscar" : "titulo"}</div>
+				<input
+					name="title"
+					type="text"
+					placeholder={!avanzado ? "buscar" : "titulo"}
+					onChange={onInputChange}
+					autoComplete="none"
+					value={query.title}
+				/>
+				<button type="button" onClick={dropQuery}>
+					<AiOutlineClose />
+				</button>
+			</div>
 
-			<select name="sortBy" onChange={SortByOnChange} value={sortBy}>
-				<option value="title">titulo</option>
-				<option value="subtitle">subtitulo</option>
-				<option value="description">descripcion</option>
-				<option value="cota">cota</option>
-				<option value="autor">autor</option>
-			</select>
-			<button type="button" onClick={ascDESC}>
-				{direction}
-			</button>
+			<div className={styles.sort}>
+				<span>Ordenar por</span>
 
-			<input
-				name="subtitle"
-				type="search"
-				placeholder="subtitle"
-				onChange={onInputChange}
-				autoComplete="none"
-				value={query.subtitle}
-			/>
-			<input
-				name="description"
-				type="search"
-				placeholder="description"
-				onChange={onInputChange}
-				autoComplete="none"
-				value={query.description}
-			/>
-			<input
-				name="cota"
-				type="search"
-				placeholder="cota"
-				onChange={onInputChange}
-				autoComplete="none"
-				value={query.cota}
-			/>
-			<input
-				name="autor"
-				type="search"
-				placeholder="autor"
-				onChange={onInputChange}
-				autoComplete="none"
-				value={query.autor}
-			/>
+				<select name="sortBy" onChange={SortByOnChange} value={sortBy}>
+					<option value="title">titulo</option>
+					<option value="subtitle">subtitulo</option>
+					<option value="description">descripcion</option>
+					<option value="cota">cota</option>
+					<option value="autor">autor</option>
+				</select>
 
-			<button>
+				<button type="button" onClick={ascDESC}>
+					{direction === "ASC" ? (
+						<AiOutlineSortAscending />
+					) : (
+						<AiOutlineSortDescending />
+					)}
+				</button>
+
+				<button type="button" onClick={AvanzadeMode}>
+					{avanzado ? <AiFillCaretDown /> : <AiFillCaretUp />}
+				</button>
+			</div>
+
+			<div
+				className={`${styles.extraInputs} ${!avanzado ? "" : styles.active}`}
+			>
+				<div>subtitulo</div>
+				<input
+					name="subtitle"
+					type="search"
+					placeholder="subtitle"
+					onChange={onInputChange}
+					autoComplete="none"
+					value={query.subtitle}
+				/>
+
+				<div>descripcion</div>
+				<input
+					name="description"
+					type="search"
+					placeholder="description"
+					onChange={onInputChange}
+					autoComplete="none"
+					value={query.description}
+				/>
+
+				<div>cota</div>
+
+				<input
+					name="cota"
+					type="search"
+					placeholder="cota"
+					onChange={onInputChange}
+					autoComplete="none"
+					value={query.cota}
+				/>
+
+				<div>autor</div>
+
+				<input
+					name="autor"
+					type="search"
+					placeholder="autor"
+					onChange={onInputChange}
+					autoComplete="none"
+					value={query.autor}
+				/>
+			</div>
+
+			<button className={styles.btnSearch}>
 				<AiOutlineSearch />
 			</button>
 		</form>
