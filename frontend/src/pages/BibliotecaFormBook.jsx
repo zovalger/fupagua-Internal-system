@@ -348,10 +348,11 @@ export function BibliotecaFormBook({ create }) {
 					<button>Guardar</button>
 
 					{!create ? (
-						<button onClick={deleteBook} type="button">
+						<button onClick={deleteBook} className={styles.deleteBook} type="button">
 							<BiTrash />
 						</button>
 					) : null}
+
 
 					
 					<datalist id="autors">

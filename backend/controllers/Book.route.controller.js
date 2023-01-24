@@ -1,6 +1,7 @@
 const { Op } = require("sequelize");
 const { uploadImage, deleteImage } = require("../libs/cloudinary");
 const Book = require("../models/Book.model");
+const { bookResizeImg } = require("../utils/helperImg");
 
 // Book
 
@@ -19,15 +20,17 @@ const createBook = async (req, res) => {
 
 			book.img_local_url = tempFilePath;
 
+			const img_optimized =			await bookResizeImg(tempFilePath, 350);
+
+
 			try {
-				const result = await uploadImage(tempFilePath);
+				const result = await uploadImage(img_optimized);
 				console.log(result);
 
-				const { public_id, url, secure_url, format } = result;
+				const { public_id,  secure_url } = result;
 
 				book.img_public_id = public_id;
 				book.img_cloudinary_url = secure_url;
-				book.img_format = format;
 			} catch (error) {
 				console.log("error al subir imagen");
 				console.log(error);
@@ -113,15 +116,18 @@ const updateBook = async (req, res) => {
 			const { img } = req.files;
 			const { tempFilePath } = img;
 
+
+
+
+
 			// eliminar la imagen anterior
 			if (book.img_local_url) {
-				const { img_public_id, img_cloudinary_url, img_format } = book;
+				const { img_public_id } = book;
 
 				book.img_public_id = "";
 				book.img_cloudinary_url = "";
-				book.img_format = "";
+							book.img_local_url = tempFilePath;
 
-				book.img_local_url = tempFilePath;
 				try {
 					await deleteImage(img_public_id);
 				} catch (error) {
@@ -132,14 +138,16 @@ const updateBook = async (req, res) => {
 
 			// subir la nueva imagen
 			try {
-				const result = await uploadImage(tempFilePath);
+
+				const img_optimized =			await bookResizeImg(tempFilePath, 350);
+
+				const result = await uploadImage(img_optimized);
 				console.log(result);
 
-				const { public_id, url, secure_url, format } = result;
+				const { public_id, secure_url } = result;
 
 				book.img_public_id = public_id;
 				book.img_cloudinary_url = secure_url;
-				book.img_format = format;
 			} catch (error) {
 				console.log("error al subir imagen");
 				console.log(error);

@@ -33,7 +33,7 @@ const Book = db.define(
 		img_public_id: { type: DataTypes.STRING, defaultValue: "" },
 		img_cloudinary_url: { type: DataTypes.STRING, defaultValue: "" },
 		img_local_url: { type: DataTypes.STRING, defaultValue: "" },
-		img_format: { type: DataTypes.STRING, defaultValue: "" },
+		// img_format: { type: DataTypes.STRING, defaultValue: "" },
 	},
 	{
 		setterMethods: {
