@@ -100,14 +100,7 @@ export function Biblioteca() {
 
 	const llenarLista = (book) => (
 		<Link to={`./${book.id}`} key={book.id}>
-			<Book
-				title={book.title}
-				subtitle={book.subtitle}
-				autor={book.autor}
-				description={book.description}
-				cota={book.cota}
-				img_cloudinary_url={book.img_cloudinary_url}
-			/>
+			<Book dataBook={book} />
 		</Link>
 	);
 	return (
