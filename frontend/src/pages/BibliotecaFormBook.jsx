@@ -1,4 +1,6 @@
 import styles from "./styles/BibliotecaFormBook.module.scss";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Nav from "../components/common/Nav";
@@ -154,7 +156,7 @@ export function BibliotecaFormBook({ create }) {
 			/>
 
 			<div className={styles.container}>
-				<form className={styles.Form} onSubmit={onSubmit} method="post">
+				<Form onSubmit={onSubmit}>
 					{bookData.img_cloudinary_url ? (
 						<div>
 							<img src={bookData.img_cloudinary_url} alt="" />
@@ -162,22 +164,23 @@ export function BibliotecaFormBook({ create }) {
 					) : (
 						""
 					)}
-					<label>
-						imagen
-						<input
+
+					<Form.Group controlId="formFile" className="my-3">
+						<Form.Label>Imagen de portada</Form.Label>
+						<Form.Control
+							type="file"
 							onChange={(e) => {
 								setBookData({ ...bookData, img: e.target.files[0] });
 								// onInputChange
 							}}
-							type="file"
 							name="img"
 							accept="image/*"
 						/>
-					</label>
+					</Form.Group>
 
-					<label>
-						titulo
-						<input
+					<Form.Group className="mb-3" controlId="formBasicEmail">
+						<Form.Label>Titulo</Form.Label>
+						<Form.Control
 							onChange={onInputChange}
 							type="text"
 							name="title"
@@ -185,154 +188,140 @@ export function BibliotecaFormBook({ create }) {
 							required
 							autoComplete="none"
 						/>
-					</label>
+					</Form.Group>
 
-					<label>
-						Subtitulo
-						<input
+					<Form.Group className="mb-3" controlId="formBasicEmail">
+						<Form.Label>Subtitulo</Form.Label>
+						<Form.Control
 							onChange={onInputChange}
 							type="text"
 							name="subtitle"
 							value={bookData.subtitle}
 							autoComplete="none"
 						/>
-					</label>
+					</Form.Group>
 
-					<label>
-						Autor
-						<input
+					<Form.Group className="mb-3" controlId="formBasicEmail">
+						<Form.Label>Autor</Form.Label>
+						<Form.Control
 							onChange={onInputChange}
 							type="text"
 							name="autor"
 							list="autors"
 							value={bookData.autor}
 						/>
-					</label>
+					</Form.Group>
 
-					<label>
-						Cota
-						<input
+					<Form.Group className="mb-3" controlId="formBasicEmail">
+						<Form.Label>Cota</Form.Label>
+						<Form.Control
 							onChange={onInputChange}
 							type="text"
 							name="cota"
 							value={bookData.cota}
 							autoComplete="none"
 						/>
-					</label>
+					</Form.Group>
 
-					<label>
-						Fecha de edicion
-						<input
+					<Form.Group className="mb-3" controlId="formBasicEmail">
+						<Form.Label> Fecha de edicion</Form.Label>
+						<Form.Control
 							onChange={onInputChange}
 							type="number"
 							name="editionDate"
 							value={bookData.editionDate}
 						/>
-					</label>
+					</Form.Group>
 
-					<label>
-						Ciudad
-						<input
+					<Form.Group className="mb-3" controlId="formBasicEmail">
+						<Form.Label>Ciudad</Form.Label>
+						<Form.Control
 							onChange={onInputChange}
 							type="text"
 							name="city"
 							value={bookData.city}
 							autoComplete="none"
 						/>
-					</label>
+					</Form.Group>
 
-					<label>
-						Editores
-						<input
+					<Form.Group className="mb-3" controlId="formBasicEmail">
+						<Form.Label>Editores</Form.Label>
+						<Form.Control
 							onChange={onInputChange}
 							type="text"
 							name="editors"
 							value={bookData.editors}
 							autoComplete="none"
 						/>
-					</label>
+					</Form.Group>
 
-					<label>
-						Materia
-						<input
+					<Form.Group className="mb-3" controlId="formBasicEmail">
+						<Form.Label>Materia</Form.Label>
+						<Form.Control
 							onChange={onInputChange}
 							type="text"
 							name="materia"
 							list="materia"
 							value={bookData.materia}
 						/>
-					</label>
+					</Form.Group>
 
-					<label>
-						Altura
-						<input
+					<Form.Group className="mb-3" controlId="formBasicEmail">
+						<Form.Label>Altura</Form.Label>
+						<Form.Control
 							onChange={onInputChange}
 							type="number"
 							name="height"
 							value={bookData.height}
 							autoComplete="none"
 						/>
-					</label>
+					</Form.Group>
 
-					{/* <label>
-						anchura
-						<input
-							onChange={onInputChange}
-							type="number"
-							name="width"
-							value={content.width}
-							autoComplete="none"
-						/>
-					</label> */}
-
-					<label>
-						Numero de ejemplares
-						<input
+					<Form.Group className="mb-3" controlId="formBasicEmail">
+						<Form.Label> Numero de ejemplares</Form.Label>
+						<Form.Control
 							onChange={onInputChange}
 							type="number"
 							name="numberCopies"
 							value={bookData.numberCopies}
 							autoComplete="none"
 						/>
-					</label>
+					</Form.Group>
 
-					<label>
-						Numero de paginas
-						<input
+					<Form.Group className="mb-3" controlId="formBasicEmail">
+						<Form.Label> Numero de paginas</Form.Label>
+						<Form.Control
 							onChange={onInputChange}
 							type="number"
 							name="numberPages"
 							value={bookData.numberPages}
 							autoComplete="none"
 						/>
-					</label>
+					</Form.Group>
 
-					<label>
-						Tipo adquisición
-						<input
+					<Form.Group className="mb-3" controlId="formBasicEmail">
+						<Form.Label>Tipo adquisición</Form.Label>
+						<Form.Control
 							onChange={onInputChange}
 							type="text"
 							name="typeAdquisition"
 							value={bookData.typeAdquisition}
-							// autoComplete="none"
 						/>
-					</label>
+					</Form.Group>
 
-					<label>
-						Observaciones
-						<input
+					<Form.Group className="mb-3" controlId="formBasicEmail">
+						<Form.Label>Observaciones</Form.Label>
+						<Form.Control
 							onChange={onInputChange}
 							type="text"
 							name="observations"
 							value={bookData.observations}
-
-							// autoComplete="none"
 						/>
-					</label>
+					</Form.Group>
 
-					<label>
-						Coleccion
-						<input
+					<Form.Group className="mb-3" controlId="formBasicEmail">
+						<Form.Label>Coleccion</Form.Label>
+						<Form.Control
 							onChange={onInputChange}
 							type="text"
 							name="collection"
@@ -340,35 +329,37 @@ export function BibliotecaFormBook({ create }) {
 							value={bookData.collection}
 							autoComplete="none"
 						/>
-					</label>
+					</Form.Group>
 
-					<label>
-						Descripcion
-						<textarea
+					<Form.Group className="mb-3" controlId="formBasicEmail">
+						<Form.Label>Descripcion</Form.Label>
+						<Form.Control
 							onChange={onInputChange}
 							name="description"
-							cols="30"
+							// cols="30"
 							rows="10"
 							value={bookData.description}
 							autoComplete="none"
 							maxLength={500}
-						></textarea>
-					</label>
+							as="textarea"
+						/>
+					</Form.Group>
 
-					<button className="btn btn-primary mb-2">Guardar</button>
+					{/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
+						<Form.Check type="checkbox" label="Check me out" />
+					</Form.Group> */}
+					<Button variant="primary" type="submit" className="w-100">
+						Guardar
+					</Button>
 
 					{!create ? (
-						<button
-							onClick={deleteBook}
-							// onClick={openComfirm}
-							// className={styles.deleteBook}
-							className="btn btn-danger"
-							type="button"
-						>
+						<Button variant="danger" type="button" onClick={deleteBook} className="w-100 mt-3">
 							<BiTrash />
-						</button>
+						</Button>
 					) : null}
+				</Form>
 
+				<form className={styles.Form} onSubmit={onSubmit} method="post">
 					<datalist id="autors">
 						<option value="gabriel garcia marques" />
 						<option value="antonio lobera" />

@@ -16,9 +16,12 @@ import {
 import AsidePanelOptions from "./components/common/AsidePanelOption/AsidePanelOptions";
 import "./App.scss";
 
+
+
 function App() {
 	return (
 		<AppDataProvider>
+			
 			<Toaster />
 			<div className="App">
 				<div className="SectionApp">

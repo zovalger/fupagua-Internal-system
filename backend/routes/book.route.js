@@ -2,27 +2,27 @@ const express = require("express");
 const router = express.Router();
 
 const {
-	getBooks,
-	createBook,
-	getBook,
-	updateBook,
-	deleteBook,
+	createBook_RouteController,
+	getBooks_RouteController,
+	getBook_RouteController,
+	updateBook_RouteController,
+	deleteBook_RouteController,
 } = require("../controllers/Book.route.controller");
 
 // crear una nueva actividad
-router.post("/", createBook);
+router.post("/", createBook_RouteController);
 
 // obtener todas las actividades
-router.get("/", getBooks);
+router.get("/", getBooks_RouteController);
 
 // buscar una actividad
-router.get("/:id", getBook);
+router.get("/:id", getBook_RouteController);
 
 // moduficar una actividad
-router.put("/:id", updateBook);
+router.put("/:id", updateBook_RouteController);
 
 // eliminar una actividad
-router.delete("/:id", deleteBook);
+router.delete("/:id", deleteBook_RouteController);
 // router.delete("/:id", patientMoveToTrash);
 
 module.exports = router;
