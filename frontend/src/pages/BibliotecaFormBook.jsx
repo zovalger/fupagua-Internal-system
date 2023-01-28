@@ -102,6 +102,10 @@ export function BibliotecaFormBook({ create }) {
 		});
 	};
 
+	const onInputFichaChange = () => {
+		console.log("cambio de ficha");
+	};
+
 	const deleteBook = async () => {
 		if (!window.confirm("Seguro que quiere eliminar el libro?")) return;
 
@@ -345,6 +349,29 @@ export function BibliotecaFormBook({ create }) {
 						/>
 					</Form.Group>
 
+					<Form.Group className="mb-3" controlId="formBasicEmail">
+						<Form.Label>Fichas Impresas</Form.Label>
+
+						{bookData.bookfichas
+							? bookData.bookfichas.map((ficha) => (
+									<Form.Check
+									onChange={onInputChange}
+									// onChange={() => onInputFichaChange(ficha.id)}
+									name="ficha"
+										// cols="30"
+										// rows="10"
+										// value={bookData.printed}
+										// as="textarea"
+										label={ficha.typeFicha}
+									/>
+							  ))
+							: null}
+
+						{/* {bookData.bookfichas.map((ficha) => (
+							
+						))} */}
+					</Form.Group>
+
 					{/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
 						<Form.Check type="checkbox" label="Check me out" />
 					</Form.Group> */}
@@ -353,7 +380,12 @@ export function BibliotecaFormBook({ create }) {
 					</Button>
 
 					{!create ? (
-						<Button variant="danger" type="button" onClick={deleteBook} className="w-100 mt-3">
+						<Button
+							variant="danger"
+							type="button"
+							onClick={deleteBook}
+							className="w-100 mt-3"
+						>
 							<BiTrash />
 						</Button>
 					) : null}
