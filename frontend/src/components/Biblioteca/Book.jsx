@@ -11,17 +11,19 @@ export default function Book({
 	return (
 		<div className={styles.container}>
 			<div className={styles.imgContainer}>
-				<img
-					src={img_cloudinary_url ? img_cloudinary_url : ""}
-					alt=""
-				/>
+				<img src={img_cloudinary_url ? img_cloudinary_url : ""} alt="" />
 			</div>
 			<div className={styles.text}>
 				<div className={styles.title}>{title}</div>
 				<div className={styles.subtitle}> {subtitle}</div>
-				<div className={styles.autor}>Autor: {autor}</div>
+				<div className={styles.autor}>
+					<b>Autor: </b> {autor}
+				</div>
+				<div className={styles.autor}>
+					<b>cota: </b>
+					{cota}
+				</div>
 				<div className={styles.description}>{description}</div>
-				<div className={styles.autor}>cota: {cota}</div>
 			</div>
 		</div>
 	);

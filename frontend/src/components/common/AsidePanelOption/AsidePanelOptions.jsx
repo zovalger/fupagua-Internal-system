@@ -45,6 +45,13 @@ function AsidePanelOptions() {
 					onClick={toggleAsideActive}
 				/>
 
+<ListOptionItem
+					url={"/biblioteca/imprimir-fichas"}
+					icon={<IoLibraryOutline />}
+					text="Biblioteca"
+					onClick={toggleAsideActive}
+				/>
+
 				{/* <ListOptionItem icon={<BsFillPeopleFill />} text="Personas" /> */}
 			</div>
 		</div>

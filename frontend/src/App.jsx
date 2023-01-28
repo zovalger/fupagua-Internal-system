@@ -10,6 +10,7 @@ import {
 	Biblioteca,
 	BibliotecaFormBook,
 	BibliotecaBook,
+	BibliotecaFichaPrint,
 } from "./pages";
 
 import AsidePanelOptions from "./components/common/AsidePanelOption/AsidePanelOptions";
@@ -42,6 +43,10 @@ function App() {
 						<Route
 							path="/biblioteca/editar/:id"
 							element={<BibliotecaFormBook />}
+						/>
+								<Route
+							path="/biblioteca/imprimir-fichas"
+							element={<BibliotecaFichaPrint />}
 						/>
 						<Route path="/biblioteca/:id" element={<BibliotecaBook />} />
 

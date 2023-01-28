@@ -15,7 +15,7 @@ export function HomePage() {
 			<Nav
 				leftIcon={<RxHamburgerMenu />}
 				leftFuctionOnClick={toggleAsideActive}
-				title={"Fupagua"}
+				title={"FUPAGUA"}
 			/>
 
 			<div className={styles.container}>

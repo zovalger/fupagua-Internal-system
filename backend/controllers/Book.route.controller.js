@@ -1,33 +1,41 @@
 const { Op } = require("sequelize");
 const { uploadImage, deleteImage } = require("../libs/cloudinary");
 const Book = require("../models/Book.model");
+const BookFicha = require("../models/BookFicha.model");
 const { bookResizeImg } = require("../utils/helperImg");
 
 // Book
 
 const createBook = async (req, res) => {
-	const { img } = req.files;
 	const data = req.body;
 
 	try {
 		// primero guardar los datos del libro
 		const book = await Book.create(data);
 
+		await BookFicha.bulkCreate([
+			{ bookId: book.id, typeFicha: "materia" },
+			{ bookId: book.id, typeFicha: "autor" },
+			{ bookId: book.id, typeFicha: "cota" },
+			{ bookId: book.id, typeFicha: "title" },
+		]);
+
+		// console.log(await Book.findByPk(book.id, { include: BookFicha }));
 		// luego subir la imagen a cloudinary
 
-		if (img) {
+		if (req.files?.img) {
+			const { img } = req.files;
 			const { tempFilePath } = img;
 
 			book.img_local_url = tempFilePath;
 
-			const img_optimized =			await bookResizeImg(tempFilePath, 350);
-
+			const img_optimized = await bookResizeImg(tempFilePath, 350);
 
 			try {
 				const result = await uploadImage(img_optimized);
 				console.log(result);
 
-				const { public_id,  secure_url } = result;
+				const { public_id, secure_url } = result;
 
 				book.img_public_id = public_id;
 				book.img_cloudinary_url = secure_url;
@@ -56,6 +64,7 @@ const getBooks = async (req, res) => {
 		subtitle,
 		cota,
 		autor,
+		materia,
 	} = req.query;
 
 	let query = {};
@@ -66,6 +75,7 @@ const getBooks = async (req, res) => {
 	if (subtitle) datos.push({ subtitle: { [Op.substring]: subtitle } });
 	if (cota) datos.push({ cota: { [Op.substring]: cota } });
 	if (autor) datos.push({ autor: { [Op.substring]: autor } });
+	if (materia) datos.push({ materia: { [Op.substring]: materia } });
 
 	console.log(datos);
 
@@ -116,17 +126,13 @@ const updateBook = async (req, res) => {
 			const { img } = req.files;
 			const { tempFilePath } = img;
 
-
-
-
-
 			// eliminar la imagen anterior
 			if (book.img_local_url) {
 				const { img_public_id } = book;
 
 				book.img_public_id = "";
 				book.img_cloudinary_url = "";
-							book.img_local_url = tempFilePath;
+				book.img_local_url = tempFilePath;
 
 				try {
 					await deleteImage(img_public_id);
@@ -138,8 +144,7 @@ const updateBook = async (req, res) => {
 
 			// subir la nueva imagen
 			try {
-
-				const img_optimized =			await bookResizeImg(tempFilePath, 350);
+				const img_optimized = await bookResizeImg(tempFilePath, 350);
 
 				const result = await uploadImage(img_optimized);
 				console.log(result);

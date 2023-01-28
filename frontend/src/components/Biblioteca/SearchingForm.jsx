@@ -17,7 +17,7 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 	const [direction, setDirection] = useState("ASC");
 	const [sortBy, setSortBy] = useState("title");
 
-	console.log(avanzado);
+	// console.log(avanzado);
 	const onsubmit = (e) => {
 		e.preventDefault();
 
@@ -35,6 +35,10 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 			req.title = query.title;
 			req.description = query.title;
 			req.subtitle = query.title;
+			req.cota = query.title;
+			req.autor = query.title;
+			req.materia = query.title;
+
 			req.or = true;
 		}
 
@@ -109,6 +113,7 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 					<option value="description">descripcion</option>
 					<option value="cota">cota</option>
 					<option value="autor">autor</option>
+					<option value="materia">materia</option>
 				</select>
 
 				<button type="button" onClick={ascDESC}>
@@ -167,6 +172,15 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 					onChange={onInputChange}
 					autoComplete="none"
 					value={query.autor}
+				/>
+				<div>materia</div>
+				<input
+					name="materia"
+					type="search"
+					placeholder="materia"
+					onChange={onInputChange}
+					autoComplete="none"
+					value={query.subtitle}
 				/>
 			</div>
 

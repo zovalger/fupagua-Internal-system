@@ -101,6 +101,8 @@ export function BibliotecaFormBook({ create }) {
 	};
 
 	const deleteBook = async () => {
+		if (!window.confirm("Seguro que quiere eliminar el libro?")) return;
+
 		try {
 			// const d = confirm("esta seguro de elminar el libro?");
 
@@ -131,9 +133,18 @@ export function BibliotecaFormBook({ create }) {
 		<>
 			<Nav
 				leftIcon={
-					<Link to="/biblioteca">
+					<button
+						onClick={() => {
+							if (
+								window.confirm(
+									"seguro que quiere salir? se perderan todos los cambios realizados"
+								)
+							)
+								navigate("/biblioteca");
+						}}
+					>
 						<BiChevronLeft />
-					</Link>
+					</button>
 				}
 				// leftFuctionOnClick={toggleAsideActive}
 				title={create ? "Añadir libro" : "Editar libro"}
@@ -177,7 +188,7 @@ export function BibliotecaFormBook({ create }) {
 					</label>
 
 					<label>
-						subtitulo
+						Subtitulo
 						<input
 							onChange={onInputChange}
 							type="text"
@@ -185,20 +196,6 @@ export function BibliotecaFormBook({ create }) {
 							value={bookData.subtitle}
 							autoComplete="none"
 						/>
-					</label>
-
-					<label>
-						descripcion
-						<textarea
-							onChange={onInputChange}
-							name="description"
-							cols="30"
-							rows="10"
-							value={bookData.description}
-							required
-							autoComplete="none"
-							maxLength={500}
-						></textarea>
 					</label>
 
 					<label>
@@ -334,7 +331,7 @@ export function BibliotecaFormBook({ create }) {
 					</label>
 
 					<label>
-						coleccion
+						Coleccion
 						<input
 							onChange={onInputChange}
 							type="text"
@@ -345,16 +342,33 @@ export function BibliotecaFormBook({ create }) {
 						/>
 					</label>
 
-					<button>Guardar</button>
+					<label>
+						Descripcion
+						<textarea
+							onChange={onInputChange}
+							name="description"
+							cols="30"
+							rows="10"
+							value={bookData.description}
+							autoComplete="none"
+							maxLength={500}
+						></textarea>
+					</label>
+
+					<button className="btn btn-primary mb-2">Guardar</button>
 
 					{!create ? (
-						<button onClick={deleteBook} className={styles.deleteBook} type="button">
+						<button
+							onClick={deleteBook}
+							// onClick={openComfirm}
+							// className={styles.deleteBook}
+							className="btn btn-danger"
+							type="button"
+						>
 							<BiTrash />
 						</button>
 					) : null}
 
-
-					
 					<datalist id="autors">
 						<option value="gabriel garcia marques" />
 						<option value="antonio lobera" />
