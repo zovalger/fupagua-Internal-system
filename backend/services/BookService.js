@@ -70,7 +70,6 @@ const getBooks_Service = async (query) => {
 		type = "book",
 	} = query;
 
-	console.log(type);
 	const datos = [];
 
 	if (title) datos.push({ title: { [Op.substring]: title } });
@@ -82,11 +81,14 @@ const getBooks_Service = async (query) => {
 	if (observations)
 		datos.push({ observations: { [Op.substring]: observations } });
 
-	// console.log(datos);
+	// datos.push();
 
-	const where = {};
+
+	const where = { type };
 
 	if (datos.length > 0) where[Op[or ? "or" : "and"]] = datos;
+
+	console.log(where);
 
 	try {
 		const books = await Book.findAll({

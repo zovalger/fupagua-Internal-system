@@ -66,7 +66,7 @@ export function Biblioteca() {
 						setInQuery(true);
 						setBooksQuery(res.data);
 						if (res.data.length <= 0)
-							return toast.error("No coincide ningun libro", {
+							return toast.error("No coincide ningun elemento", {
 								duration: 2500,
 							});
 					},

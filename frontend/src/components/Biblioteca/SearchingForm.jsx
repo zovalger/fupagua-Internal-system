@@ -15,6 +15,7 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 
 	const [avanzado, setAvanzado] = useState(false);
 	const [direction, setDirection] = useState("ASC");
+	const [type, setType] = useState("book");
 	const [sortBy, setSortBy] = useState("title");
 
 	// console.log(avanzado);
@@ -45,6 +46,7 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 
 		req.sortBy = sortBy;
 		req.direction = direction;
+		req.type = type;
 
 		console.log(req);
 
@@ -71,6 +73,10 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 
 	const SortByOnChange = ({ target: { value } }) => {
 		setSortBy(value);
+	};
+
+	const typeOnChange = ({ target: { value } }) => {
+		setType(value);
 	};
 
 	const dropQuery = () => {
@@ -115,6 +121,15 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 					<option value="cota">cota</option>
 					<option value="autor">autor</option>
 					<option value="materia">materia</option>
+				</select>
+
+				<span>Tipo</span>
+				<select name="type" onChange={typeOnChange} value={type}>
+					<option value="book">Libro</option>
+					<option value="magazine">Revista</option>
+					<option value="audiobook">Audiolibro</option>
+					<option value="fonoteca">Fonoteca</option>
+					<option value="video">Video</option>
 				</select>
 
 				<button type="button" onClick={ascDESC}>

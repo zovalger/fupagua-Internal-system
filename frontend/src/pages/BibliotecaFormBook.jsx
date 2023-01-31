@@ -408,12 +408,7 @@ export function BibliotecaFormBook({ create }) {
 									? fichaData.map((ficha) => (
 											<Form.Check
 												onChange={onInputFichaChange}
-												// onChange={() => onInputFichaChange(ficha.id)}
 												name={ficha.id}
-												// cols="30"
-												// rows="10"
-												// value={bookData.printed}
-												// as="textarea"
 												checked={ficha.printed}
 												label={
 													ficha.typeFicha === "title"
