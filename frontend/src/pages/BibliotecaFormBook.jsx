@@ -17,6 +17,7 @@ import {
 	updateBookRequest,
 } from "../api/books";
 import toast from "react-hot-toast";
+import { updateBookFichaRequest } from "../api/booksFichas";
 
 export function BibliotecaFormBook({ create }) {
 	const navigate = useNavigate();
@@ -43,6 +44,8 @@ export function BibliotecaFormBook({ create }) {
 		img: "",
 	});
 
+	const [fichaData, setFichaData] = useState([]);
+
 	const [isSubmiting, setIsSubmitin] = useState(false);
 
 	useEffect(() => {
@@ -53,10 +56,19 @@ export function BibliotecaFormBook({ create }) {
 			const res = await getBookRequest(params.id);
 
 			setBookData(res.data);
+			setFichaData(res.data.bookfichas);
 		};
 
 		fillInputs();
 	}, []);
+
+	const savePutDataBook = async () => {
+		await updateBookRequest(params.id, bookData);
+
+		await fichaData.map(
+			async (ficha) => await updateBookFichaRequest(ficha.id, ficha)
+		);
+	};
 
 	const onSubmit = async (e, v) => {
 		e.preventDefault();
@@ -64,14 +76,10 @@ export function BibliotecaFormBook({ create }) {
 
 		setIsSubmitin(true);
 
-		const paylot = bookData;
-
-		console.log(paylot);
-
 		try {
 			const myPromise = create
-				? createBookRequest(paylot)
-				: updateBookRequest(params.id, paylot);
+				? createBookRequest(bookData)
+				: savePutDataBook();
 
 			console.log(myPromise);
 
@@ -82,10 +90,13 @@ export function BibliotecaFormBook({ create }) {
 
 					setTimeout(() => {
 						navigate("/biblioteca");
-					}, 1000);
+					}, 500);
 					return create ? "Nuevo libro añadido" : "cambios guardados";
 				},
-				error: (err) => `This just happened: ${err.toString()}`,
+				error: (err) => {
+					setIsSubmitin(false);
+					return `This just happened: ${err.toString()}`;
+				},
 			});
 		} catch (error) {
 			setIsSubmitin(false);
@@ -102,9 +113,16 @@ export function BibliotecaFormBook({ create }) {
 		});
 	};
 
-	const onInputFichaChange = () => {
-		console.log("cambio de ficha");
-	};
+	const onInputFichaChange = ({ target: { name, checked } }) =>
+		setFichaData(
+			fichaData.map((ficha) => {
+				if (ficha.id.toString() === name) {
+					ficha.printed = !ficha.printed;
+				}
+
+				return ficha;
+			})
+		);
 
 	const deleteBook = async () => {
 		if (!window.confirm("Seguro que quiere eliminar el libro?")) return;
@@ -352,17 +370,20 @@ export function BibliotecaFormBook({ create }) {
 					<Form.Group className="mb-3" controlId="formBasicEmail">
 						<Form.Label>Fichas Impresas</Form.Label>
 
-						{bookData.bookfichas
-							? bookData.bookfichas.map((ficha) => (
+						{fichaData.length > 0
+							? fichaData.map((ficha) => (
 									<Form.Check
-									onChange={onInputChange}
-									// onChange={() => onInputFichaChange(ficha.id)}
-									name="ficha"
+										onChange={onInputFichaChange}
+										// onChange={() => onInputFichaChange(ficha.id)}
+										name={ficha.id}
 										// cols="30"
 										// rows="10"
 										// value={bookData.printed}
 										// as="textarea"
-										label={ficha.typeFicha}
+										checked={ficha.printed}
+										label={
+											ficha.typeFicha === "title" ? "titulo" : ficha.typeFicha
+										}
 									/>
 							  ))
 							: null}

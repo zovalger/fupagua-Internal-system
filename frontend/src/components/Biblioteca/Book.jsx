@@ -15,7 +15,7 @@ export default function Book({ dataBook }) {
 		<div className={styles.container}>
 			<div className={styles.imgContainer}>
 				<img
-					src={img_local_url ? img_local_url : img_cloudinary_url}
+					src={img_cloudinary_url ? img_cloudinary_url:img_local_url}
 					alt="foto de portada"
 				/>
 			</div>
