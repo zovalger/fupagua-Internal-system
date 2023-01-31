@@ -1,7 +1,8 @@
 import styles from "./AsidePanelOptions.module.scss";
 
 import { IoLibraryOutline,IoHomeOutline } from "react-icons/io5";
-import { BsCalendarWeek,  } from "react-icons/bs";
+import { BsCalendarWeek,BsCardText  } from "react-icons/bs";
+
 
 import { RxHamburgerMenu } from "react-icons/rx";
 
@@ -47,8 +48,8 @@ function AsidePanelOptions() {
 
 <ListOptionItem
 					url={"/biblioteca/imprimir-fichas"}
-					icon={<IoLibraryOutline />}
-					text="Biblioteca"
+					icon={<BsCardText />}
+					text="Fichas"
 					onClick={toggleAsideActive}
 				/>
 

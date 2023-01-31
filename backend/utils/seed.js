@@ -1,5 +1,5 @@
 const Book = require("../models/Book.model");
-const { createBook_Service } = require("../services/Book.service");
+const { createBook_Service } = require("../services/BookService");
 const DataSeed = require("./dataSet");
 
 const Seed = async () => {

@@ -4,11 +4,11 @@ const {
 	getBooks_Service,
 	updateBook_Service,
 	deleteBook_Service,
-} = require("../services/Book.service");
+} = require("../services/BookService");
 
 const createBook_RouteController = async (req, res) => {
 	const data = req.body;
-	const img = req.files?.img;
+	const img = req.files ? (req.files.img ? req.files.img : null) : null;
 	try {
 		const book = await createBook_Service(data, img);
 
@@ -47,7 +47,7 @@ const getBook_RouteController = async (req, res) => {
 const updateBook_RouteController = async (req, res) => {
 	const { id } = req.params;
 	const data = req.body;
-	const img = req.files?.img;
+	const img = req.files ? (req.files.img ? req.files.img : null) : null;
 
 	try {
 		const book = await updateBook_Service(id, data, img);

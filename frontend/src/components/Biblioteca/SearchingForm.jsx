@@ -38,6 +38,7 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 			req.cota = query.title;
 			req.autor = query.title;
 			req.materia = query.title;
+			req.observations = query.observations;
 
 			req.or = true;
 		}

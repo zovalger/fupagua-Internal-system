@@ -108,7 +108,7 @@ export function Biblioteca() {
 			<Nav
 				leftIcon={<RxHamburgerMenu />}
 				leftFuctionOnClick={toggleAsideActive}
-				title={"Biblioteca"}
+				title={"Biblioteca: Juana Milano de Diaz"}
 				rightButtons={
 					<>
 						<button onClick={refreshData}>

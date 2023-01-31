@@ -186,6 +186,21 @@ export function BibliotecaFormBook({ create }) {
 					) : (
 						""
 					)}
+					<Form.Group className="my-3" controlId="formBasicEmail">
+						<Form.Label>Tipo</Form.Label>
+
+						<Form.Select
+							onChange={onInputChange}
+							name="type"
+							value={bookData.type}
+						>
+							<option value="book">Libro</option>
+							<option value="magazine">Revista</option>
+							<option value="audiobook">Audiolibro</option>
+							<option value="fonoteca">Fonoteca</option>
+							<option value="video">Video</option>
+						</Form.Select>
+					</Form.Group>
 
 					<Form.Group controlId="formFile" className="my-3">
 						<Form.Label>Imagen de portada</Form.Label>
@@ -212,30 +227,40 @@ export function BibliotecaFormBook({ create }) {
 						/>
 					</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicEmail">
-						<Form.Label>Subtitulo</Form.Label>
-						<Form.Control
-							onChange={onInputChange}
-							type="text"
-							name="subtitle"
-							value={bookData.subtitle}
-							autoComplete="none"
-						/>
-					</Form.Group>
+					{bookData.type === "audiobook" || bookData.type === "book" ? (
+						<>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Subtitulo</Form.Label>
+								<Form.Control
+									onChange={onInputChange}
+									type="text"
+									name="subtitle"
+									value={bookData.subtitle}
+									autoComplete="none"
+								/>
+							</Form.Group>
+
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Autor</Form.Label>
+								<Form.Control
+									onChange={onInputChange}
+									type="text"
+									name="autor"
+									list="autors"
+									value={bookData.autor}
+								/>
+							</Form.Group>
+						</>
+					) : (
+						""
+					)}
 
 					<Form.Group className="mb-3" controlId="formBasicEmail">
-						<Form.Label>Autor</Form.Label>
-						<Form.Control
-							onChange={onInputChange}
-							type="text"
-							name="autor"
-							list="autors"
-							value={bookData.autor}
-						/>
-					</Form.Group>
-
-					<Form.Group className="mb-3" controlId="formBasicEmail">
-						<Form.Label>Cota</Form.Label>
+						<Form.Label>
+							{bookData.type !== "book" || bookData.type !== "audiobook"
+								? "Numero"
+								: "Cota"}
+						</Form.Label>
 						<Form.Control
 							onChange={onInputChange}
 							type="text"
@@ -246,34 +271,16 @@ export function BibliotecaFormBook({ create }) {
 					</Form.Group>
 
 					<Form.Group className="mb-3" controlId="formBasicEmail">
-						<Form.Label> Fecha de edicion</Form.Label>
+						<Form.Label>
+							{bookData.type !== "book" || bookData.type !== "audiobook"
+								? "Fecha"
+								: " Fecha de edicion"}
+						</Form.Label>
 						<Form.Control
 							onChange={onInputChange}
 							type="number"
 							name="editionDate"
 							value={bookData.editionDate}
-						/>
-					</Form.Group>
-
-					<Form.Group className="mb-3" controlId="formBasicEmail">
-						<Form.Label>Ciudad</Form.Label>
-						<Form.Control
-							onChange={onInputChange}
-							type="text"
-							name="city"
-							value={bookData.city}
-							autoComplete="none"
-						/>
-					</Form.Group>
-
-					<Form.Group className="mb-3" controlId="formBasicEmail">
-						<Form.Label>Editores</Form.Label>
-						<Form.Control
-							onChange={onInputChange}
-							type="text"
-							name="editors"
-							value={bookData.editors}
-							autoComplete="none"
 						/>
 					</Form.Group>
 
@@ -288,70 +295,95 @@ export function BibliotecaFormBook({ create }) {
 						/>
 					</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicEmail">
-						<Form.Label>Altura</Form.Label>
-						<Form.Control
-							onChange={onInputChange}
-							type="number"
-							name="height"
-							value={bookData.height}
-							autoComplete="none"
-						/>
-					</Form.Group>
+					{bookData.type === "audiobook" || bookData.type === "book" ? (
+						<>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Ciudad</Form.Label>
+								<Form.Control
+									onChange={onInputChange}
+									type="text"
+									name="city"
+									value={bookData.city}
+									autoComplete="none"
+								/>
+							</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicEmail">
-						<Form.Label> Numero de ejemplares</Form.Label>
-						<Form.Control
-							onChange={onInputChange}
-							type="number"
-							name="numberCopies"
-							value={bookData.numberCopies}
-							autoComplete="none"
-						/>
-					</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Editores</Form.Label>
+								<Form.Control
+									onChange={onInputChange}
+									type="text"
+									name="editors"
+									value={bookData.editors}
+									autoComplete="none"
+								/>
+							</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicEmail">
-						<Form.Label> Numero de paginas</Form.Label>
-						<Form.Control
-							onChange={onInputChange}
-							type="number"
-							name="numberPages"
-							value={bookData.numberPages}
-							autoComplete="none"
-						/>
-					</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Altura</Form.Label>
+								<Form.Control
+									onChange={onInputChange}
+									type="number"
+									name="height"
+									value={bookData.height}
+									autoComplete="none"
+								/>
+							</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicEmail">
-						<Form.Label>Tipo adquisición</Form.Label>
-						<Form.Control
-							onChange={onInputChange}
-							type="text"
-							name="typeAdquisition"
-							value={bookData.typeAdquisition}
-						/>
-					</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label> Numero de paginas</Form.Label>
+								<Form.Control
+									onChange={onInputChange}
+									type="number"
+									name="numberPages"
+									value={bookData.numberPages}
+									autoComplete="none"
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label> Numero de ejemplares</Form.Label>
+								<Form.Control
+									onChange={onInputChange}
+									type="number"
+									name="numberCopies"
+									value={bookData.numberCopies}
+									autoComplete="none"
+								/>
+							</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicEmail">
-						<Form.Label>Observaciones</Form.Label>
-						<Form.Control
-							onChange={onInputChange}
-							type="text"
-							name="observations"
-							value={bookData.observations}
-						/>
-					</Form.Group>
-
-					<Form.Group className="mb-3" controlId="formBasicEmail">
-						<Form.Label>Coleccion</Form.Label>
-						<Form.Control
-							onChange={onInputChange}
-							type="text"
-							name="collection"
-							list="collection"
-							value={bookData.collection}
-							autoComplete="none"
-						/>
-					</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Tipo adquisición</Form.Label>
+								<Form.Control
+									onChange={onInputChange}
+									type="text"
+									name="typeAdquisition"
+									value={bookData.typeAdquisition}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Coleccion</Form.Label>
+								<Form.Control
+									onChange={onInputChange}
+									type="text"
+									name="collection"
+									list="collection"
+									value={bookData.collection}
+									autoComplete="none"
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Observaciones</Form.Label>
+								<Form.Control
+									onChange={onInputChange}
+									type="text"
+									name="observations"
+									value={bookData.observations}
+								/>
+							</Form.Group>
+						</>
+					) : (
+						""
+					)}
 
 					<Form.Group className="mb-3" controlId="formBasicEmail">
 						<Form.Label>Descripcion</Form.Label>
@@ -367,31 +399,39 @@ export function BibliotecaFormBook({ create }) {
 						/>
 					</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicEmail">
-						<Form.Label>Fichas Impresas</Form.Label>
+					{bookData.type === "audiobook" || bookData.type === "book" ? (
+						<>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Fichas Impresas</Form.Label>
 
-						{fichaData.length > 0
-							? fichaData.map((ficha) => (
-									<Form.Check
-										onChange={onInputFichaChange}
-										// onChange={() => onInputFichaChange(ficha.id)}
-										name={ficha.id}
-										// cols="30"
-										// rows="10"
-										// value={bookData.printed}
-										// as="textarea"
-										checked={ficha.printed}
-										label={
-											ficha.typeFicha === "title" ? "titulo" : ficha.typeFicha
-										}
-									/>
-							  ))
-							: null}
+								{fichaData.length > 0
+									? fichaData.map((ficha) => (
+											<Form.Check
+												onChange={onInputFichaChange}
+												// onChange={() => onInputFichaChange(ficha.id)}
+												name={ficha.id}
+												// cols="30"
+												// rows="10"
+												// value={bookData.printed}
+												// as="textarea"
+												checked={ficha.printed}
+												label={
+													ficha.typeFicha === "title"
+														? "titulo"
+														: ficha.typeFicha
+												}
+											/>
+									  ))
+									: null}
 
-						{/* {bookData.bookfichas.map((ficha) => (
+								{/* {bookData.bookfichas.map((ficha) => (
 							
 						))} */}
-					</Form.Group>
+							</Form.Group>
+						</>
+					) : (
+						""
+					)}
 
 					{/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
 						<Form.Check type="checkbox" label="Check me out" />

@@ -21,9 +21,13 @@ export function BibliotecaFichaPrint({ create }) {
 		toast.promise(myPromise, {
 			loading: "cargando",
 			success: (res) => {
+				const fichas = res.data;
 				console.log(res.data);
-				setBookFichaData(res.data);
-				return "informacion de fichas obtenida";
+
+				setBookFichaData(fichas);
+				return fichas.length <= 0
+					? "no hay fichas por imprimir"
+					: "informacion de fichas obtenida";
 			},
 			error: (error) => {
 				console.log(error);

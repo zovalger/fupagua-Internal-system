@@ -33,7 +33,10 @@ export function HomePage() {
 							<div className={styles.icon}>
 								<IoLibraryOutline />
 							</div>
-							<span>Biblioteca</span>
+							<span>Biblioteca
+					
+							</span>
+							<span>		Juana Milano de Diaz</span>
 						</button>
 					</Link>
 				</div>

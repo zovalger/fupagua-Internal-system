@@ -66,8 +66,11 @@ const getBooks_Service = async (query) => {
 		cota,
 		autor,
 		materia,
+		observations,
+		type = "book",
 	} = query;
 
+	console.log(type);
 	const datos = [];
 
 	if (title) datos.push({ title: { [Op.substring]: title } });
@@ -76,6 +79,8 @@ const getBooks_Service = async (query) => {
 	if (cota) datos.push({ cota: { [Op.substring]: cota } });
 	if (autor) datos.push({ autor: { [Op.substring]: autor } });
 	if (materia) datos.push({ materia: { [Op.substring]: materia } });
+	if (observations)
+		datos.push({ observations: { [Op.substring]: observations } });
 
 	// console.log(datos);
 

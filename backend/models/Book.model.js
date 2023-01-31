@@ -18,7 +18,6 @@ const Book = db.define(
 		materia: { type: DataTypes.STRING, defaultValue: "" },
 
 		height: { type: DataTypes.INTEGER, defaultValue: 0 },
-		// width: DataTypes.INTEGER,
 
 		numberCopies: { type: DataTypes.INTEGER, defaultValue: 1 },
 		numberCopiesAvailable: { type: DataTypes.INTEGER, defaultValue: 1 },
@@ -34,13 +33,7 @@ const Book = db.define(
 		img_cloudinary_url: { type: DataTypes.STRING, defaultValue: "" },
 		img_local_url: { type: DataTypes.STRING, defaultValue: "" },
 
-		// BibliographicRecordPrinted: {
-		// 	type: DataTypes.BOOLEAN,
-		// 	defaultValue: false,
-		// },
-
-		
-		// img_format: { type: DataTypes.STRING, defaultValue: "" },
+		type: { type: DataTypes.STRING, allowNull: false, defaultValue: "book" },
 	},
 	{
 		setterMethods: {

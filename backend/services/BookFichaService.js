@@ -1,63 +1,58 @@
 const { Op } = require("sequelize");
 const Book = require("../models/Book.model");
 const BookFicha = require("../models/BookFicha.model");
-const {
-	updateBookFicha_Service,
-	getBookFicha_Service,
-	getBooksFicha_Service,
-} = require("../services/BookFichaService");
 
-const getBooksFicha_RouteController = async (req, res) => {
-	// const { title, type } = req.query;
-
-	// const where = {
-	// 	printed: false,
-	// 	type: { [Op.or]: ["book", "audiobook"] },
-	// };
-
-	// if (datos.length > 0) where[Op[or ? "or" : "and"]] = datos;
+const getBooksFicha_Service = async () => {
+	// const where = {};
 
 	try {
-		const bookFicha = await getBooksFicha_Service();
-
-
-		return res.json(bookFicha);
+		const bookFicha = await BookFicha.findAll({
+			limit: 4,
+			where: { printed: false },
+			include: {
+				model: Book,
+				where: { type: { [Op.or]: ["book", "audiobook"] } },
+			},
+		});
+		return bookFicha;
 	} catch (error) {
-		res.status(500).send(error);
 		console.log(error);
+		return error;
 	}
 };
 
-const getBookFicha_RouteController = async (req, res) => {
-	const { id } = req.params;
+const getBookFicha_Service = async (idFicha) => {
+	const id = idFicha;
 
 	try {
-		const bookFicha = await getBookFicha_Service(id);
+		const bookFicha = await BookFicha.findByPk(id);
 
 		if (!bookFicha) return res.status(404).json({ message: "Book no found" });
 
-		res.json(bookFicha);
+		return bookFicha;
 	} catch (error) {
-		res.status(500).send(error);
 		console.log(error);
+		return error;
 	}
 };
 
-const updateBookFicha_RouteController = async (req, res) => {
-	const { id } = req.params;
-	const { printed } = req.body;
+const updateBookFicha_Service = async (idFicha, printedFicha) => {
+	const id = idFicha;
+	const printed = printedFicha;
 
 	try {
-		const bookFicha = await updateBookFicha_Service(id, printed);
+		const bookFicha = await BookFicha.findByPk(id);
 
-		return res.json(bookFicha);
+		await bookFicha.update({ printed });
+
+		return bookFicha;
 	} catch (error) {
-		res.status(500).send(error);
 		console.log(error);
+		return error;
 	}
 };
 
-const deleteBookFicha_RouteController = async (req, res) => {
+const deleteBookFicha_Service = async (idFicha) => {
 	const { id } = req.params;
 
 	// try {
@@ -93,8 +88,8 @@ const deleteBookFicha_RouteController = async (req, res) => {
 
 module.exports = {
 	// createBook,
-	getBooksFicha_RouteController,
-	getBookFicha_RouteController,
-	updateBookFicha_RouteController,
-	deleteBookFicha_RouteController,
+	getBooksFicha_Service,
+	getBookFicha_Service,
+	updateBookFicha_Service,
+	deleteBookFicha_Service,
 };
