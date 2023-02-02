@@ -2,7 +2,8 @@ const { Op } = require("sequelize");
 const { uploadImage, deleteImage } = require("../libs/cloudinary");
 const Book = require("../models/Book.model");
 const BookFicha = require("../models/BookFicha.model");
-const { bookResizeImg } = require("../utils/helperImg");
+const ImgFile = require("../models/ImgFile.model");
+const { bookResizeImg, ImgFileFormate } = require("../utils/helperImg");
 const { createBookFicha_Service } = require("./BookFichaService");
 const { ImageAndOptimizationSync } = require("./ImageService");
 
@@ -13,66 +14,43 @@ const createBook_Service = async (dataBook, portadaBook, imgExtrasBook) => {
 	let data = dataBook;
 
 	try {
-		if (portadaBook)
-			data = {
-				...data,
-				portada: { img_local_url_original: portadaBook.tempFilePath },
-			};
+		const book = await Book.create(data, { include: ["portada", "imgExtras"] });
 
-		if (imgExtrasBook)
-			data = {
-				...data,
-				imgExtras: imgExtrasBook.map((img) => {
-					return { img_local_url_original: img.tempFilePath };
-				}),
-			};
-
-		// primero guardar los datos del libro
-		const book = await Book.create(data
-			
-			// ,{ include: ["portada", "imgExtras"] }
-		
-		);
-
-		const fichas = createBookFicha_Service(book.id, {
+		await createBookFicha_Service(book.id, {
 			autors: book.autor,
 			materias: book.materia,
 		});
 
-		// const result = await BookFicha.bulkCreate([
-		// 	{ bookId: book.id, typeFicha: "materia" },
-		// 	{ bookId: book.id, typeFicha: "autor" },
-		// 	{ bookId: book.id, typeFicha: "cota" },
-		// 	{ bookId: book.id, typeFicha: "title" },
-		// ]);
+		// imagen de portada del libro
 
-		// console.log(await Book.findByPk(book.id, { include: BookFicha }));
-		// luego subir la imagen a cloudinary
+		if (portadaBook)
+			await ImgFileFormate(portadaBook).then(
+				async (format) =>
+					await ImgFile.create({ ...format, portadaId: book.id })
+			);
 
-		// if (img) {
-		// 	const { tempFilePath } = img;
+		// imagenes extra del libro
 
-		// 	book.img_local_url = tempFilePath;
+		if (imgExtrasBook) {
+			if (imgExtrasBook instanceof Array) {
+				await imgExtrasBook.map(async (img) => {
+					const format = await ImgFileFormate(img);
+					const newImg = await ImgFile.create({
+						...format,
+						bookId: book.id,
+					});
 
-		// 	try {
-		// 		const img_optimized = await bookResizeImg(tempFilePath, 350);
-		// 		const result = await uploadImage(img_optimized);
-		// 		console.log(result);
+					// console.log(newImg);
+				});
+			} else {
+				const format = await ImgFileFormate(imgExtrasBook);
+				const img = await ImgFile.create({ ...format, bookId: book.id });
 
-		// 		const { public_id, secure_url } = result;
+				// console.log(img);
+			}
+		}
 
-		// 		book.img_public_id = public_id;
-		// 		book.img_cloudinary_url = secure_url;
-		// 	} catch (error) {
-		// 		console.log("error al subir imagen");
-		// 		console.log(error);
-		// 	}
-
-		// 	await book.save();
-		// }
-
-		await ImageAndOptimizationSync();
-		return book;
+		return await book.reload({ include: ["portada", "imgExtras"] });
 	} catch (error) {
 		console.log(error);
 		return error;
@@ -141,15 +119,53 @@ const getBook_Service = async (id) => {
 	}
 };
 
-const updateBook_Service = async (idBook, dataBook, imgBook) => {
+const updateBook_Service = async (
+	idBook,
+	dataBook,
+	portadaBook,
+	imgExtrasBook
+) => {
 	const id = idBook;
 	const data = dataBook;
-	const img = imgBook;
 
 	try {
-		const book = await Book.findByPk(id);
+		const book = await Book.findByPk(id, { include: { all: true } });
 
 		await book.update(data);
+
+		if (portadaBook) {
+			if (book.portada) {
+				if (book.portada.public_id) {
+					await deleteImage(img_public_id);
+				}
+			}
+
+			await ImgFileFormate(portadaBook).then(
+				async (format) =>
+					await ImgFile.create({ ...format, portadaId: book.id })
+			);
+		}
+
+		// imagenes extra del libro
+
+		if (imgExtrasBook) {
+			if (imgExtrasBook instanceof Array) {
+				await imgExtrasBook.map(async (img) => {
+					const format = await ImgFileFormate(img);
+					const newImg = await ImgFile.create({
+						...format,
+						bookId: book.id,
+					});
+
+					// console.log(newImg);
+				});
+			} else {
+				const format = await ImgFileFormate(imgExtrasBook);
+				const img = await ImgFile.create({ ...format, bookId: book.id });
+
+				// console.log(img);
+			}
+		}
 
 		// ver si tiene imagen primero
 

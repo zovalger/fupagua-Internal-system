@@ -15,6 +15,7 @@
 // };
 
 const Jimp = require("jimp");
+const { uploadImage } = require("../libs/cloudinary");
 
 const bookResizeImg = async (filePath, size = 300) => {
 	const path = `${filePath}-resize`;
@@ -52,4 +53,41 @@ const bookResizeImg = async (filePath, size = 300) => {
 	return path;
 };
 
-module.exports = { bookResizeImg };
+const ImgFileFormate = async (file) => {
+	const imgFormat = {};
+
+	imgFormat.img_local_url_original = file.tempFilePath;
+
+	// compirmir imagen
+
+	try {
+		imgFormat.img_local_url = await bookResizeImg(imgFormat.img_local_url_original, 350);
+	} catch (error) {
+		console.log("error al comprimir la imagen");
+		console.log(error);
+	}
+
+	// subir imagen
+
+	try {
+		if (!imgFormat.img_public_id) {
+			const result = await uploadImage(imgFormat.img_local_url);
+
+			// console.log(result);
+
+			const { public_id, secure_url } = result;
+
+			imgFormat.img_cloudinary_url = secure_url;
+			imgFormat.img_public_id = public_id;
+		}
+	} catch (error) {
+		console.log("error al subir imagen");
+		console.log(error);
+	}
+
+	// devolver formato para imagefile
+
+	return imgFormat
+};
+
+module.exports = { bookResizeImg, ImgFileFormate };

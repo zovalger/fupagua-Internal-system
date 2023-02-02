@@ -1,6 +1,8 @@
-const { uploadImage } = require("../libs/cloudinary");
+const { uploadImage, deleteImage } = require("../libs/cloudinary");
 const ImgFile = require("../models/ImgFile.model");
 const { bookResizeImg } = require("../utils/helperImg");
+
+const fs = require("fs-extra");
 
 const ImageAndOptimizationSync = async () => {
 	const imgs = await ImgFile.findAll({ where: { img_public_id: "" } });
@@ -39,4 +41,28 @@ const ImageAndOptimizationSync = async () => {
 	});
 };
 
-module.exports = { ImageAndOptimizationSync };
+const DeleteInstaceImgFile_Book = async (idImgFile) => {
+	const imgFile = await ImgFile.findByPk(idImgFile);
+
+// todo: eliminar registro de imagen en libro
+
+	if (condition) {
+		
+	}
+	imgFile.bookId
+
+	try {
+		
+
+
+
+
+	} catch (error) {
+		
+	}
+
+	await deleteImage(imgFile.public_id);
+
+};
+
+module.exports = { ImageAndOptimizationSync, DeleteInstaceImgFile: DeleteInstaceImgFile_Book };
