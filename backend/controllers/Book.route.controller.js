@@ -8,9 +8,18 @@ const {
 
 const createBook_RouteController = async (req, res) => {
 	const data = req.body;
-	const img = req.files ? (req.files.img ? req.files.img : null) : null;
+
+	let portada_Img = null,
+		extraImg_Img = null;
+
+	if (req.files) {
+		const { portada, imgExtras } = req.files;
+		portada_Img = portada ? portada : null;
+		extraImg_Img = imgExtras ? imgExtras : null;
+	}
+
 	try {
-		const book = await createBook_Service(data, img);
+		const book = await createBook_Service(data, portada_Img, extraImg_Img);
 
 		return res.json(book);
 	} catch (error) {
@@ -47,10 +56,17 @@ const getBook_RouteController = async (req, res) => {
 const updateBook_RouteController = async (req, res) => {
 	const { id } = req.params;
 	const data = req.body;
-	const img = req.files ? (req.files.img ? req.files.img : null) : null;
 
+	let portada_Img = null,
+		extraImg_Img = null;
+
+	if (req.files) {
+		const { portada, imgExtras } = req.files;
+		portada_Img = portada ? portada : null;
+		extraImg_Img = imgExtras ? imgExtras : null;
+	}
 	try {
-		const book = await updateBook_Service(id, data, img);
+		const book = await updateBook_Service(id, data, portada_Img);
 
 		return res.json(book);
 	} catch (error) {

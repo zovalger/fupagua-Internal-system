@@ -15,7 +15,7 @@ export default function BookFicha({ data }) {
 		collection,
 		materia,
 	} = data.book;
-	const { typeFicha } = data;
+	const { typeFicha, title: titleF } = data;
 
 	const AutorFicha = () => (
 		<>
@@ -58,7 +58,7 @@ export default function BookFicha({ data }) {
 	const MateriaFicha = () => (
 		<>
 			<div className={styles.cota}>{cota}</div>
-			<div>Materias: {materia}</div>
+			<div>{titleF}</div>
 			{/* <div>
 				<span>{autor}</span>
 			</div> */}

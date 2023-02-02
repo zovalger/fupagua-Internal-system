@@ -3,51 +3,75 @@ const { uploadImage, deleteImage } = require("../libs/cloudinary");
 const Book = require("../models/Book.model");
 const BookFicha = require("../models/BookFicha.model");
 const { bookResizeImg } = require("../utils/helperImg");
+const { createBookFicha_Service } = require("./BookFichaService");
+const { ImageAndOptimizationSync } = require("./ImageService");
 
 // Book
 
 // data, img
-const createBook_Service = async (dataBook, imgBook) => {
-	const data = dataBook;
-	const img = imgBook;
+const createBook_Service = async (dataBook, portadaBook, imgExtrasBook) => {
+	let data = dataBook;
 
 	try {
-		// primero guardar los datos del libro
-		const book = await Book.create(data);
+		if (portadaBook)
+			data = {
+				...data,
+				portada: { img_local_url_original: portadaBook.tempFilePath },
+			};
 
-		await BookFicha.bulkCreate([
-			{ bookId: book.id, typeFicha: "materia" },
-			{ bookId: book.id, typeFicha: "autor" },
-			{ bookId: book.id, typeFicha: "cota" },
-			{ bookId: book.id, typeFicha: "title" },
-		]);
+		if (imgExtrasBook)
+			data = {
+				...data,
+				imgExtras: imgExtrasBook.map((img) => {
+					return { img_local_url_original: img.tempFilePath };
+				}),
+			};
+
+		// primero guardar los datos del libro
+		const book = await Book.create(data
+			
+			// ,{ include: ["portada", "imgExtras"] }
+		
+		);
+
+		const fichas = createBookFicha_Service(book.id, {
+			autors: book.autor,
+			materias: book.materia,
+		});
+
+		// const result = await BookFicha.bulkCreate([
+		// 	{ bookId: book.id, typeFicha: "materia" },
+		// 	{ bookId: book.id, typeFicha: "autor" },
+		// 	{ bookId: book.id, typeFicha: "cota" },
+		// 	{ bookId: book.id, typeFicha: "title" },
+		// ]);
 
 		// console.log(await Book.findByPk(book.id, { include: BookFicha }));
 		// luego subir la imagen a cloudinary
 
-		if (img) {
-			const { tempFilePath } = img;
+		// if (img) {
+		// 	const { tempFilePath } = img;
 
-			book.img_local_url = tempFilePath;
+		// 	book.img_local_url = tempFilePath;
 
-			const img_optimized = await bookResizeImg(tempFilePath, 350);
+		// 	try {
+		// 		const img_optimized = await bookResizeImg(tempFilePath, 350);
+		// 		const result = await uploadImage(img_optimized);
+		// 		console.log(result);
 
-			try {
-				const result = await uploadImage(img_optimized);
-				console.log(result);
+		// 		const { public_id, secure_url } = result;
 
-				const { public_id, secure_url } = result;
+		// 		book.img_public_id = public_id;
+		// 		book.img_cloudinary_url = secure_url;
+		// 	} catch (error) {
+		// 		console.log("error al subir imagen");
+		// 		console.log(error);
+		// 	}
 
-				book.img_public_id = public_id;
-				book.img_cloudinary_url = secure_url;
-			} catch (error) {
-				console.log("error al subir imagen");
-				console.log(error);
-			}
+		// 	await book.save();
+		// }
 
-			await book.save();
-		}
-
+		await ImageAndOptimizationSync();
 		return book;
 	} catch (error) {
 		console.log(error);
@@ -83,7 +107,6 @@ const getBooks_Service = async (query) => {
 
 	// datos.push();
 
-
 	const where = { type };
 
 	if (datos.length > 0) where[Op[or ? "or" : "and"]] = datos;
@@ -94,6 +117,7 @@ const getBooks_Service = async (query) => {
 		const books = await Book.findAll({
 			where,
 			order: [[sortBy, direction]],
+			include: ["portada", "imgExtras"],
 		});
 		return books;
 	} catch (error) {
@@ -106,7 +130,9 @@ const getBook_Service = async (id) => {
 	// const id = id;
 
 	try {
-		const book = await Book.findByPk(id, { include: BookFicha });
+		const book = await Book.findByPk(id, {
+			include: [BookFicha, "portada", "imgExtras"],
+		});
 
 		return book ? book : null;
 	} catch (error) {

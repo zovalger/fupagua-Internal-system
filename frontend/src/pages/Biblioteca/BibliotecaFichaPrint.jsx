@@ -1,16 +1,16 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { BiChevronLeft } from "react-icons/bi";
 import { AiOutlinePrinter } from "react-icons/ai";
+import toast from "react-hot-toast";
 
-import styles from "./styles/BibliotecaFichaPrint.module.scss";
-import Nav from "../components/common/Nav";
-import BookFicha from "../components/Biblioteca/BookFicha";
+import styles from "../styles/BibliotecaFichaPrint.module.scss";
+import Nav from "../../components/common/Nav";
+import BookFicha from "../../components/Biblioteca/BookFicha";
 import {
 	getBookFichasRequest,
 	updateBookFichaRequest,
-} from "../api/booksFichas";
+} from "../../api/booksFichas";
 
 export function BibliotecaFichaPrint({ create }) {
 	const [bookFichaData, setBookFichaData] = useState([]);

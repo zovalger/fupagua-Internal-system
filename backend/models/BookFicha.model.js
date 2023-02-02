@@ -11,10 +11,15 @@ const BookFicha = db.define(
 			allowNull: false,
 			defaultValue: "autor",
 		},
+
+		title: DataTypes.STRING,
 		printed: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
 	},
 	{
 		setterMethods: {
+			title(value) {
+				this.setDataValue("title", value.trim());
+			},
 			// name(value) {
 			// 	this.setDataValue("name", value.trim());
 			// },

@@ -1,23 +1,23 @@
-import styles from "./styles/BibliotecaFormBook.module.scss";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-
-import { Link, useNavigate, useParams } from "react-router-dom";
-import Nav from "../components/common/Nav";
 import { BiChevronLeft, BiTrash } from "react-icons/bi";
+import toast from "react-hot-toast";
 
-import { useAppData } from "../context/AppContext";
-import { useEffect, useState } from "react";
-import { toInputDate } from "../utility";
-
+import styles from "../styles/BibliotecaFormBook.module.scss";
+import Nav from "../../components/common/Nav";
+import { updateBookFichaRequest } from "../../api/booksFichas";
 import {
 	createBookRequest,
 	deleteBookRequest,
 	getBookRequest,
 	updateBookRequest,
-} from "../api/books";
-import toast from "react-hot-toast";
-import { updateBookFichaRequest } from "../api/booksFichas";
+} from "../../api/books";
+
+// import { useAppData } from "../context/AppContext";
+// import { toInputDate } from "../utility";
+
 
 export function BibliotecaFormBook({ create }) {
 	const navigate = useNavigate();
@@ -210,7 +210,7 @@ export function BibliotecaFormBook({ create }) {
 								setBookData({ ...bookData, img: e.target.files[0] });
 								// onInputChange
 							}}
-							name="img"
+							name="portada"
 							accept="image/*"
 						/>
 					</Form.Group>
@@ -411,9 +411,7 @@ export function BibliotecaFormBook({ create }) {
 												name={ficha.id}
 												checked={ficha.printed}
 												label={
-													ficha.typeFicha === "title"
-														? "titulo"
-														: ficha.typeFicha
+													ficha.title
 												}
 											/>
 									  ))

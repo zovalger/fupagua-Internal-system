@@ -3,19 +3,18 @@
 	position: relative;
 
 	width: 12.5cm;
-	height: 7.5cm;
-	padding: 1cm;
+	height: 6.5cm;
+	padding: .5cm;
 	padding-right: 2cm;
 	padding-left: 3cm;
+	margin-right: 0.3cm;
+	margin-bottom: 0.1cm;
 
 	border: 1px solid black;
 	background-color: white;
 	font-size: 14px;
 
-	margin-right: .5cm;
-	margin-bottom: 0.5cm;
-
-	&:nth-child(2n){
+	&:nth-child(2n) {
 		margin: 0;
 	}
 

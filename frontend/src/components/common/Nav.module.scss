@@ -16,9 +16,8 @@
 		align-items: center;
 		background: none;
 		color: white;
-
 	}
-	img{
+	img {
 		width: 2rem;
 	}
 }
@@ -36,5 +35,11 @@
 
 		width: 2rem;
 		height: 2rem;
+	}
+}
+
+@media print {
+	.container {
+		display: none;
 	}
 }

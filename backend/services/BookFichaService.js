@@ -2,12 +2,46 @@ const { Op } = require("sequelize");
 const Book = require("../models/Book.model");
 const BookFicha = require("../models/BookFicha.model");
 
+const createBookFicha_Service = async (id_Book, { materias }) => {
+	const bookId = id_Book;
+
+	// const m = materias.split(",");
+
+	const dataFichas = [
+		{ bookId, typeFicha: "autor", title: "Autor" },
+		{ bookId, typeFicha: "cota", title: "Cota" },
+		{ bookId, typeFicha: "title", title: "Titulo" },
+	];
+
+	if (materias)
+		materias
+			.split(",")
+			.map((value) =>
+				dataFichas.push({ bookId, typeFicha: "materia", title: value.trim() })
+			);
+
+	// if (autors)
+	// 	autors
+	// 		.split(",")
+	// 		.map((value) =>
+	// 			dataFichas.push({ bookId, typeFicha: "autor", title: value.trim() })
+	// 		);
+
+	// { bookId, typeFicha: "materia" }
+
+	const fichas = await BookFicha.bulkCreate(dataFichas);
+
+	return fichas;
+};
+
 const getBooksFicha_Service = async () => {
 	// const where = {};
 
+	// const limit = limit;
+
 	try {
 		const bookFicha = await BookFicha.findAll({
-			limit: 4,
+			limit: 6,
 			where: { printed: false },
 			include: {
 				model: Book,
@@ -87,7 +121,7 @@ const deleteBookFicha_Service = async (idFicha) => {
 };
 
 module.exports = {
-	// createBook,
+	createBookFicha_Service,
 	getBooksFicha_Service,
 	getBookFicha_Service,
 	updateBookFicha_Service,
