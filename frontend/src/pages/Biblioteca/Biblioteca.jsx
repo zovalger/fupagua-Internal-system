@@ -1,20 +1,19 @@
-import styles from "./styles/Biblioteca.module.scss";
-
 import { Link, useNavigate } from "react-router-dom";
-import Nav from "../components/common/Nav";
+import { useEffect, useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import {
 	AiOutlinePlus,
 	AiOutlineSearch,
 	AiOutlineReload,
 } from "react-icons/ai";
-
-import { useAppData } from "../context/AppContext";
-import Book from "../components/Biblioteca/Book";
-import { useEffect, useState } from "react";
-import { getBooksRequest } from "../api/books";
 import toast from "react-hot-toast";
-import SearchingForm from "../components/Biblioteca/SearchingForm";
+
+import styles from "../styles/Biblioteca.module.scss";
+import { useAppData } from "../../context/AppContext";
+import { getBooksRequest } from "../../api/books";
+import Nav from "../../components/common/Nav";
+import Book from "../../components/Biblioteca/Book";
+import SearchingForm from "../../components/Biblioteca/SearchingForm";
 
 export function Biblioteca() {
 	const [books, setBooks] = useState([]);

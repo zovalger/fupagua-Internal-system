@@ -23,7 +23,7 @@ const bookResizeImg = async (filePath, size = 300) => {
 		.then((image) => {
 			let rotar = false;
 
-			console.log(image);
+			// console.log(image);
 			// vemos si tiene metadatos
 			if (image._exif) {
 				const { bitmap } = image;

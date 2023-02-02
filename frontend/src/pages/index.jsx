@@ -2,7 +2,8 @@ export { HomePage } from "./HomePage";
 export { People } from "./People";
 export { Agenda } from "./Agenda";
 export { AgendaActivity } from "./AgendaActivity";
-export { Biblioteca } from "./Biblioteca";
-export { BibliotecaFormBook } from "./BibliotecaFormBook";
-export { BibliotecaFichaPrint } from "./BibliotecaFichaPrint";
-export { BibliotecaBook } from "./BibliotecaBook";
+export { Biblioteca } from "./Biblioteca/Biblioteca";
+export { BibliotecaFormBook } from "./Biblioteca/BibliotecaFormBook";
+export { BibliotecaFichaPrint } from "./Biblioteca/BibliotecaFichaPrint";
+export { BibliotecaBook } from "./Biblioteca/BibliotecaBook";
+

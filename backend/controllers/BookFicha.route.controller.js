@@ -8,7 +8,7 @@ const {
 } = require("../services/BookFichaService");
 
 const getBooksFicha_RouteController = async (req, res) => {
-	// const { title, type } = req.query;
+	// const { title, type, limit } = req.query;
 
 	// const where = {
 	// 	printed: false,

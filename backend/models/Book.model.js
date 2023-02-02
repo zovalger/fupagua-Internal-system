@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db");
+const ImgFile = require("./ImgFile.model");
 
 const Book = db.define(
 	"book",
@@ -10,7 +11,7 @@ const Book = db.define(
 		description: DataTypes.STRING(500),
 		cota: { type: DataTypes.STRING, defaultValue: "" },
 		autor: { type: DataTypes.STRING, defaultValue: "" },
-		editionDate: { type: DataTypes.INTEGER, defaultValue: 1900 },
+		editionDate: { type: DataTypes.STRING, defaultValue: "" },
 
 		city: { type: DataTypes.STRING, defaultValue: "" },
 		editors: { type: DataTypes.STRING, defaultValue: "" },
@@ -33,13 +34,15 @@ const Book = db.define(
 		img_cloudinary_url: { type: DataTypes.STRING, defaultValue: "" },
 		img_local_url: { type: DataTypes.STRING, defaultValue: "" },
 
+
+
 		type: { type: DataTypes.STRING, allowNull: false, defaultValue: "book" },
 	},
 	{
 		setterMethods: {
-			// name(value) {
-			// 	this.setDataValue("name", value.trim());
-			// },
+			materia(value) {
+				this.setDataValue("materia", value.trim());
+			},
 			// ci(value) {
 			// 	if (!value) return;
 			// 	this.setDataValue("ci", value.trim());
@@ -55,5 +58,8 @@ const Book = db.define(
 		},
 	}
 );
+
+Book.hasOne(ImgFile, { as: 'portada' });
+Book.hasMany(ImgFile, { as: 'imgExtras' });
 
 module.exports = Book;
