@@ -32,12 +32,13 @@ function AsidePanelOptions() {
 					onClick={toggleAsideActive}
 				/>
 
-				<ListOptionItem
+				{/* <ListOptionItem
 					url={"/agenda"}
 					icon={<BsCalendarWeek />}
 					text="Agenda"
 					onClick={toggleAsideActive}
-				/>
+				/> */}
+				
 
 				<ListOptionItem
 					url={"/biblioteca"}

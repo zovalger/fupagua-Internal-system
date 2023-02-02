@@ -20,23 +20,21 @@ export function HomePage() {
 
 			<div className={styles.container}>
 				<div className={styles.secciones}>
-					<Link to={`/agenda`}>
+					{/* <Link to={`/agenda`}>
 						<button>
 							<div className={styles.icon}>
 								<BsCalendarWeek />
 							</div>
 							<span>Agenda</span>
 						</button>
-					</Link>
+					</Link> */}
 					<Link to={`/biblioteca`}>
 						<button>
 							<div className={styles.icon}>
 								<IoLibraryOutline />
 							</div>
-							<span>Biblioteca
-					
-							</span>
-							<span>		Juana Milano de Diaz</span>
+							<div>Biblioteca</div>
+							<div>Juana Milano de Diaz</div>
 						</button>
 					</Link>
 				</div>
