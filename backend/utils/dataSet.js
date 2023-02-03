@@ -1,17 +1,17 @@
 const DataSeed = {
 	books: [
 		{
-			id: 7,
-			title: "Bases psicológicas de la educación ",
+			id: 8,
+			title: "Bases psicológicas de la educación",
 			subtitle: "",
 			description:
 				"Trata sobre los fundamentos educativo de las ciencias de la educación. ",
 			cota: "153/B.186",
 			autor: "Bigge, M. L. y Hunt, M. P.",
-			editionDate: 1972,
-			city: "México ",
+			editionDate: "1972",
+			city: "México",
 			editors: "Trillas",
-			materia: "Psicología,  educación,  sicologia educativa",
+			materia: "Psicología,  educación, Psicologia educativa",
 			height: 23,
 			numberCopies: 1,
 			numberCopiesAvailable: 1,
@@ -19,13 +19,22 @@ const DataSeed = {
 			typeAdquisition: "Propia",
 			observations: "Tapas duras",
 			collection: "",
-			img_public_id: "fupagua/qilfzloz8bmhpgzj5q6n",
-			img_cloudinary_url:
-				"https://res.cloudinary.com/dpqw06ajr/image/upload/v1674576408/fupagua/qilfzloz8bmhpgzj5q6n.jpg",
-			img_local_url: "uploads/tmp-3-1674576403884",
 			type: "book",
 			createdAt: "2023-01-24T16:06:47.000Z",
-			updatedAt: "2023-01-31T14:53:59.000Z",
+			updatedAt: "2023-02-03T00:55:16.000Z",
+			portada: {
+				id: 1,
+				img_local_url: "uploads\\tmp-1-1675385716251-resize",
+				img_local_url_original: "uploads\\tmp-1-1675385716251",
+				img_public_id: "fupagua/ack2yryt0mjrvwrhgtv3",
+				img_cloudinary_url:
+					"https://res.cloudinary.com/dpqw06ajr/image/upload/v1675385747/fupagua/ack2yryt0mjrvwrhgtv3.jpg",
+				createdAt: "2023-02-03T00:55:16.000Z",
+				updatedAt: "2023-02-03T00:55:48.000Z",
+				portadaId: 8,
+				bookId: null,
+			},
+			imgExtras: [],
 		},
 		// {
 		// 	id: 4,

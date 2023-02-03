@@ -4,65 +4,106 @@ const { bookResizeImg } = require("../utils/helperImg");
 
 const fs = require("fs-extra");
 
-const ImageAndOptimizationSync = async () => {
+const ImageSyncCloud = async () => {
 	const imgs = await ImgFile.findAll({ where: { img_public_id: "" } });
 
-	await imgs.map(async (img) => {
-		try {
-			if (!img.img_local_url)
-				img.img_local_url = await bookResizeImg(
-					img.img_local_url_original,
-					350
-				);
+	console.log(imgs);
+	if (imgs.length <= 0) return;
 
+	imgs.map((img, index) =>
+		setTimeout(async () => {
 			try {
-				if (!img.img_public_id) {
-					const result = await uploadImage(img.img_local_url);
+				const result = await uploadImage(img.img_local_url);
 
-					// console.log(result);
+				console.log(result);
+				const { public_id, secure_url } = result;
+				img.img_cloudinary_url = secure_url;
+				img.img_public_id = public_id;
 
-					const { public_id, secure_url } = result;
-
-					img.img_cloudinary_url = secure_url;
-					img.img_public_id = public_id;
-				}
-
-				console.log(secure_url);
+				await img.save();
 			} catch (error) {
 				console.log("error al subir imagen");
 				console.log(error);
 			}
+		}, 500 * (index + 1))
+	);
 
-			await img.save();
-		} catch (error) {
-			console.log("error al optimizar la imagen");
-			console.log(error);
-		}
-	});
+	console.log("sync de imagenes iniciada");
+	
 };
 
 const DeleteInstaceImgFile_Book = async (idImgFile) => {
 	const imgFile = await ImgFile.findByPk(idImgFile);
 
-// todo: eliminar registro de imagen en libro
-
-	if (condition) {
-		
-	}
-	imgFile.bookId
-
+	// * eliminar imagen de cloudinary
 	try {
-		
-
-
-
-
+		await deleteImage(imgFile.img_public_id);
 	} catch (error) {
-		
+		console.log("error al eliminar imagen en cloudinary");
+		console.log(error);
 	}
 
-	await deleteImage(imgFile.public_id);
+	// * eliminar imagen local
+	try {
+		if (imgFile.img_local_url) await fs.remove(imgFile.img_local_url);
 
+		if (imgFile.img_local_url_original)
+			await fs.remove(imgFile.img_local_url_original);
+	} catch (error) {
+		console.log("error al eliminar una imagen local");
+		console.log(error);
+	}
+
+	// * eliminar registro de la base de datos
+	try {
+		await imgFile.destroy();
+	} catch (error) {
+		console.log(error);
+	}
 };
 
-module.exports = { ImageAndOptimizationSync, DeleteInstaceImgFile: DeleteInstaceImgFile_Book };
+const ImgFileOptimiceAndFormate = async (file) => {
+	const imgFormat = {};
+
+	imgFormat.img_local_url_original = file.tempFilePath;
+
+	// compirmir imagen
+
+	try {
+		imgFormat.img_local_url = await bookResizeImg(
+			imgFormat.img_local_url_original,
+			350
+		);
+	} catch (error) {
+		console.log("error al comprimir la imagen");
+		console.log(error);
+	}
+
+	// subir imagen
+
+	// try {
+	// 	if (!imgFormat.img_public_id) {
+	// 		const result = await uploadImage(imgFormat.img_local_url);
+
+	// 		// console.log(result);
+
+	// 		const { public_id, secure_url } = result;
+
+	// 		imgFormat.img_cloudinary_url = secure_url;
+	// 		imgFormat.img_public_id = public_id;
+	// 	}
+	// } catch (error) {
+	// 	console.log("error al subir imagen");
+	// 	console.log(error);
+	// }
+
+	// devolver formato para imagefile
+
+	return imgFormat;
+};
+
+module.exports = {
+	ImageSyncCloud,
+	DeleteInstaceImgFile_Book,
+	ImgFileOptimiceAndFormate,
+};

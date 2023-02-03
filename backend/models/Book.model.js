@@ -6,9 +6,9 @@ const Book = db.define(
 	"book",
 	{
 		title: { type: DataTypes.STRING, allowNull: false },
-		subtitle: DataTypes.STRING,
+		subtitle: { type: DataTypes.STRING, defaultValue: "" },
 
-		description: DataTypes.STRING(500),
+		description: { type: DataTypes.STRING(500), defaultValue: "" },
 		cota: { type: DataTypes.STRING, defaultValue: "" },
 		autor: { type: DataTypes.STRING, defaultValue: "" },
 		editionDate: { type: DataTypes.STRING, defaultValue: "" },
@@ -30,11 +30,9 @@ const Book = db.define(
 
 		collection: { type: DataTypes.STRING, defaultValue: "" },
 
-		img_public_id: { type: DataTypes.STRING, defaultValue: "" },
-		img_cloudinary_url: { type: DataTypes.STRING, defaultValue: "" },
-		img_local_url: { type: DataTypes.STRING, defaultValue: "" },
-
-
+		// img_public_id: { type: DataTypes.STRING, defaultValue: "" },
+		// img_cloudinary_url: { type: DataTypes.STRING, defaultValue: "" },
+		// img_local_url: { type: DataTypes.STRING, defaultValue: "" },
 
 		type: { type: DataTypes.STRING, allowNull: false, defaultValue: "book" },
 	},
@@ -59,7 +57,7 @@ const Book = db.define(
 	}
 );
 
-Book.hasOne(ImgFile, { as: 'portada' });
-Book.hasMany(ImgFile, { as: 'imgExtras' });
+Book.hasOne(ImgFile, { as: "portada" });
+Book.hasMany(ImgFile, { as: "imgExtras" });
 
 module.exports = Book;
