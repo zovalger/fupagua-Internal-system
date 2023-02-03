@@ -1,21 +1,19 @@
 import styles from "./Book.module.scss";
 
 export default function Book({ dataBook }) {
-	const {
-		title,
-		subtitle,
-		autor,
-		description,
-		cota,
-		img_cloudinary_url,
-		img_local_url,
-	} = dataBook;
+	const { title, subtitle, autor, description, cota, portada } = dataBook;
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.imgContainer}>
 				<img
-					src={img_cloudinary_url ? img_cloudinary_url:img_local_url}
+					src={
+						portada
+							? portada.img_cloudinary_url
+								? portada.img_cloudinary_url
+								: portada.img_local_url
+							: "/"
+					}
 					alt="foto de portada"
 				/>
 			</div>

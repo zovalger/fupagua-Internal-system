@@ -8,6 +8,7 @@ import styles from "../styles/BibliotecaBook.module.scss";
 // import { useAppData } from "../context/AppContext";
 import { getBookRequest } from "../../api/books";
 import Nav from "../../components/common/Nav";
+import BookImageSlider from "../../components/Biblioteca/BookImageSlider";
 
 export function BibliotecaBook() {
 	const params = useParams();
@@ -61,13 +62,10 @@ export function BibliotecaBook() {
 
 			{book.id ? (
 				<div className={styles.container}>
-					<div className={styles.slide}>
-						<img src={book.portada.img_cloudinary_url} alt="imagen de libro" />
 
-						{book.imgExtras.map((img) => (
-							<img src={img.img_cloudinary_url} alt="imagen de libro" />
-						))}
-					</div>
+
+					<BookImageSlider book={book}/>
+					
 					<h3>{book.title}</h3>
 
 					<h4>{book.subtitle}</h4>

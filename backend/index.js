@@ -3,6 +3,7 @@
 // 							active completamente el servidor
 // ****************************************************************************
 
+const { backupAll, backupRestore } = require("./backup");
 const app = require("./app");
 const { PORT, NODE_ENV } = require("./config");
 const db = require("./db");
@@ -15,10 +16,14 @@ const conectToDataBase = async () => {
 
 		if (NODE_ENV === "development") {
 			await db.sync({ alter: true, force: true });
-			await Seed();
+			// await Seed();
+			await backupRestore();
 		}
 
 		app.listen(PORT);
+
+
+		setInterval(() => backupAll(), 1000* 60*10);
 
 		console.log(`servidor en el puerto: ${PORT}`);
 	} catch (error) {

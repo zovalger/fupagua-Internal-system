@@ -29,11 +29,10 @@ const createBook_Service = async (dataBook, portadaBook, imgExtrasBook) => {
 
 		// imagen de portada del libro
 
-		if (portadaBook)
-			await ImgFileOptimiceAndFormate(portadaBook).then(
-				async (format) =>
-					await ImgFile.create({ ...format, portadaId: book.id })
-			);
+		if (portadaBook) {
+			const format = await ImgFileOptimiceAndFormate(portadaBook);
+			await ImgFile.create({ ...format, portadaId: book.id });
+		}
 
 		// imagenes extra del libro
 
@@ -103,11 +102,8 @@ const getBooks_Service = async (query) => {
 		const books = await Book.findAll({
 			where,
 			order: [[sortBy, direction]],
-			include: ["portada", "imgExtras"],
+			include: { all: true },
 		});
-
-
-
 
 		return books;
 	} catch (error) {
@@ -123,7 +119,7 @@ const getBook_Service = async (id) => {
 
 	try {
 		const book = await Book.findByPk(id, {
-			include: [BookFicha, "portada", "imgExtras"],
+			include: { all: true },
 		});
 
 		return book ? book : null;
