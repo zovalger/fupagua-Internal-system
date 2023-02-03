@@ -4,7 +4,11 @@
 
 	overflow-x: hidden;
 	overflow-y: auto;
-
+	.slide {
+		display: flex;
+		overflow: hidden;
+		overflow-x: auto;
+	}
 	div,
 	h3 {
 		margin-bottom: 0.5rem;

@@ -26,15 +26,28 @@ const DataSeed = {
 				id: 1,
 				img_local_url: "uploads\\tmp-1-1675385716251-resize",
 				img_local_url_original: "uploads\\tmp-1-1675385716251",
-				img_public_id: "fupagua/ack2yryt0mjrvwrhgtv3",
+				img_public_id: "fupagua/pxorohlqilzoevawxxbp",
 				img_cloudinary_url:
-					"https://res.cloudinary.com/dpqw06ajr/image/upload/v1675385747/fupagua/ack2yryt0mjrvwrhgtv3.jpg",
+					"https://res.cloudinary.com/dpqw06ajr/image/upload/v1675385724/fupagua/pxorohlqilzoevawxxbp.jpg",
 				createdAt: "2023-02-03T00:55:16.000Z",
 				updatedAt: "2023-02-03T00:55:48.000Z",
 				portadaId: 8,
 				bookId: null,
 			},
-			imgExtras: [],
+			imgExtras: [
+				{
+					id: 2,
+					img_local_url: "uploads\\tmp-1-1675385716251-resize",
+					img_local_url_original: "uploads\\tmp-1-1675385716251",
+					img_public_id: "fupagua/pxorohlqilzoevawxxbp",
+					img_cloudinary_url:
+						"https://res.cloudinary.com/dpqw06ajr/image/upload/v1675385724/fupagua/pxorohlqilzoevawxxbp.jpg",
+					createdAt: "2023-02-03T00:55:16.000Z",
+					updatedAt: "2023-02-03T00:55:48.000Z",
+					portadaId: null,
+					bookId: 8,
+				},
+			],
 		},
 		// {
 		// 	id: 4,
