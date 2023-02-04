@@ -20,6 +20,7 @@ const createBook_RouteController = async (req, res) => {
 		extraImg_Img = imgExtras ? imgExtras : null;
 	}
 
+	
 	try {
 		const book = await createBook_Service(data, portada_Img, extraImg_Img);
 

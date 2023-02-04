@@ -1,21 +1,21 @@
-// const Patient = require("../models/Patient.model");
-// const Representative = require("../models/Representative.model");
+const Patient = require("../models/Patient.model");
+const Representative = require("../models/Representative.model");
 
-
+// Patient
 // ****************************************************************************
 // 										creacion de paciente
 // ****************************************************************************
 
 const createPatient = async (req, res) => {
-	// const { name, ci, age, dateBirth, school } = req.body;
+	const { name, ci, age, dateBirth, school } = req.body;
 
-	// try {
-	// 	const patient = await Patient.create({ name, ci, age, dateBirth, school });
-	// 	return res.json(patient);
-	// } catch (error) {
-	// 	res.status(500).send(error);
-	// 	console.log(error);
-	// }
+	try {
+		const patient = await Patient.create({ name, ci, age, dateBirth, school });
+		return res.json(patient);
+	} catch (error) {
+		res.status(500).send(error);
+		console.log(error);
+	}
 };
 
 // ****************************************************************************
@@ -23,13 +23,13 @@ const createPatient = async (req, res) => {
 // ****************************************************************************
 
 const getPatients = async (req, res) => {
-	// try {
-	// 	const patinets = await Patient.findAll();
-	// 	return res.json(patinets);
-	// } catch (error) {
-	// 	res.status(500).send(error);
-	// 	console.log(error);
-	// }
+	try {
+		const patinets = await Patient.findAll();
+		return res.json(patinets);
+	} catch (error) {
+		res.status(500).send(error);
+		console.log(error);
+	}
 };
 
 // ****************************************************************************
@@ -37,18 +37,18 @@ const getPatients = async (req, res) => {
 // ****************************************************************************
 
 const getPatient = async (req, res) => {
-	// const { id } = req.params;
+	const { id } = req.params;
 
-	// try {
-	// 	const patient = await Patient.findByPk(id);
+	try {
+		const patient = await Patient.findByPk(id);
 
-	// 	if (!patient) return res.status(404).json({ message: "patient no found" });
+		if (!patient) return res.status(404).json({ message: "patient no found" });
 
-	// 	res.json(patient);
-	// } catch (error) {
-	// 	res.status(500).send(error);
-	// 	console.log(error);
-	// }
+		res.json(patient);
+	} catch (error) {
+		res.status(500).send(error);
+		console.log(error);
+	}
 };
 
 // ****************************************************************************
@@ -56,25 +56,25 @@ const getPatient = async (req, res) => {
 // ****************************************************************************
 
 const updatePatient = async (req, res) => {
-	// const { id } = req.params;
-	// const { name, ci, age, dateBirth, school } = req.body;
+	const { id } = req.params;
+	const { name, ci, age, dateBirth, school } = req.body;
 
-	// try {
-	// 	const patient = await Patient.findByPk(id);
+	try {
+		const patient = await Patient.findByPk(id);
 
-	// 	if (name) patient.name = name;
-	// 	if (ci) patient.ci = ci;
-	// 	if (age) patient.age = age;
-	// 	if (dateBirth) patient.dateBirth = dateBirth;
-	// 	if (school) patient.school = school;
+		if (name) patient.name = name;
+		if (ci) patient.ci = ci;
+		if (age) patient.age = age;
+		if (dateBirth) patient.dateBirth = dateBirth;
+		if (school) patient.school = school;
 
-	// 	await patient.save();
+		await patient.save();
 
-	// 	return res.json(patient);
-	// } catch (error) {
-	// 	res.status(500).send(error);
-	// 	console.log(error);
-	// }
+		return res.json(patient);
+	} catch (error) {
+		res.status(500).send(error);
+		console.log(error);
+	}
 };
 
 // // ToDO: crear primero la api de los representantes
@@ -110,20 +110,22 @@ const updatePatient = async (req, res) => {
 // la primera peticion marca como eliminado el registro
 // en la segunda consulta se eliminara permanentemente de la base de datos
 
-const deletePatient = async (req, res) => {
-	// const { id } = req.params;
+const deletePatient = async (patientId) => {
+	const id = rpatientId;
 
-	// const patient = await Patient.findByPk(id);
+	const patient = await Patient.findByPk(id);
 
-	// console.log(await patient.destroy());
+  // marcar como eliminado
 
-	// res.send("a Patient move to trash");
+	// await patient.destroy()
+
+	res.send("a Patient move to trash");
 };
 
-module.exports = {
-	createPatient,
-	getPatients,
-	getPatient,
-	updatePatient,
-	deletePatient,
-};
+// module.exports = {
+// 	createPatient,
+// 	getPatients,
+// 	getPatient,
+// 	updatePatient,
+// 	deletePatient,
+// };

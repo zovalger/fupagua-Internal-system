@@ -39,18 +39,15 @@ const createBook_Service = async (dataBook, portadaBook, imgExtrasBook) => {
 		if (imgExtrasBook) {
 			if (imgExtrasBook instanceof Array) {
 				await imgExtrasBook.map(async (img) => {
-					await ImgFileOptimiceAndFormate(img).then(
-						async (format) =>
-							await ImgFile.create({
-								...format,
-								bookId: book.id,
-							})
-					);
+					const format = await ImgFileOptimiceAndFormate(img);
+					await ImgFile.create({
+						...format,
+						bookId: book.id,
+					});
 				});
 			} else {
-				await ImgFileOptimiceAndFormate(imgExtrasBook).then(
-					async (format) => await ImgFile.create({ ...format, bookId: book.id })
-				);
+				const format = await ImgFileOptimiceAndFormate(imgExtrasBook);
+				await ImgFile.create({ ...format, bookId: book.id });
 			}
 		}
 

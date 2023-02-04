@@ -12,7 +12,7 @@ const { NODE_ENV } = require("./config");
 // 										importacion de rutas
 // ****************************************************************************
 
-const representativeRoute = require("./routes/representative.route");
+// const representativeRoute = require("./routes/representative.route");
 const patientRoute = require("./routes/patient.route");
 const activityRoute = require("./routes/activity.route");
 const bookRoute = require("./routes/book.route");
@@ -33,7 +33,7 @@ app.use(fileUpload({ useTempFiles: true, tempFileDir: "./uploads" }));
 // 										rutas para la api
 // ****************************************************************************
 
-app.use("/api/representative", representativeRoute);
+// app.use("/api/representative", representativeRoute);
 app.use("/api/patient", patientRoute);
 app.use("/api/activity", activityRoute);
 app.use("/api/book", bookRoute);
