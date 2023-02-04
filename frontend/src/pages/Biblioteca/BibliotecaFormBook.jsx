@@ -176,7 +176,7 @@ export function BibliotecaFormBook({ create }) {
 			/>
 
 			<div className={styles.container}>
-				<BookImageSlider book={book} />
+				{!create ? <BookImageSlider book={book} /> : null}
 
 				<FormBook
 					bookData={book}

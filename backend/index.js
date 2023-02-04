@@ -16,8 +16,8 @@ const conectToDataBase = async () => {
 
 		if (NODE_ENV === "development") {
 			await db.sync({ alter: true, force: true });
-			// await Seed();
-			await backupRestore();
+			await Seed();
+			// await backupRestore();
 		}
 
 		app.listen(PORT);

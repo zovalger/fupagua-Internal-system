@@ -20,14 +20,6 @@ const createBookFicha_Service = async (id_Book, { materias }) => {
 				dataFichas.push({ bookId, typeFicha: "materia", title: value.trim() })
 			);
 
-	// if (autors)
-	// 	autors
-	// 		.split(",")
-	// 		.map((value) =>
-	// 			dataFichas.push({ bookId, typeFicha: "autor", title: value.trim() })
-	// 		);
-
-	// { bookId, typeFicha: "materia" }
 
 	const fichas = await BookFicha.bulkCreate(dataFichas);
 
@@ -86,38 +78,24 @@ const updateBookFicha_Service = async (idFicha, printedFicha) => {
 	}
 };
 
+const actualizarMaterias_Service = async (idBook, materias) => {
+	const fichas = await BookFicha.findAll({
+		where: { bookId: idBook, typeFicha: "materia" },
+	});
+
+
+};
+
 const deleteBookFicha_Service = async (idFicha) => {
-	const { id } = req.params;
+	try {
+		const bookFicha = await BookFicha.findByPk(idFicha);
 
-	// try {
-	// 	const book = await Book.findByPk(id);
+		if (!bookFicha) return;
 
-	// 	if (!book)
-	// 		return res.status(404).json({
-	// 			message: "libro no encontrado",
-	// 		});
-
-	// 	const { img_public_id } = book;
-	// 	// eliminar la imagen
-	// 	if (img_public_id) {
-	// 		try {
-	// 			console.log(await deleteImage(img_public_id));
-	// 		} catch (error) {
-	// 			console.log("error al tratar de eliminar la imagen en cloudinary");
-	// 			console.log(error);
-	// 		}
-	// 	}
-
-	// 	// ver si tiene imagen primero
-
-	// 	// deleteImage(id)
-	// 	console.log(await book.destroy());
-
-	// 	res.send("a Book move to trash");
-	// } catch (error) {
-	// 	res.status(500).send(error);
-	// 	console.log(error);
-	// }
+		await bookFicha.destroy();
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 module.exports = {
@@ -126,4 +104,5 @@ module.exports = {
 	getBookFicha_Service,
 	updateBookFicha_Service,
 	deleteBookFicha_Service,
+	actualizarMaterias_Service,
 };

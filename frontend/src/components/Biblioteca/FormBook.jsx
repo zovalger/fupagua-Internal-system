@@ -210,7 +210,9 @@ const FormBook = ({
 				<Form.Label>Imagen de portada</Form.Label>
 				<Form.Control
 					type="file"
-					onChange={(e) => setBookData({ ...bookData, img: e.target.files[0] })}
+					onChange={(e) =>
+						setBookData({ ...bookData, portada: e.target.files[0] })
+					}
 					name="portada"
 					accept="image/*"
 				/>
@@ -220,7 +222,9 @@ const FormBook = ({
 				<Form.Label>Imagenes Extra</Form.Label>
 				<Form.Control
 					type="file"
-					onChange={(e) => setBookData({ ...bookData, img: e.target.files[0] })}
+					onChange={(e) =>
+						setBookData({ ...bookData, imgExtras: e.target.files[0] })
+					}
 					name="imgExtras"
 					accept="image/*"
 					multiple

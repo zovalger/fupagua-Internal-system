@@ -14,6 +14,7 @@ const backupAll = async () => {
 	await fs.writeJSON(backupPath, data);
 
 	console.log("Respaldo de la base de datos realizado");
+	
 };
 
 const backupRestore = async () => {

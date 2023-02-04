@@ -12,7 +12,7 @@ const createBook_RouteController = async (req, res) => {
 	let portada_Img = null,
 		extraImg_Img = null;
 
-	// console.log(req.files);
+	console.log(req.files);
 
 	if (req.files) {
 		const { portada, imgExtras } = req.files;

@@ -7,6 +7,9 @@ const BookImageSlider = ({ book }) => {
 
 	if (!portada && !imgExtras) return;
 
+	if (!portada.img_local_url_original && !imgExtras.img_local_url_original)
+		return;
+
 	return (
 		<Carousel>
 			{portada ? (
@@ -24,7 +27,7 @@ const BookImageSlider = ({ book }) => {
 				</Carousel.Item>
 			) : null}
 
-			{imgExtras
+			{imgExtras && imgExtras instanceof Array
 				? imgExtras.map((img) => (
 						<Carousel.Item key={img.id}>
 							<img
