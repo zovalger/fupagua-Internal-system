@@ -2,23 +2,23 @@ const express = require("express");
 const router = express.Router();
 
 const {
-	getPatient,
-	getPatients,
-	createPatient,
-	updatePatient,
-	deletePatient,
-} = require("../controllers/patient.route.controller");
+	getPatients_RouteController,
+	getPatient_RouteController,
+	createPatient_RouteController,
+	updatePatient_RouteController,
+	deletePatient_RouteController,
+} = require("../controllers/Patient.route.controller");
 
 // obtener datos
-router.get("/", getPatients);
-router.get("/:id", getPatient);
+router.get("/", getPatients_RouteController);
+router.get("/:id", getPatient_RouteController);
 
 // crear datos
-router.post("/", createPatient);
+router.post("/", createPatient_RouteController);
 
 // modificar datos
-router.put("/:id", updatePatient);
+router.put("/:id", updatePatient_RouteController);
 
-router.delete("/:id", deletePatient);
+router.delete("/:id", deletePatient_RouteController);
 
 module.exports = router;

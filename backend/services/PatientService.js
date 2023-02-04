@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const Patient = require("../models/Patient.model");
 const Representative = require("../models/Representative.model");
 
@@ -6,15 +7,25 @@ const Representative = require("../models/Representative.model");
 // 										creacion de paciente
 // ****************************************************************************
 
-const createPatient = async (req, res) => {
-	const { name, ci, age, dateBirth, school } = req.body;
+const createPatient_Service = async (dataPatient, dataRepresentative) => {
+	let data = dataPatient;
+
+	console.log(dataPatient);
+
+	console.log(dataRepresentative);
+
+	if (dataRepresentative)
+		data = { ...data, representative: dataRepresentative };
 
 	try {
-		const patient = await Patient.create({ name, ci, age, dateBirth, school });
-		return res.json(patient);
+		const patient = await Patient.create(data, {
+			include: { all: true },
+		});
+
+		return patient;
 	} catch (error) {
-		res.status(500).send(error);
 		console.log(error);
+		return error;
 	}
 };
 
@@ -22,13 +33,43 @@ const createPatient = async (req, res) => {
 // 										obtencion de varios paciente con busqueda incluida
 // ****************************************************************************
 
-const getPatients = async (req, res) => {
+const getPatients_Service = async (query) => {
+	const { name, ci, historyNumber } = query;
+
+	const datos = [];
+	const where = {};
+	const ids = [];
+
+	if (name) datos.push({ name: { [Op.substring]: name } });
+	if (ci) datos.push({ ci: { [Op.substring]: ci } });
+	if (historyNumber)
+		datos.push({ historyNumber: { [Op.substring]: historyNumber } });
+
+	if (datos.length > 0) where[Op.or] = datos;
+
 	try {
-		const patinets = await Patient.findAll();
-		return res.json(patinets);
+		const pati = await Patient.findAll({ where });
+		const repre = await Representative.findAll({ where });
+
+		if (pati.length > 0) pati.map((patient) => ids.push(patient.id));
+
+		if (repre.length > 0)
+			repre.map((representative) => ids.push(representative.patientId));
+
+		const patients = await Patient.findAll({
+			where: { id: { [Op.in]: ids } },
+			order: ["name"],
+		});
+
+		console.log(pati);
+		console.log(repre);
+		console.log(ids);
+		console.log(patients);
+
+		return patients;
 	} catch (error) {
-		res.status(500).send(error);
 		console.log(error);
+		return error;
 	}
 };
 
@@ -36,18 +77,18 @@ const getPatients = async (req, res) => {
 // 										obtencion de un solo paciente
 // ****************************************************************************
 
-const getPatient = async (req, res) => {
-	const { id } = req.params;
+const getPatient_Service = async (patientId) => {
+	const id = patientId;
 
 	try {
-		const patient = await Patient.findByPk(id);
+		const patient = await Patient.findByPk(id, { include: { all: true } });
 
-		if (!patient) return res.status(404).json({ message: "patient no found" });
+		if (!patient) return null;
 
-		res.json(patient);
+		return patient;
 	} catch (error) {
-		res.status(500).send(error);
 		console.log(error);
+		return error;
 	}
 };
 
@@ -55,53 +96,35 @@ const getPatient = async (req, res) => {
 // 										actualizacion del registro de un solo paciente
 // ****************************************************************************
 
-const updatePatient = async (req, res) => {
-	const { id } = req.params;
-	const { name, ci, age, dateBirth, school } = req.body;
+const updatePatient_Service = async (
+	patientId,
+	dataPatient,
+	dataRepresentative
+) => {
+	const data = dataPatient;
+	const id = patientId;
 
 	try {
-		const patient = await Patient.findByPk(id);
+		const patient = await Patient.findByPk(id, { include: { all: true } });
 
-		if (name) patient.name = name;
-		if (ci) patient.ci = ci;
-		if (age) patient.age = age;
-		if (dateBirth) patient.dateBirth = dateBirth;
-		if (school) patient.school = school;
+		if (!patient) return null;
 
-		await patient.save();
+		await patient.update(data);
 
-		return res.json(patient);
+		if (dataRepresentative) {
+			const representative = await Representative.findByPk(
+				patient.representative.id
+			);
+
+			if (representative) await representative.update(dataRepresentative);
+		}
+
+		return patient;
 	} catch (error) {
-		res.status(500).send(error);
 		console.log(error);
+		return error;
 	}
 };
-
-// // ToDO: crear primero la api de los representantes
-
-// const jointPatientWithRepresentative = async (req, res) => {
-// 	const { id, representativeId } = req.params;
-
-// 	const patient = await Patient.findByPk(id);
-
-// 	const representative = await Representative.findByPk(representativeId);
-
-// 	await patient.addRepresentatives(representative);
-
-// 	res.status(200).json({ message: "was make a join" });
-// };
-
-// const unjointPatientWithRepresentative = async (req, res) => {
-// 	const { id, representativeId } = req.params;
-
-// 	const patient = await Patient.findByPk(id);
-
-// 	const representative = await Representative.findByPk(representativeId);
-
-// 	await patient.removeRepresentatives(representative);
-
-// 	res.status(200).json({ message: "was destroy a join" });
-// };
 
 // ****************************************************************************
 // 				marcado como eliminado (cambio propidad estatus de registro)
@@ -110,22 +133,27 @@ const updatePatient = async (req, res) => {
 // la primera peticion marca como eliminado el registro
 // en la segunda consulta se eliminara permanentemente de la base de datos
 
-const deletePatient = async (patientId) => {
-	const id = rpatientId;
+const deletePatient_Service = async (patientId) => {
+	const id = patientId;
 
 	const patient = await Patient.findByPk(id);
 
-  // marcar como eliminado
+  if (!patient ) return null
 
-	// await patient.destroy()
-
-	res.send("a Patient move to trash");
+	if (patient.status === "a") {
+		patient.status = "d";
+		await patient.save();
+		return patient;
+	} else {
+		await patient.destroy();
+		return { message: "eliminado" };
+	}
 };
 
-// module.exports = {
-// 	createPatient,
-// 	getPatients,
-// 	getPatient,
-// 	updatePatient,
-// 	deletePatient,
-// };
+module.exports = {
+	createPatient_Service,
+	getPatient_Service,
+	getPatients_Service,
+	updatePatient_Service,
+	deletePatient_Service,
+};

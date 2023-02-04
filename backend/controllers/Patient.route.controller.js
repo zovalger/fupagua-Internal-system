@@ -1,80 +1,82 @@
-// const Patient = require("../models/Patient.model");
-// const Representative = require("../models/Representative.model");
-
+const {
+	createPatient_Service,
+	getPatients_Service,
+	getPatient_Service,
+	updatePatient_Service,
+	deletePatient_Service,
+} = require("../services/PatientService");
 
 // ****************************************************************************
 // 										creacion de paciente
 // ****************************************************************************
 
-const createPatient = async (req, res) => {
-	// const { name, ci, age, dateBirth, school } = req.body;
+const createPatient_RouteController = async (req, res) => {
+	const { patient, representative } = req.body;
 
-	// try {
-	// 	const patient = await Patient.create({ name, ci, age, dateBirth, school });
-	// 	return res.json(patient);
-	// } catch (error) {
-	// 	res.status(500).send(error);
-	// 	console.log(error);
-	// }
+	try {
+		const newPatient = await createPatient_Service(patient, representative);
+
+		return res.json(newPatient);
+	} catch (error) {
+		console.log(error);
+		return res.status(500).send(error);
+	}
 };
 
 // ****************************************************************************
 // 										obtencion de varios paciente con busqueda incluida
 // ****************************************************************************
 
-const getPatients = async (req, res) => {
-	// try {
-	// 	const patinets = await Patient.findAll();
-	// 	return res.json(patinets);
-	// } catch (error) {
-	// 	res.status(500).send(error);
-	// 	console.log(error);
-	// }
+const getPatients_RouteController = async (req, res) => {
+	// todo: peticiones diferentes por pacientes y representantes
+	try {
+		const patinets = await getPatients_Service(req.query);
+		return res.json(patinets);
+	} catch (error) {
+		res.status(500).send(error);
+		console.log(error);
+	}
 };
 
 // ****************************************************************************
 // 										obtencion de un solo paciente
 // ****************************************************************************
 
-const getPatient = async (req, res) => {
-	// const { id } = req.params;
+const getPatient_RouteController = async (req, res) => {
+	const { id } = req.params;
+	try {
+		const patient = await getPatient_Service(id);
 
-	// try {
-	// 	const patient = await Patient.findByPk(id);
-
-	// 	if (!patient) return res.status(404).json({ message: "patient no found" });
-
-	// 	res.json(patient);
-	// } catch (error) {
-	// 	res.status(500).send(error);
-	// 	console.log(error);
-	// }
+		if (!patient) return res.status(404).json({ message: "patient no found" });
+		res.json(patient);
+	} catch (error) {
+		console.log(error);
+		res.status(500).send(error);
+	}
 };
 
 // ****************************************************************************
 // 										actualizacion del registro de un solo paciente
 // ****************************************************************************
 
-const updatePatient = async (req, res) => {
-	// const { id } = req.params;
-	// const { name, ci, age, dateBirth, school } = req.body;
+const updatePatient_RouteController = async (req, res) => {
+	const { id } = req.params;
+	const { patient, representative } = req.body;
 
-	// try {
-	// 	const patient = await Patient.findByPk(id);
+	try {
+		const updatePatient = await updatePatient_Service(
+			id,
+			patient,
+			representative
+		);
 
-	// 	if (name) patient.name = name;
-	// 	if (ci) patient.ci = ci;
-	// 	if (age) patient.age = age;
-	// 	if (dateBirth) patient.dateBirth = dateBirth;
-	// 	if (school) patient.school = school;
+		if (!updatePatient) return res.status(404).json({ message: "not found" });
 
-	// 	await patient.save();
-
-	// 	return res.json(patient);
-	// } catch (error) {
-	// 	res.status(500).send(error);
-	// 	console.log(error);
-	// }
+		return res.json(updatePatient);
+	} catch (error) {
+		res.status(500).send(error);
+		console.log(error);
+	}
 };
 
 // // ToDO: crear primero la api de los representantes
@@ -110,20 +112,21 @@ const updatePatient = async (req, res) => {
 // la primera peticion marca como eliminado el registro
 // en la segunda consulta se eliminara permanentemente de la base de datos
 
-const deletePatient = async (req, res) => {
-	// const { id } = req.params;
+const deletePatient_RouteController = async (req, res) => {
+	const { id } = req.params;
 
-	// const patient = await Patient.findByPk(id);
+	const patient = await deletePatient_Service(id);
 
-	// console.log(await patient.destroy());
+	if (!patient) return res.status(404).json(patient);
 
-	// res.send("a Patient move to trash");
+	return res.json(patient);
+	
 };
 
 module.exports = {
-	createPatient,
-	getPatients,
-	getPatient,
-	updatePatient,
-	deletePatient,
+	createPatient_RouteController,
+	getPatients_RouteController,
+	getPatient_RouteController,
+	updatePatient_RouteController,
+	deletePatient_RouteController,
 };
