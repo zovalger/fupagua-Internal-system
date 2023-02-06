@@ -1,8 +1,7 @@
 import styles from "./AsidePanelOptions.module.scss";
 
-import { IoLibraryOutline,IoHomeOutline } from "react-icons/io5";
-import { BsCalendarWeek,BsCardText  } from "react-icons/bs";
-
+import { IoLibraryOutline, IoHomeOutline } from "react-icons/io5";
+import { BsCalendarWeek, BsCardText, BsPeopleFill } from "react-icons/bs";
 
 import { RxHamburgerMenu } from "react-icons/rx";
 
@@ -32,13 +31,19 @@ function AsidePanelOptions() {
 					onClick={toggleAsideActive}
 				/>
 
+				<ListOptionItem
+					url={"/pacientes"}
+					icon={<BsPeopleFill />}
+					text="Pacientes"	
+					onClick={toggleAsideActive}
+				/>
+
 				{/* <ListOptionItem
 					url={"/agenda"}
 					icon={<BsCalendarWeek />}
 					text="Agenda"
 					onClick={toggleAsideActive}
 				/> */}
-				
 
 				<ListOptionItem
 					url={"/biblioteca"}
@@ -47,7 +52,7 @@ function AsidePanelOptions() {
 					onClick={toggleAsideActive}
 				/>
 
-<ListOptionItem
+				<ListOptionItem
 					url={"/biblioteca/imprimir-fichas"}
 					icon={<BsCardText />}
 					text="Fichas"

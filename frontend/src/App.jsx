@@ -11,17 +11,16 @@ import {
 	BibliotecaFormBook,
 	BibliotecaBook,
 	BibliotecaFichaPrint,
+	Patients,
+	PatientsFormPatient,
 } from "./pages";
 
 import AsidePanelOptions from "./components/common/AsidePanelOption/AsidePanelOptions";
 import "./App.scss";
 
-
-
 function App() {
 	return (
 		<AppDataProvider>
-			
 			<Toaster />
 			<div className="App">
 				<div className="SectionApp">
@@ -47,14 +46,23 @@ function App() {
 							path="/biblioteca/editar/:id"
 							element={<BibliotecaFormBook />}
 						/>
-								<Route
+						<Route
 							path="/biblioteca/imprimir-fichas"
 							element={<BibliotecaFichaPrint />}
 						/>
 						<Route path="/biblioteca/:id" element={<BibliotecaBook />} />
 
-						{/* <Route path="/People" element={<People />} />
-						<Route path="/People/new" element={<PeopleNew />} /> */}
+						{/* **************************************************************************
+																							gestion de pacientes
+						************************************************************************** */}
+
+						<Route path="/pacientes" element={<Patients />} />
+						<Route
+							path="/pacientes/añadir"
+							element={<PatientsFormPatient create={true} />}
+						/>
+						<Route path="/pacientes/:id" element={<PatientsFormPatient />} />
+
 						{/* <Route path="/:id" element={<PostForm />} />
 					<Route path="*" element={<NotFoundPage />} /> */}
 					</Routes>
