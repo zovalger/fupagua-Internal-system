@@ -20,3 +20,4 @@ Representative.belongsToMany(Patient,{through:"representativejoin"});
 Patient.hasOne(Representative);
 
 module.exports = Representative;
+

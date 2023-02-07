@@ -8,3 +8,4 @@ export { BibliotecaBook } from "./Biblioteca/BibliotecaBook";
 
 export { Patients } from "./Patients/Patients";
 export { PatientsFormPatient } from "./Patients/PatientsFormPatient";
+export { PatientsDetails } from "./Patients/PatientsDetails";

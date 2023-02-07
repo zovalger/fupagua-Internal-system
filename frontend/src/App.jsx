@@ -13,6 +13,7 @@ import {
 	BibliotecaFichaPrint,
 	Patients,
 	PatientsFormPatient,
+	PatientsDetails,
 } from "./pages";
 
 import AsidePanelOptions from "./components/common/AsidePanelOption/AsidePanelOptions";
@@ -61,8 +62,10 @@ function App() {
 							path="/pacientes/añadir"
 							element={<PatientsFormPatient create={true} />}
 						/>
-						<Route path="/pacientes/:id" element={<PatientsFormPatient />} />
+						<Route path="/pacientes/editar/:id" element={<PatientsFormPatient />} />
+						<Route path="/pacientes/:id" element={<PatientsDetails />} />
 
+						
 						{/* <Route path="/:id" element={<PostForm />} />
 					<Route path="*" element={<NotFoundPage />} /> */}
 					</Routes>
