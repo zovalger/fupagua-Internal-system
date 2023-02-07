@@ -1,12 +1,15 @@
 import Button from "react-bootstrap/esm/Button";
 import Form from "react-bootstrap/Form";
 import { BiTrash } from "react-icons/bi";
+import { toInputDate } from "../../utility";
 
 export function FormPatient({
 	create,
 	onSubmit,
-	onInputChange,
-	data,
+	onInputChangePatient,
+	onInputChangeRepresentative,
+	patientData,
+	representativeData,
 	deleteItem,
 }) {
 	return (
@@ -19,39 +22,39 @@ export function FormPatient({
 			<Form.Group className="mb-3" controlId="name">
 				<Form.Label>Nombre completo</Form.Label>
 				<Form.Control
-					onChange={onInputChange}
+					onChange={onInputChangePatient}
 					type="text"
 					name="name"
-					// value={data.title}
-					required
+					placeholder="Nombres y apellidos"
+					value={patientData.name}
 					autoComplete="none"
+					required
 				/>
 			</Form.Group>
 			{/* *********************       Cedula        ************************/}
 			<Form.Group className="mb-3" controlId="ci">
 				<Form.Label>Cedula</Form.Label>
 				<Form.Control
-					onChange={onInputChange}
-					type="text"
+					onChange={onInputChangePatient}
+					type="number"
 					name="ci"
-					// value={data.title}
-
+					placeholder="opcional"
+					value={patientData.ci}
 					autoComplete="none"
 				/>
 			</Form.Group>
-		
 
 			{/* *********************  Fecha de nacimiento  ************************/}
 
 			<Form.Group className="mb-3" controlId="dateBirth">
 				<Form.Label>Fecha de nacimiento</Form.Label>
 				<Form.Control
-					onChange={onInputChange}
+					onChange={onInputChangePatient}
 					type="date"
 					name="dateBirth"
-					// value={data.title}
-
-					autoComplete="none"
+					value={toInputDate(patientData.dateBirth)}
+					required
+					// placeholder=
 				/>
 			</Form.Group>
 
@@ -59,12 +62,13 @@ export function FormPatient({
 			<Form.Group className="mb-3" controlId="age">
 				<Form.Label>Edad</Form.Label>
 				<Form.Control
-					onChange={onInputChange}
+					onChange={onInputChangePatient}
 					type="number"
 					name="age"
-					// value={data.title}
-
+					value={patientData.age}
+					placeholder={10}
 					autoComplete="none"
+					required
 				/>
 			</Form.Group>
 
@@ -74,12 +78,12 @@ export function FormPatient({
 				<Form.Label>Sexo</Form.Label>
 
 				<Form.Select
-					onChange={onInputChange}
+					onChange={onInputChangePatient}
 					name="sex"
-					// value={data.title}
+					value={patientData.sex}
 				>
-					<option value="male">H</option>
-					<option value="female">F</option>
+					<option value="male">Masculino</option>
+					<option value="female">Femenino</option>
 				</Form.Select>
 			</Form.Group>
 
@@ -88,11 +92,11 @@ export function FormPatient({
 			<Form.Group className="mb-3" controlId="weight">
 				<Form.Label>Peso</Form.Label>
 				<Form.Control
-					onChange={onInputChange}
+					onChange={onInputChangePatient}
 					type="number"
 					name="weight"
-					// value={data.title}
-
+					value={patientData.weight}
+					placeholder="10.4"
 					autoComplete="none"
 				/>
 			</Form.Group>
@@ -102,55 +106,62 @@ export function FormPatient({
 			<Form.Group className="mb-3" controlId="scholarship">
 				<Form.Label>Escolaridad</Form.Label>
 				<Form.Control
-					onChange={onInputChange}
+					onChange={onInputChangePatient}
 					type="text"
 					name="scholarship"
-					// value={data.title}
-
-					autoComplete="none"
+					value={patientData.scholarship}
+					placeholder="preescolar"
+					required
 				/>
 			</Form.Group>
 
-				{/* *********************   Numero de historia   ************************/}
-				<Form.Group className="mb-3" controlId="historyNumber">
+			{/* *********************   Numero de historia   ************************/}
+			<Form.Group className="mb-3" controlId="historyNumber">
 				<Form.Label>Numero de historia</Form.Label>
 				<Form.Control
-					onChange={onInputChange}
+					onChange={onInputChangePatient}
 					type="text"
 					name="historyNumber"
-					// value={data.title}
-
+					value={patientData.historyNumber}
 					autoComplete="none"
+					placeholder="00-00-00"
+					required
 				/>
 			</Form.Group>
+
+			{/* *****************************************************************
+													inputs para el representante
+			***************************************************************** */}
 
 			<h3>Representante</h3>
-
-			{/* *********************   Nombre completo   ************************/}
-
-			<Form.Group className="mb-3" controlId="name-r">
-				<Form.Label>Nombre completo</Form.Label>
-				<Form.Control
-					onChange={onInputChange}
-					type="text"
-					name="name"
-					// value={data.title}
-
-					autoComplete="none"
-				/>
-			</Form.Group>
 
 			{/* *********************       Cedula        ************************/}
 
 			<Form.Group className="mb-3" controlId="ci-r">
 				<Form.Label>Cedula</Form.Label>
 				<Form.Control
-					onChange={onInputChange}
-					type="text"
+					onChange={onInputChangeRepresentative}
+					type="number"
 					name="ci"
-					// value={data.title}
-
+					value={representativeData.ci}
+					placeholder="12345678"
 					autoComplete="none"
+					required
+				/>
+			</Form.Group>
+
+			{/* *********************   Nombre completo   ************************/}
+
+			<Form.Group className="mb-3" controlId="name-r">
+				<Form.Label>Nombre completo</Form.Label>
+				<Form.Control
+					onChange={onInputChangeRepresentative}
+					type="text"
+					name="name"
+					value={representativeData.name}
+					placeholder="nombre y apellidos"
+					autoComplete="none"
+					required
 				/>
 			</Form.Group>
 
@@ -159,11 +170,11 @@ export function FormPatient({
 			<Form.Group className="mb-3" controlId="age-r">
 				<Form.Label>edad</Form.Label>
 				<Form.Control
-					onChange={onInputChange}
+					onChange={onInputChangeRepresentative}
 					type="number"
 					name="age"
-					// value={data.title}
-
+					value={representativeData.age}
+					placeholder="opcional"
 					autoComplete="none"
 				/>
 			</Form.Group>
@@ -173,12 +184,13 @@ export function FormPatient({
 			<Form.Group className="mb-3" controlId="phoneNumber">
 				<Form.Label>Numero de telefono</Form.Label>
 				<Form.Control
-					onChange={onInputChange}
+					onChange={onInputChangeRepresentative}
 					type="text"
 					name="phoneNumber"
-					// value={data.title}
-
+					value={representativeData.phoneNumber}
+					placeholder="+58 4241234567"
 					autoComplete="none"
+					required
 				/>
 			</Form.Group>
 
@@ -187,11 +199,11 @@ export function FormPatient({
 			<Form.Group className="mb-3" controlId="email">
 				<Form.Label>Correo electronico</Form.Label>
 				<Form.Control
-					onChange={onInputChange}
-					type="text"
+					onChange={onInputChangeRepresentative}
+					type="email"
 					name="email"
-					// value={data.title}
-
+					value={representativeData.email}
+					placeholder="ejemplo@gmail.com"
 					autoComplete="none"
 				/>
 			</Form.Group>

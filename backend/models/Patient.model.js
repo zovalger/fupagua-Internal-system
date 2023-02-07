@@ -5,26 +5,22 @@ const Patient = db.define(
 	"patient",
 	{
 		name: { type: DataTypes.STRING, allowNull: false },
-		ci: { type: DataTypes.STRING},
-		historyNumber: { type: DataTypes.STRING, unique: true },
-		age: DataTypes.INTEGER,
-		dateBirth: DataTypes.DATE,
-
+		dateBirth: { type: DataTypes.DATE, allowNull: false },
+		ci: { type: DataTypes.STRING, defaultValue: "" },
+		historyNumber: { type: DataTypes.STRING, unique: true, allowNull: false },
+		age: { type: DataTypes.INTEGER, defaultValue: 0 },
 
 		// male female
-		sex: DataTypes.STRING,
+		sex: { type: DataTypes.STRING, defaultValue: "male" },
 		// peso en kg
-		weight: DataTypes.FLOAT,
-		scholarship: DataTypes.STRING,
+		weight: { type: DataTypes.FLOAT, defaultValue: 0 },
+		scholarship: { type: DataTypes.STRING, defaultValue: "" },
 
 		// a: active d:trash
 		status: { type: DataTypes.CHAR, defaultValue: "a" },
 	},
 	{
-
-		getterMethods:{
-
-		},
+		getterMethods: {},
 		setterMethods: {
 			// name(value) {
 			// 	this.setDataValue("name", value.trim());

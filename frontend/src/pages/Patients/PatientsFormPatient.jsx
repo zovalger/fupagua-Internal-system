@@ -3,82 +3,68 @@ import { useEffect, useState } from "react";
 import { BiChevronLeft, BiTrash } from "react-icons/bi";
 import toast from "react-hot-toast";
 
-import styles from "../styles/BibliotecaFormBook.module.scss";
 import Nav from "../../components/common/Nav";
-import { updateBookFichaRequest } from "../../api/booksFichas";
-import {
-	createBookRequest,
-	deleteBookRequest,
-	getBookRequest,
-	updateBookRequest,
-} from "../../api/books";
-import { FormPatient } from "../../components/Patients/FormPatient";
 
-// import { useAppData } from "../context/AppContext";
-// import { toInputDate } from "../utility";
+import { FormPatient } from "../../components/Patients/FormPatient";
+import {
+	createPatientRequest,
+	deletePatientRequest,
+	updatePatientRequest,
+} from "../../api/patients";
 
 export function PatientsFormPatient({ create }) {
 	const navigate = useNavigate();
 	const params = useParams();
 
-	const [book, setBookData] = useState({
-		title: "",
-		subtitle: "",
-		description: "",
-		autor: "",
-		cota: "",
-		editionDate: 1900,
-		city: "",
-		editors: "",
-		materia: "",
-		height: 0,
+	const [patientData, setPatientData] = useState({
+		name: "",
+		dateBirth: "",
+		ci: "",
+		historyNumber: "",
+		age: "",
 
-		typeAdquisition: "",
-		observations: "",
-		collection: "",
+		// male female
+		sex: "male",
 
-		numberCopies: 1,
-		numberPages: 1,
-		img: "",
-		type: "book",
+		weight: "",
+		scholarship: "",
 	});
 
-	const [fichaData, setFichaData] = useState([]);
+	const [representativeData, setRepresentativeData] = useState({
+		name: "",
+		ci: "",
+		age: "",
+		dateBirth: "",
+		email: "",
+		phoneNumber: "",
+	});
 
 	const [isSubmiting, setIsSubmitin] = useState(false);
 
 	useEffect(() => {
 		// si estamos en el modo crear no se ejecuta, si no buscamos los datos del registro
-		if (create) return;
-
-		const fillInputs = async () => {
-			const res = await getBookRequest(params.id);
-
-			setBookData(res.data);
-			setFichaData(res.data.bookfichas);
-		};
-
+		// if (create) return;
+		// const fillInputs = async () => {
+		// 	const res = await getBookRequest(params.id);
+		// 	setBookData(res.data);
+		// 	setFichaData(res.data.bookfichas);
+		// };
 		// fillInputs();
 	}, []);
 
-	const savePutDataBook = async () => {
-		await updateBookRequest(params.id, book);
-
-		await fichaData.map(
-			async (ficha) => await updateBookFichaRequest(ficha.id, ficha)
-		);
-	};
-
 	const onSubmit = async (e, v) => {
 		e.preventDefault();
+
 		if (isSubmiting) return;
 
 		setIsSubmitin(true);
 
-		try {
-			const myPromise = create ? createBookRequest(book) : savePutDataBook();
+		const data = { patient: patientData, representative: representativeData };
 
-			console.log(myPromise);
+		try {
+			const myPromise = create
+				? createPatientRequest(data)
+				: await updatePatientRequest(params.id, data);
 
 			toast.promise(myPromise, {
 				loading: "guardando",
@@ -86,9 +72,10 @@ export function PatientsFormPatient({ create }) {
 					console.log(res);
 
 					setTimeout(() => {
-						navigate("/biblioteca");
+						navigate("/pacientes");
 					}, 500);
-					return create ? "Nuevo libro añadido" : "cambios guardados";
+
+					return create ? "Nuevo paciente añadido" : "cambios guardados";
 				},
 				error: (err) => {
 					setIsSubmitin(false);
@@ -101,33 +88,29 @@ export function PatientsFormPatient({ create }) {
 		}
 	};
 
-	const onInputChange = ({ target: { name, value } }) => {
-		console.log(name, value);
+	const onInputChangePatient = ({ target: { name, value } }) =>{
 
-		setBookData({
-			...book,
+		console.log(name,value);
+		setPatientData({
+			...patientData,
 			[name]: value,
-		});
-	};
+		});}
 
-	const onInputFichaChange = ({ target: { name, checked } }) =>
-		setFichaData(
-			fichaData.map((ficha) => {
-				if (ficha.id.toString() === name) {
-					ficha.printed = !ficha.printed;
-				}
+	const onInputChangeRepresentative = ({ target: { name, value } }) =>{
+				console.log(name,value);
 
-				return ficha;
-			})
-		);
+		setRepresentativeData({
+			...representativeData,
+			[name]: value,
+		});}
 
-	const deleteBook = async () => {
+	const deleteItem = async () => {
 		if (!window.confirm("Seguro que quiere eliminar el libro?")) return;
 
 		try {
 			// const d = confirm("esta seguro de elminar el libro?");
 
-			const myPromise = deleteBookRequest(params.id);
+			const myPromise = deletePatientRequest(params.id);
 
 			toast.promise(myPromise, {
 				loading: "eliminando",
@@ -178,14 +161,14 @@ export function PatientsFormPatient({ create }) {
 				{/* {!create ? <BookImageSlider book={book} /> : null} */}
 
 				<FormPatient
-					bookData={book}
-					fichaData={fichaData}
+					patientData={patientData}
+					representativeData={representativeData}
 					create={create}
 					onSubmit={onSubmit}
-					onInputChange={onInputChange}
-					setBookData={setBookData}
-					onInputFichaChange={onInputFichaChange}
-					deleteBook={deleteBook}
+					onInputChangePatient={onInputChangePatient}
+					onInputChangeRepresentative={onInputChangeRepresentative}
+					// setBookData={setPatientData}
+					deleteItem={deleteItem}
 				/>
 			</div>
 		</>

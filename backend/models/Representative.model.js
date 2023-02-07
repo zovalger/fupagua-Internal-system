@@ -4,20 +4,20 @@ const Patient = require("./Patient.model");
 
 const Representative = db.define("representative", {
 	name: { type: DataTypes.STRING, allowNull: false },
-	ci: { type: DataTypes.STRING, allowNull: false },
+	ci: { type: DataTypes.STRING, allowNull: false, unique: true },
 
-	age: DataTypes.INTEGER,
-	dateBirth: DataTypes.DATE,
+	age: { type: DataTypes.INTEGER, defaultValue: 0 },
+	dateBirth: { type: DataTypes.DATE, allowNull: false },
 	email: { type: DataTypes.STRING, unique: true },
-	phoneNumber: { type: DataTypes.STRING, allowNull: false },
+
+	phoneNumber: { type: DataTypes.STRING, allowNull: false, defaultValue: "" },
 
 	// a: active d:trash
 	status: { type: DataTypes.CHAR, defaultValue: "a" },
 });
 
-Representative.belongsToMany(Patient,{through:"representativejoin"});
+Representative.belongsToMany(Patient, { through: "representativejoin" });
 
 Patient.hasOne(Representative);
 
 module.exports = Representative;
-

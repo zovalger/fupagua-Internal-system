@@ -1,24 +1,42 @@
 import axios from "axios";
 
-export const getPatientsRequest = async () => await axios.get("/api/patient");
+const url = "/api/patient";
 
-export const getPatientRequest = async (id) =>
-	await axios.get("/api/patient/" + id);
+export const createPatientRequest = async (data) => await axios.post(url, data);
 
-// export const deletePostRequest = async (id) =>
-// 	await axios.delete("/api/posts/" + id);
-
-export const createPatientRequest = async (data) =>
-	await axios.post("/api/patient", data);
-
-// export const updatePostRequest = async (id, newPostFields) => {
+// {
 // 	const form = new FormData();
-// 	for (let key in newPostFields) {
-// 		form.append(key, newPostFields[key]);
+
+// 	for (const key in data) {
+// 		if (Object.hasOwnProperty.call(data, key)) {
+// 			const element = data[key];
+// 			form.append(key, element);
+// 		}
 // 	}
-// 	return axios.put("/api/posts/" + id, form, {
-// 		headers: {
-// 			"Content-Type": "multipart/form-data",
-// 		},
+// 	return await axios.post(url, form, {
+// 		headers: { "Content-Type": "multiplart/form-data" },
 // 	});
 // };
+
+export const getPatientsRequest = async (query) =>
+	await axios.get(url, { params: query });
+
+export const getPatientRequest = async (id) => await axios.get(`${url}/${id}`);
+
+export const deletePatientRequest = async (id) =>
+	await axios.delete(`${url}/${id}`);
+
+export const updatePatientRequest = async (id, data) => {
+	const form = new FormData();
+
+	for (const key in data) {
+		if (Object.hasOwnProperty.call(data, key)) {
+			const element = data[key];
+			form.append(key, element);
+		}
+	}
+
+	return await axios.put(`${url}/${id}`, form, {
+		headers: { "Content-Type": "multiplart/form-data" },
+	});
+};

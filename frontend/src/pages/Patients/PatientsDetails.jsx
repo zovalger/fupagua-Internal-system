@@ -44,7 +44,15 @@ export function PatientsDetails({ create }) {
 				}
 			/>
 
-			<div className="container scrollInSpacework">dasdsa</div>
+			
+
+			<div className="container scrollInSpacework">
+				
+
+				
+
+
+			</div>
 		</>
 	);
 }

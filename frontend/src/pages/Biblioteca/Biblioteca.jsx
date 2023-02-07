@@ -78,16 +78,6 @@ export function Biblioteca() {
 				}
 			);
 
-			// // e.preventDefault();
-			// const res = await getBooksRequest(query);
-			// const { data } = res;
-			// console.log(res);
-
-			// if (data.length <= 0)
-			// 	return toast.error("No coincide ningun libro", { duration: 2500 });
-
-			// setInQuery(true);
-			// setBooksQuery(res.data);
 		} catch (error) {
 			console.log(error);
 			const { response: res } = error;

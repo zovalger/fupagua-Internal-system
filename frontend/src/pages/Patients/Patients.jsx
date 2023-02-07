@@ -10,21 +10,73 @@ import { useAppData } from "../../context/AppContext";
 import Nav from "../../components/common/Nav";
 import { PatientSeachForm } from "../../components/Patients/PatientSeachForm";
 import { PatientListItem } from "../../components/Patients/PatientListItem";
+import { getPatientsRequest } from "../../api/patients";
 
 export function Patients() {
 	const { toggleAsideActive } = useAppData();
+	const [patients, setPatients] = useState([]);
 
-	const llenarLista = (book) => (
-		<Link to={`./${book.id}`} key={book.id}>
-			{/* <Book dataBook={book} /> */}
-		</Link>
+	const [patientsQuery, setPatientsQuery] = useState([]);
+	const [inQuery, setInQuery] = useState(false);
+
+	const makeQuery = async (query) => {
+		try {
+			const myPromise = getPatientsRequest(query);
+
+			// e.preventDefault();
+
+			toast.promise(
+				myPromise,
+				{
+					id: "refreshDataBiblioteca",
+					loading: "cargando datos",
+					success: (res) => {
+						console.log(res);
+
+						if (query) {
+							setInQuery(true);
+							setPatientsQuery(res.data);
+						} else {
+							setPatients(res.data);
+						}
+
+						if (res.data.length <= 0)
+							return toast.error(
+								query
+									? "No coincide ningun elemento"
+									: "no hay datos disponibles",
+								{
+									duration: 2500,
+								}
+							);
+					},
+					error: (err) => `This just happened: ${err.toString()}`,
+				},
+				{
+					success: {
+						duration: 10,
+					},
+					error: {
+						duration: 4,
+					},
+				}
+			);
+		} catch (error) {
+			console.log(error);
+			const { response: res } = error;
+
+			if (res.status === 404)
+				return toast.error(res.data.message, { duration: 2000 });
+		}
+	};
+
+	useEffect(() => {
+		makeQuery();
+	}, []);
+
+	const insertarItemInList = (patient) => (
+		<PatientListItem data={patient} key={patient.id} />
 	);
-
-	let p = [];
-
-	for (let index = 0; index < 10; index++) {
-		p.push(<PatientListItem />);
-	}
 
 	return (
 		<>
@@ -56,7 +108,9 @@ export function Patients() {
 			<div className="container scrollInSpacework">
 				<PatientSeachForm />
 
-				{p}
+				{inQuery && patientsQuery.length > 0
+					? patientsQuery.map(insertarItemInList)
+					: patients.map(insertarItemInList)}
 			</div>
 		</>
 	);
