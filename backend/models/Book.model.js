@@ -22,11 +22,13 @@ const Book = db.define(
 
 		numberCopies: { type: DataTypes.INTEGER, defaultValue: 1 },
 		numberCopiesAvailable: { type: DataTypes.INTEGER, defaultValue: 1 },
+		
 
 		numberPages: { type: DataTypes.INTEGER, defaultValue: 1 },
 
 		typeAdquisition: { type: DataTypes.STRING, defaultValue: "" },
 		observations: { type: DataTypes.STRING, defaultValue: "" },
+
 
 		collection: { type: DataTypes.STRING, defaultValue: "" },
 

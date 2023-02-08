@@ -167,6 +167,8 @@ export function PatientsFormPatient({ create }) {
 					onSubmit={onSubmit}
 					onInputChangePatient={onInputChangePatient}
 					onInputChangeRepresentative={onInputChangeRepresentative}
+					setRepresentativeData={setRepresentativeData}
+					
 					// setBookData={setPatientData}
 					deleteItem={deleteItem}
 				/>

@@ -1,17 +1,22 @@
+import { useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import Form from "react-bootstrap/Form";
 import { BiTrash } from "react-icons/bi";
-import { toInputDate } from "../../utility";
+import { consultCI } from "../../api/utility";
+import { calcular_edad, toDateInput, toInputDate } from "../../utility";
 
 export function FormPatient({
 	create,
 	onSubmit,
 	onInputChangePatient,
 	onInputChangeRepresentative,
+	setRepresentativeData,
 	patientData,
 	representativeData,
 	deleteItem,
 }) {
+	const [nameSugerido, setnameSugerido] = useState();
+
 	return (
 		<Form className="mt-3" onSubmit={onSubmit}>
 			<h3>Paciente</h3>
@@ -27,7 +32,6 @@ export function FormPatient({
 					name="name"
 					placeholder="Nombres y apellidos"
 					value={patientData.name}
-					autoComplete="none"
 					required
 				/>
 			</Form.Group>
@@ -49,7 +53,15 @@ export function FormPatient({
 			<Form.Group className="mb-3" controlId="dateBirth">
 				<Form.Label>Fecha de nacimiento</Form.Label>
 				<Form.Control
-					onChange={onInputChangePatient}
+					onChange={(e) => {
+						console.log(e);
+						onInputChangePatient(e);
+
+						let edad = calcular_edad(toDateInput(e.target.value));
+
+						if (!edad) return;
+						onInputChangePatient({ target: { name: "age", value: edad } });
+					}}
 					type="date"
 					name="dateBirth"
 					value={toInputDate(patientData.dateBirth)}
@@ -66,8 +78,9 @@ export function FormPatient({
 					type="number"
 					name="age"
 					value={patientData.age}
-					placeholder={10}
+					placeholder="00"
 					autoComplete="none"
+					readOnly
 					required
 				/>
 			</Form.Group>
@@ -140,7 +153,17 @@ export function FormPatient({
 			<Form.Group className="mb-3" controlId="ci-r">
 				<Form.Label>Cedula</Form.Label>
 				<Form.Control
-					onChange={onInputChangeRepresentative}
+					onChange={(e) => {
+						onInputChangeRepresentative(e);
+
+						consultCI({ ci: e.target.value })
+							.then(({ data: name }) => {
+								if (!name) return;
+
+								setnameSugerido(name);
+							})
+							.catch((error) => console.log(error));
+					}}
 					type="number"
 					name="ci"
 					value={representativeData.ci}
@@ -161,6 +184,7 @@ export function FormPatient({
 					value={representativeData.name}
 					placeholder="nombre y apellidos"
 					autoComplete="none"
+					list="nameSugerido"
 					required
 				/>
 			</Form.Group>
@@ -222,6 +246,10 @@ export function FormPatient({
 					<BiTrash />
 				</Button>
 			) : null}
+
+			<datalist id="nameSugerido">
+				<option value={nameSugerido} />
+			</datalist>
 		</Form>
 	);
 }

@@ -17,6 +17,7 @@ const patientRoute = require("./routes/patient.route");
 const activityRoute = require("./routes/activity.route");
 const bookRoute = require("./routes/book.route");
 const bookFichaRoute = require("./routes/bookFicha.route");
+const utilityRoute = require("./routes/utility.route");
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.use("/api/patient", patientRoute);
 app.use("/api/activity", activityRoute);
 app.use("/api/book", bookRoute);
 app.use("/api/bookficha", bookFichaRoute);
+app.use("/api/utility", utilityRoute);
 
 // app.use('/api/users', userRoutes)
 // app.use('/api/orders', orderRoutes)
