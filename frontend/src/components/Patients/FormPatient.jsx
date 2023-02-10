@@ -4,7 +4,12 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
 import { BiTrash } from "react-icons/bi";
 import { consultCI } from "../../api/utility";
-import { calcular_edad, toDateInput, toInputDate } from "../../utility";
+import {
+	calcular_edad,
+	calculateAge,
+	toDateInput,
+	toInputDate,
+} from "../../utility";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -14,6 +19,7 @@ export function FormPatient({
 	onInputChangePatient,
 	onInputChangeRepresentative,
 	setRepresentativeData,
+	setPatientData,
 	patientData,
 	representativeData,
 	deleteItem,
@@ -61,16 +67,18 @@ export function FormPatient({
 					className="form-control"
 					selected={patientData.dateBirth}
 					onChange={(date) => {
+						let edad = calculateAge(date);
 
-						console.log(date);
-						onInputChangePatient({
-							target: { name: "dateBirth", value: date },
-						});
-
-						let edad = calcular_edad(date);
-
-						if (typeof edad !== "number" && edad <= 0) return;
-						onInputChangePatient({ target: { name: "age", value: edad } });
+						if (typeof edad === "number" && edad >= 0) {
+							console.log(edad);
+							setPatientData({
+								...patientData,
+								dateBirth: date,
+								age: edad,
+							});
+						} else {
+							setPatientData({ ...patientData, dateBirth: date });
+						}
 
 						// setStartDate(date)
 					}}
@@ -78,23 +86,8 @@ export function FormPatient({
 					showMonthDropdown
 					showYearDropdown
 					dropdownMode="select"
-				/>
-
-				{/* <Form.Control
-					onChange={(e) => {
-						onInputChangePatient(e);
-
-						let edad = calcular_edad(toDateInput(e.target.value));
-
-						if (typeof edad !== "number" && edad <= 0) return;
-						onInputChangePatient({ target: { name: "age", value: edad } });
-					}}
-					type="date"
-					name="dateBirth"
-					// value={toInputDate(patientData.dateBirth)}
 					required
-					// placeholder=
-				/> */}
+				/>
 			</Form.Group>
 
 			{/* *********************  Edad  ************************/}
@@ -145,6 +138,22 @@ export function FormPatient({
 				</InputGroup>
 			</Form.Group>
 
+			<Form.Group className="mb-3" controlId="height">
+				<Form.Label>Estatura</Form.Label>
+
+				<InputGroup className="mb-3">
+					<Form.Control
+						onChange={onInputChangePatient}
+						type="number"
+						name="height"
+						value={patientData.height}
+						placeholder="0.5"
+						autoComplete="none"
+					/>
+					<InputGroup.Text>m</InputGroup.Text>
+				</InputGroup>
+			</Form.Group>
+
 			{/* *********************  Escolaridad  ************************/}
 
 			<Form.Group className="mb-3" controlId="scholarship">
@@ -155,12 +164,11 @@ export function FormPatient({
 					name="scholarship"
 					value={patientData.scholarship}
 					placeholder="preescolar"
-					required
 				/>
 			</Form.Group>
 
 			{/* *********************   Numero de historia   ************************/}
-			<Form.Group className="mb-3" controlId="historyNumber">
+			{/* <Form.Group className="mb-3" controlId="historyNumber">
 				<Form.Label>Numero de historia</Form.Label>
 				<Form.Control
 					onChange={onInputChangePatient}
@@ -171,7 +179,7 @@ export function FormPatient({
 					placeholder="00-00-00"
 					required
 				/>
-			</Form.Group>
+			</Form.Group> */}
 
 			{/* *****************************************************************
 													inputs para el representante
@@ -193,7 +201,10 @@ export function FormPatient({
 
 								setnameSugerido(name);
 							})
-							.catch((error) => console.log(error));
+							.catch((error) => {
+								setnameSugerido("");
+								console.log(error);
+							});
 					}}
 					type="number"
 					name="ci"
@@ -230,21 +241,25 @@ export function FormPatient({
 				</Form.Text>
 			</Form.Group>
 
-			{/* <Form.Group className="mb-3" controlId="dateBirth-r">
-				<Form.Label>Fecha de nacimiento</Form.Label> */}
+			<Form.Group className="mb-3" controlId="dateBirth-r">
+				<Form.Label>Fecha de nacimiento</Form.Label>
 
-			{/* <DatePicker
+				<DatePicker
 					className="form-control"
 					selected={representativeData.dateBirth}
 					onChange={(date) => {
-						onInputChangeRepresentative({
-							target: { name: "dateBirth", value: date },
-						});
+						let edad = calculateAge(date);
 
-						let edad = calcular_edad(date);
-
-						if (typeof edad !== "number" && edad <= 0) return;
-						onInputChangeRepresentative({ target: { name: "age", value: edad } });
+						if (typeof edad === "number" && edad >= 0) {
+							console.log(edad);
+							setRepresentativeData({
+								...representativeData,
+								dateBirth: date,
+								age: edad,
+							});
+						} else {
+							setRepresentativeData({ ...representativeData, dateBirth: date });
+						}
 
 						// setStartDate(date)
 					}}
@@ -252,26 +267,9 @@ export function FormPatient({
 					showMonthDropdown
 					showYearDropdown
 					dropdownMode="select"
-					portalId="root-portal"
-				/> */}
-			{/* <Form.Control
-					onChange={(e) => {
-						onInputChangeRepresentative(e);
-
-						let edad = calcular_edad(toDateInput(e.target.value));
-
-						if (typeof edad !== "number" && edad <= 0) return;
-						onInputChangeRepresentative({
-							target: { name: "age", value: edad },
-						});
-					}}
-					type="date"
-					name="dateBirth"
-					value={toInputDate(representativeData.dateBirth)}
 					required
-					// placeholder=
-				/> */}
-			{/* </Form.Group> */}
+				/>
+			</Form.Group>
 
 			{/* *********************  edad ************************/}
 
@@ -284,6 +282,7 @@ export function FormPatient({
 					value={representativeData.age}
 					placeholder="opcional"
 					autoComplete="none"
+					required
 				/>
 			</Form.Group>
 
@@ -313,6 +312,19 @@ export function FormPatient({
 					value={representativeData.email}
 					placeholder="ejemplo@gmail.com"
 					autoComplete="none"
+				/>
+			</Form.Group>
+
+			{/* *********************  Direccion ************************/}
+
+			<Form.Group className="mb-3" controlId="address">
+				<Form.Label>Dirección</Form.Label>
+				<Form.Control
+					onChange={onInputChangeRepresentative}
+					type="text"
+					name="address"
+					value={representativeData.address}
+					placeholder=""
 				/>
 			</Form.Group>
 

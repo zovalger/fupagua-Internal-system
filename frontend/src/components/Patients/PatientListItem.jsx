@@ -17,7 +17,11 @@ export function PatientListItem({ data }) {
 			}}
 		>
 			<div className={styles.title}>{name}</div>
+
+			{(representative)?
 			<div>Representante: {representative.name}</div>
+		:null	
+		}
 		</div>
 	);
 }

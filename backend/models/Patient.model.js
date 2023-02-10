@@ -14,7 +14,10 @@ const Patient = db.define(
 		sex: { type: DataTypes.STRING, defaultValue: "male" },
 		// peso en kg
 		weight: { type: DataTypes.FLOAT, defaultValue: 0 },
+
+		height: { type: DataTypes.FLOAT, defaultValue: 0 },
 		scholarship: { type: DataTypes.STRING, defaultValue: "" },
+
 
 		// a: active d:trash
 		status: { type: DataTypes.CHAR, defaultValue: "a" },

@@ -18,10 +18,11 @@ export function PatientsFormPatient({ create }) {
 
 	const [patientData, setPatientData] = useState({
 		name: "",
-		dateBirth: new Date("2012"),
+		dateBirth: new Date("2018"),
 		ci: "",
 		historyNumber: "",
 		age: "",
+		height:"",
 
 		// male female
 		sex: "male",
@@ -30,12 +31,13 @@ export function PatientsFormPatient({ create }) {
 		scholarship: "",
 	});
 
-
 	const [representativeData, setRepresentativeData] = useState({
 		name: "",
 		ci: "",
 		age: "",
-		// dateBirth: Date.now(),
+		dateBirth: new Date("2000"),
+		address:"",
+
 		email: "",
 		phoneNumber: "",
 	});
@@ -60,16 +62,7 @@ export function PatientsFormPatient({ create }) {
 
 		setIsSubmitin(true);
 
-		const r = representativeData;
-		const p = patientData;
-
-
-		console.log(r);
-		console.log(p);
-		r.dateBirth = new Date(r.dateBirth);
-		p.dateBirth = new Date(p.dateBirth);
-
-		const data = { patient: p, representative: r };
+		const data = { patient: patientData, representative: representativeData };
 
 		try {
 			const myPromise = create
@@ -179,6 +172,7 @@ export function PatientsFormPatient({ create }) {
 					onInputChangePatient={onInputChangePatient}
 					onInputChangeRepresentative={onInputChangeRepresentative}
 					setRepresentativeData={setRepresentativeData}
+					setPatientData={setPatientData}
 					// setBookData={setPatientData}
 					deleteItem={deleteItem}
 				/>

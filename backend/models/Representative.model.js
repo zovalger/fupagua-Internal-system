@@ -8,9 +8,11 @@ const Representative = db.define("representative", {
 
 	age: { type: DataTypes.INTEGER, defaultValue: 0 },
 	dateBirth: { type: DataTypes.DATE, allowNull: false },
-	email: { type: DataTypes.STRING, unique: true },
+	// email: { type: DataTypes.STRING, unique: true },
+	email: { type: DataTypes.STRING },
 
 	phoneNumber: { type: DataTypes.STRING, allowNull: false, defaultValue: "" },
+	address: { type: DataTypes.STRING, defaultValue: "" },
 
 	// a: active d:trash
 	status: { type: DataTypes.CHAR, defaultValue: "a" },

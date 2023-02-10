@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const { validateCreatePatient } = require("../validators/patientsValidator");
+
 const {
 	getPatients_RouteController,
 	getPatient_RouteController,
@@ -14,7 +16,7 @@ router.get("/", getPatients_RouteController);
 router.get("/:id", getPatient_RouteController);
 
 // crear datos
-router.post("/", createPatient_RouteController);
+router.post("/", validateCreatePatient, createPatient_RouteController);
 
 // modificar datos
 router.put("/:id", updatePatient_RouteController);
