@@ -11,7 +11,7 @@ const BookImageSlider = ({ book }) => {
 		return;
 
 	return (
-		<Carousel>
+		<Carousel className=" ">
 			{portada ? (
 				<Carousel.Item>
 					<img

@@ -61,79 +61,89 @@ export function BibliotecaBook() {
 			/>
 
 			{book.id ? (
-				<div className={styles.container}>
+				<div className={styles.container + ` scrollInSpacework`}>
+					<div className="container">
+						<div className="row">
+							<div className="col-lg-4 col-sm-12 ">
+								<div className="d-flex align-items-center justify-content-center w-100 h-100">
+									<BookImageSlider book={book} />
+								</div>
+							</div>
+							<div className="col-lg-8 col-sm-12">
+								<h3>{book.title}</h3>
 
+								<h4>{book.subtitle}</h4>
 
-					<BookImageSlider book={book}/>
-					
-					<h3>{book.title}</h3>
+								<Campo title="Descripción" validation={book.description}>
+									{book.description}
+								</Campo>
 
-					<h4>{book.subtitle}</h4>
+								<Campo title="Autor" validation={book.autor}>
+									{book.autor}
+								</Campo>
 
-					<Campo title="Descripción" validation={book.description}>
-						{book.description}
-					</Campo>
+								<Campo title="Cota" validation={book.cota}>
+									{book.cota}
+								</Campo>
 
-					<Campo title="Autor" validation={book.autor}>
-						{book.autor}
-					</Campo>
+								<Campo title="Fecha de edición" validation={book.editionDate}>
+									{book.editionDate}
+								</Campo>
 
-					<Campo title="Cota" validation={book.cota}>
-						{book.cota}
-					</Campo>
+								<Campo title="Ciudad" validation={book.city}>
+									{book.city}
+								</Campo>
 
-					<Campo title="Fecha de edición" validation={book.editionDate}>
-						{book.editionDate}
-					</Campo>
+								<Campo title="Editores" validation={book.editors}>
+									{book.editors}
+								</Campo>
 
-					<Campo title="Ciudad" validation={book.city}>
-						{book.city}
-					</Campo>
+								<Campo title="Materia" validation={book.materia}>
+									{book.materia}
+								</Campo>
 
-					<Campo title="Editores" validation={book.editors}>
-						{book.editors}
-					</Campo>
+								<Campo title="Altura" validation={book.height > 0}>
+									{book.height} cm
+								</Campo>
 
-					<Campo title="Materia" validation={book.materia}>
-						{book.materia}
-					</Campo>
+								<Campo title="Colección" validation={book.Colección}>
+									{book.Colección}
+								</Campo>
 
-					<Campo title="Altura" validation={book.height > 0}>
-						{book.height} cm
-					</Campo>
+								<Campo
+									title="tipo de adquisicion"
+									validation={book.typeAdquisition}
+								>
+									{book.typeAdquisition}
+								</Campo>
 
-					<Campo title="Colección" validation={book.Colección}>
-						{book.Colección}
-					</Campo>
+								<Campo title="observaciones" validation={book.observations}>
+									{book.observations}
+								</Campo>
 
-					<Campo title="tipo de adquisicion" validation={book.typeAdquisition}>
-						{book.typeAdquisition}
-					</Campo>
+								<Campo
+									title="Número de paginas"
+									validation={typeof book.numberPages === "number"}
+								>
+									{book.numberPages}
+								</Campo>
 
-					<Campo title="observaciones" validation={book.observations}>
-						{book.observations}
-					</Campo>
+								<Campo
+									title="Número de ejemplares"
+									validation={typeof book.numberCopies === "number"}
+								>
+									{book.numberCopies}
+								</Campo>
 
-					<Campo
-						title="Número de paginas"
-						validation={typeof book.numberPages === "number"}
-					>
-						{book.numberPages}
-					</Campo>
-
-					<Campo
-						title="Número de ejemplares"
-						validation={typeof book.numberCopies === "number"}
-					>
-						{book.numberCopies}
-					</Campo>
-
-					<Campo
-						title="Ejemplares disponibles"
-						validation={typeof book.numberCopiesAvailable === "number"}
-					>
-						{book.numberCopiesAvailable}
-					</Campo>
+								<Campo
+									title="Ejemplares disponibles"
+									validation={typeof book.numberCopiesAvailable === "number"}
+								>
+									{book.numberCopiesAvailable}
+								</Campo>
+							</div>
+						</div>
+					</div>
 				</div>
 			) : (
 				""

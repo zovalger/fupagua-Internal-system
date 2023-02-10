@@ -175,19 +175,28 @@ export function BibliotecaFormBook({ create }) {
 				// }
 			/>
 
-			<div className={styles.container}>
-				{!create ? <BookImageSlider book={book} /> : null}
-
-				<FormBook
-					bookData={book}
-					fichaData={fichaData}
-					create={create}
-					onSubmit={onSubmit}
-					onInputChange={onInputChange}
-					setBookData={setBookData}
-					onInputFichaChange={onInputFichaChange}
-					deleteBook={deleteBook}
-				/>
+			<div className={styles.container + ` scrollInSpacework`}>
+				<div className="container pt-3 ">
+					<div className="row">
+						<div className="col-sm-12 col-lg-4">
+							<div className="d-flex  justify-content-center w-100">
+								{!create ? <BookImageSlider book={book} /> : null}
+							</div>
+						</div>
+						<div className="col-sm-12 col-lg-8">
+							<FormBook
+								bookData={book}
+								fichaData={fichaData}
+								create={create}
+								onSubmit={onSubmit}
+								onInputChange={onInputChange}
+								setBookData={setBookData}
+								onInputFichaChange={onInputFichaChange}
+								deleteBook={deleteBook}
+							/>
+						</div>
+					</div>
+				</div>
 			</div>
 		</>
 	);

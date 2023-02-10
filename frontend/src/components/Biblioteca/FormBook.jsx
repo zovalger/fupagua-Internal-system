@@ -129,19 +129,18 @@ const FormBook = ({
 
 			<Form.Group className="mb-3" controlId="height">
 				<Form.Label>Altura</Form.Label>
-			
 
-<InputGroup className="mb-3">
-<Form.Control
-					onChange={onInputChange}
-					type="number"
-					name="height"
-					value={bookData.height}
-					autoComplete="none"
-				/>
-        <InputGroup.Text>Cm</InputGroup.Text>
-      </InputGroup>
-
+				<InputGroup className="mb-3">
+					<Form.Control
+						className=""
+						onChange={onInputChange}
+						type="number"
+						name="height"
+						value={bookData.height}
+						autoComplete="none"
+					/>
+					<InputGroup.Text>cm</InputGroup.Text>
+				</InputGroup>
 			</Form.Group>
 
 			<Form.Group className="mb-3" controlId="numberPages">
