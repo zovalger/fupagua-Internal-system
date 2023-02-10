@@ -18,7 +18,7 @@ export function PatientsFormPatient({ create }) {
 
 	const [patientData, setPatientData] = useState({
 		name: "",
-		dateBirth: "",
+		dateBirth: new Date("2012"),
 		ci: "",
 		historyNumber: "",
 		age: "",
@@ -30,11 +30,12 @@ export function PatientsFormPatient({ create }) {
 		scholarship: "",
 	});
 
+
 	const [representativeData, setRepresentativeData] = useState({
 		name: "",
 		ci: "",
 		age: "",
-		dateBirth: "",
+		// dateBirth: Date.now(),
 		email: "",
 		phoneNumber: "",
 	});
@@ -59,7 +60,16 @@ export function PatientsFormPatient({ create }) {
 
 		setIsSubmitin(true);
 
-		const data = { patient: patientData, representative: representativeData };
+		const r = representativeData;
+		const p = patientData;
+
+
+		console.log(r);
+		console.log(p);
+		r.dateBirth = new Date(r.dateBirth);
+		p.dateBirth = new Date(p.dateBirth);
+
+		const data = { patient: p, representative: r };
 
 		try {
 			const myPromise = create
@@ -88,21 +98,22 @@ export function PatientsFormPatient({ create }) {
 		}
 	};
 
-	const onInputChangePatient = ({ target: { name, value } }) =>{
-
-		console.log(name,value);
+	const onInputChangePatient = ({ target: { name, value } }) => {
+		console.log(name, value);
 		setPatientData({
 			...patientData,
 			[name]: value,
-		});}
+		});
+	};
 
-	const onInputChangeRepresentative = ({ target: { name, value } }) =>{
-				console.log(name,value);
+	const onInputChangeRepresentative = ({ target: { name, value } }) => {
+		console.log(name, value);
 
 		setRepresentativeData({
 			...representativeData,
 			[name]: value,
-		});}
+		});
+	};
 
 	const deleteItem = async () => {
 		if (!window.confirm("Seguro que quiere eliminar el libro?")) return;
@@ -168,7 +179,6 @@ export function PatientsFormPatient({ create }) {
 					onInputChangePatient={onInputChangePatient}
 					onInputChangeRepresentative={onInputChangeRepresentative}
 					setRepresentativeData={setRepresentativeData}
-					
 					// setBookData={setPatientData}
 					deleteItem={deleteItem}
 				/>

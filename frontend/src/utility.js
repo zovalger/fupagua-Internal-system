@@ -31,6 +31,10 @@ export function calcular_edad(fecha) {
 	let hoy = new Date();
 	//alert(hoy)
 
+	console.log(fecha);
+
+	fecha = fecha.toLocaleDateString();
+
 	//calculo la fecha que recibo
 	//La descompongo en un array
 	let array_fecha = fecha.split("/");

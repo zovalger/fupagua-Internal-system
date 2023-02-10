@@ -25,7 +25,7 @@ const createPatient_Service = async (dataPatient, dataRepresentative) => {
 		return patient;
 	} catch (error) {
 		console.log(error);
-		return error;
+		throw new Error(error);
 	}
 };
 
@@ -59,6 +59,7 @@ const getPatients_Service = async (query) => {
 		const patients = await Patient.findAll({
 			where: { id: { [Op.in]: ids } },
 			order: ["name"],
+			include: { all: true },
 		});
 
 		console.log(pati);
@@ -138,7 +139,7 @@ const deletePatient_Service = async (patientId) => {
 
 	const patient = await Patient.findByPk(id);
 
-  if (!patient ) return null
+	if (!patient) return null;
 
 	if (patient.status === "a") {
 		patient.status = "d";

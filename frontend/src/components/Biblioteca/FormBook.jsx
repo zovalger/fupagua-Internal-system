@@ -1,5 +1,6 @@
 import Button from "react-bootstrap/esm/Button";
 import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
 import { BiTrash } from "react-icons/bi";
 
 const FormBook = ({
@@ -128,13 +129,19 @@ const FormBook = ({
 
 			<Form.Group className="mb-3" controlId="height">
 				<Form.Label>Altura</Form.Label>
-				<Form.Control
+			
+
+<InputGroup className="mb-3">
+<Form.Control
 					onChange={onInputChange}
 					type="number"
 					name="height"
 					value={bookData.height}
 					autoComplete="none"
 				/>
+        <InputGroup.Text>Cm</InputGroup.Text>
+      </InputGroup>
+
 			</Form.Group>
 
 			<Form.Group className="mb-3" controlId="numberPages">

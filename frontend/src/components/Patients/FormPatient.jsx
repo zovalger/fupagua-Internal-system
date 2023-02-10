@@ -1,9 +1,12 @@
 import { useState } from "react";
 import Button from "react-bootstrap/esm/Button";
+import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
 import { BiTrash } from "react-icons/bi";
 import { consultCI } from "../../api/utility";
 import { calcular_edad, toDateInput, toInputDate } from "../../utility";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export function FormPatient({
 	create,
@@ -32,6 +35,7 @@ export function FormPatient({
 					name="name"
 					placeholder="Nombres y apellidos"
 					value={patientData.name}
+					autoComplete="true"
 					required
 				/>
 			</Form.Group>
@@ -52,22 +56,45 @@ export function FormPatient({
 
 			<Form.Group className="mb-3" controlId="dateBirth">
 				<Form.Label>Fecha de nacimiento</Form.Label>
-				<Form.Control
+
+				<DatePicker
+					className="form-control"
+					selected={patientData.dateBirth}
+					onChange={(date) => {
+
+						console.log(date);
+						onInputChangePatient({
+							target: { name: "dateBirth", value: date },
+						});
+
+						let edad = calcular_edad(date);
+
+						if (typeof edad !== "number" && edad <= 0) return;
+						onInputChangePatient({ target: { name: "age", value: edad } });
+
+						// setStartDate(date)
+					}}
+					peekNextMonth
+					showMonthDropdown
+					showYearDropdown
+					dropdownMode="select"
+				/>
+
+				{/* <Form.Control
 					onChange={(e) => {
-						console.log(e);
 						onInputChangePatient(e);
 
 						let edad = calcular_edad(toDateInput(e.target.value));
 
-						if (!edad) return;
+						if (typeof edad !== "number" && edad <= 0) return;
 						onInputChangePatient({ target: { name: "age", value: edad } });
 					}}
 					type="date"
 					name="dateBirth"
-					value={toInputDate(patientData.dateBirth)}
+					// value={toInputDate(patientData.dateBirth)}
 					required
 					// placeholder=
-				/>
+				/> */}
 			</Form.Group>
 
 			{/* *********************  Edad  ************************/}
@@ -104,14 +131,18 @@ export function FormPatient({
 
 			<Form.Group className="mb-3" controlId="weight">
 				<Form.Label>Peso</Form.Label>
-				<Form.Control
-					onChange={onInputChangePatient}
-					type="number"
-					name="weight"
-					value={patientData.weight}
-					placeholder="10.4"
-					autoComplete="none"
-				/>
+
+				<InputGroup className="mb-3">
+					<Form.Control
+						onChange={onInputChangePatient}
+						type="number"
+						name="weight"
+						value={patientData.weight}
+						placeholder="10.4"
+						autoComplete="none"
+					/>
+					<InputGroup.Text>Kg</InputGroup.Text>
+				</InputGroup>
 			</Form.Group>
 
 			{/* *********************  Escolaridad  ************************/}
@@ -146,11 +177,11 @@ export function FormPatient({
 													inputs para el representante
 			***************************************************************** */}
 
-			<h3>Representante</h3>
+			<h3 className="mt-5">Representante</h3>
 
 			{/* *********************       Cedula        ************************/}
 
-			<Form.Group className="mb-3" controlId="ci-r">
+			<Form.Group className="my-3" controlId="ci-r">
 				<Form.Label>Cedula</Form.Label>
 				<Form.Control
 					onChange={(e) => {
@@ -187,7 +218,60 @@ export function FormPatient({
 					list="nameSugerido"
 					required
 				/>
+				<Form.Text
+					className="text-muted clic"
+					onClick={() =>
+						onInputChangeRepresentative({
+							target: { name: "name", value: nameSugerido },
+						})
+					}
+				>
+					{nameSugerido}
+				</Form.Text>
 			</Form.Group>
+
+			{/* <Form.Group className="mb-3" controlId="dateBirth-r">
+				<Form.Label>Fecha de nacimiento</Form.Label> */}
+
+			{/* <DatePicker
+					className="form-control"
+					selected={representativeData.dateBirth}
+					onChange={(date) => {
+						onInputChangeRepresentative({
+							target: { name: "dateBirth", value: date },
+						});
+
+						let edad = calcular_edad(date);
+
+						if (typeof edad !== "number" && edad <= 0) return;
+						onInputChangeRepresentative({ target: { name: "age", value: edad } });
+
+						// setStartDate(date)
+					}}
+					peekNextMonth
+					showMonthDropdown
+					showYearDropdown
+					dropdownMode="select"
+					portalId="root-portal"
+				/> */}
+			{/* <Form.Control
+					onChange={(e) => {
+						onInputChangeRepresentative(e);
+
+						let edad = calcular_edad(toDateInput(e.target.value));
+
+						if (typeof edad !== "number" && edad <= 0) return;
+						onInputChangeRepresentative({
+							target: { name: "age", value: edad },
+						});
+					}}
+					type="date"
+					name="dateBirth"
+					value={toInputDate(representativeData.dateBirth)}
+					required
+					// placeholder=
+				/> */}
+			{/* </Form.Group> */}
 
 			{/* *********************  edad ************************/}
 
