@@ -9,6 +9,7 @@ import { FormPatient } from "../../components/Patients/FormPatient";
 import {
 	createPatientRequest,
 	deletePatientRequest,
+	getPatientRequest,
 	updatePatientRequest,
 } from "../../api/patients";
 
@@ -18,15 +19,13 @@ export function PatientsFormPatient({ create }) {
 
 	const [patientData, setPatientData] = useState({
 		name: "",
-		dateBirth: new Date("2018"),
+		dateBirth: Date.now(),
 		ci: "",
 		historyNumber: "",
-		age: "",
-		height:"",
-
+		age: 0,
+		height: "",
 		// male female
 		sex: "male",
-
 		weight: "",
 		scholarship: "",
 	});
@@ -34,10 +33,9 @@ export function PatientsFormPatient({ create }) {
 	const [representativeData, setRepresentativeData] = useState({
 		name: "",
 		ci: "",
-		age: "",
-		dateBirth: new Date("2000"),
-		address:"",
-
+		age: 0,
+		dateBirth: Date.now(),
+		address: "",
 		email: "",
 		phoneNumber: "",
 	});
@@ -46,13 +44,25 @@ export function PatientsFormPatient({ create }) {
 
 	useEffect(() => {
 		// si estamos en el modo crear no se ejecuta, si no buscamos los datos del registro
-		// if (create) return;
-		// const fillInputs = async () => {
-		// 	const res = await getBookRequest(params.id);
-		// 	setBookData(res.data);
-		// 	setFichaData(res.data.bookfichas);
-		// };
-		// fillInputs();
+		if (create) return;
+
+		const fillInputs = async () => {
+			const res = await getPatientRequest(params.id);
+
+			const patient = res.data;
+			const { representative } = patient;
+
+			patient.dateBirth = new Date(patient.dateBirth);
+			setPatientData(patient);
+
+			if (representative) {
+				representative.dateBirth = new Date(representative.dateBirth);
+
+				setRepresentativeData(representative);
+			}
+		};
+
+		fillInputs();
 	}, []);
 
 	const onSubmit = async (e, v) => {
@@ -67,7 +77,7 @@ export function PatientsFormPatient({ create }) {
 		try {
 			const myPromise = create
 				? createPatientRequest(data)
-				: await updatePatientRequest(params.id, data);
+				: updatePatientRequest(params.id, data);
 
 			toast.promise(myPromise, {
 				loading: "guardando",

@@ -18,8 +18,9 @@ const Representative = db.define("representative", {
 	status: { type: DataTypes.CHAR, defaultValue: "a" },
 });
 
-Representative.belongsToMany(Patient, { through: "representativejoin" });
-
-Patient.hasOne(Representative);
+Patient.belongsTo(Representative, {
+	foreignKey: "representativeId",
+});
+Representative.hasMany(Patient, { foreignKey: "patientId" });
 
 module.exports = Representative;

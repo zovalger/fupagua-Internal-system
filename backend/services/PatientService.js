@@ -10,18 +10,21 @@ const Representative = require("../models/Representative.model");
 const createPatient_Service = async (dataPatient, dataRepresentative) => {
 	let data = dataPatient;
 
-	console.log(dataPatient);
-
-	console.log(dataRepresentative);
-
-	if (dataRepresentative)
-		data = { ...data, representative: dataRepresentative };
+	// if (!dataRepresentative.id)
+	// 	data = { ...data, representative: dataRepresentative };
 
 	try {
-		const patient = await Patient.create(data, {
-			include: { all: true },
-		});
+		const patient = await Patient.create(data);
 
+		const representative = !dataRepresentative.id
+			? await Representative.create(dataRepresentative)
+			: await Representative.findByPk(dataRepresentative.id);
+
+		if (dataRepresentative.id) await representative.update(dataRepresentative);
+
+		await patient.setRepresentative(representative);
+
+		// return {};
 		return patient;
 	} catch (error) {
 		console.log(error);
@@ -62,10 +65,10 @@ const getPatients_Service = async (query) => {
 			include: { all: true },
 		});
 
-		console.log(pati);
-		console.log(repre);
-		console.log(ids);
-		console.log(patients);
+		// console.log(pati);
+		// console.log(repre);
+		// console.log(ids);
+		// console.log(patients);
 
 		return patients;
 	} catch (error) {
@@ -108,16 +111,53 @@ const updatePatient_Service = async (
 	try {
 		const patient = await Patient.findByPk(id, { include: { all: true } });
 
-		if (!patient) return null;
+		if (!patient) return;
 
 		await patient.update(data);
 
-		if (dataRepresentative) {
-			const representative = await Representative.findByPk(
-				patient.representative.id
-			);
+		const representative = await Representative.findByPk(
+			patient.representativeId
+		);
 
-			if (representative) await representative.update(dataRepresentative);
+		if (!representative) {
+			console.log("no existe el representante");
+			let newRepresentative = await Representative.create(dataRepresentative);
+			await patient.setRepresentative({ newRepresentative });
+			return;
+		}
+
+		if (dataRepresentative.ci === representative.ci) {
+			console.log("repreentante modificado");
+			await representative.update(dataRepresentative);
+		} else {
+
+			console.log("cambio de representante");
+
+			// primero vemos si esta en la base de datos
+			let newRepresentative = await Representative.findOne({
+				where: { ci: dataRepresentative.ci },
+			});
+
+			// quitamos el id para evitar conflictos
+			const newDataRepresentative = { ...dataRepresentative, id: undefined };
+
+			// sino esta en la base de datos creamos un nuevo registro
+			if (!newRepresentative)
+				newRepresentative = await Representative.create(newDataRepresentative);
+
+			// le asignamos el nuevo representante al paciente
+			// si esta lo asignamos al paciente
+
+			await patient.setRepresentative({ newRepresentative });
+
+			// si el viejo representante no tiene paciente se elimina
+
+			const num = await representative.countPatients();
+
+			console.log(num);
+
+			if (num <= 0) await representative.destroy();
+
 		}
 
 		return patient;

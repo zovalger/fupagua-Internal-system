@@ -25,7 +25,7 @@ export function FormPatient({
 	deleteItem,
 }) {
 	const [nameSugerido, setnameSugerido] = useState();
-
+	const [busquedaTimeout, setBusquedaTimeout] = useState();
 	return (
 		<Form className="mt-3" onSubmit={onSubmit}>
 			<h3>Paciente</h3>
@@ -195,16 +195,31 @@ export function FormPatient({
 					onChange={(e) => {
 						onInputChangeRepresentative(e);
 
-						consultCI({ ci: e.target.value })
-							.then(({ data: name }) => {
-								if (!name) return;
+						clearTimeout(busquedaTimeout);
 
-								setnameSugerido(name);
-							})
-							.catch((error) => {
-								setnameSugerido("");
-								console.log(error);
-							});
+						setBusquedaTimeout(
+							setTimeout(async () => {
+								try {
+									const res = await consultCI({ ci: e.target.value });
+									const { data } = res;
+
+									if (!data) return;
+
+									if (data.id) {
+										data.dateBirth = new Date(data.dateBirth);
+
+										console.log(data);
+
+										return setRepresentativeData(data);
+									}
+
+									setnameSugerido(data);
+								} catch (error) {
+									setnameSugerido("");
+									console.log(error);
+								}
+							}, 1500)
+						);
 					}}
 					type="number"
 					name="ci"

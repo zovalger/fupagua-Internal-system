@@ -1,8 +1,19 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
+const Representative = require("../models/Representative.model");
 
-const consultCI = (req, res) => {
+const consultCI = async (req, res) => {
 	const { ci } = req.query;
+
+	try {
+		const representative = await Representative.findOne({ where: { ci } });
+
+		if (representative) return res.json(representative);
+		
+	} catch (error) {
+		console.log(error);
+		res.status(500).send(error);
+	}
 
 	let config = {
 		method: "get",

@@ -18,15 +18,21 @@ export function PatientsDetails() {
 		try {
 			const res = await getPatientRequest(params.id);
 
+			console.log(res);
+
 			const patient = res.data;
+
 			const { representative } = patient;
 
 			if (patient.dateBirth) patient.dateBirth = new Date(patient.dateBirth);
-			if (representative.dateBirth)
-				representative.dateBirth = new Date(representative.dateBirth);
-
 			setPatientData(patient);
-			setRepresentativeData(representative);
+
+			if (representative) {
+				if (representative.dateBirth)
+					representative.dateBirth = new Date(representative.dateBirth);
+
+				setRepresentativeData(representative);
+			}
 		} catch (error) {
 			navigate({ to: "/pacientes" });
 		}
@@ -93,27 +99,34 @@ export function PatientsDetails() {
 
 						{/* datos del representante */}
 						<h5 className="mt-4">Representante</h5>
-						{representativeData.name}
-						<div>Cedula: {representativeData.ci}</div>
-						<div>
-							Fecha de nacimiento:{" "}
-							{representativeData.dateBirth.toLocaleDateString()}
-						</div>
-						<div>Edad: {calculateAge(representativeData.dateBirth)}</div>
-						<div>Numero Telefonico: {representativeData.phoneNumber}</div>
-						<div>
-							Correo electronico:{" "}
-							{representativeData.email
-								? representativeData.email
-								: "No indicado"}
-						</div>
 
-						<div>
-							Dirección:{" "}
-							{representativeData.address
-								? representativeData.address
-								: "No indicado"}{" "}
-						</div>
+						{representativeData ? (
+							<>
+								{representativeData.name}
+								<div>Cedula: {representativeData.ci}</div>
+								<div>
+									Fecha de nacimiento:{" "}
+									{representativeData.dateBirth.toLocaleDateString()}
+								</div>
+								<div>Edad: {calculateAge(representativeData.dateBirth)}</div>
+								<div>Numero Telefonico: {representativeData.phoneNumber}</div>
+								<div>
+									Correo electronico:{" "}
+									{representativeData.email
+										? representativeData.email
+										: "No indicado"}
+								</div>
+
+								<div>
+									Dirección:{" "}
+									{representativeData.address
+										? representativeData.address
+										: "No indicado"}{" "}
+								</div>
+							</>
+						) : (
+							<div>No asignado</div>
+						)}
 					</>
 				) : null}
 			</div>
