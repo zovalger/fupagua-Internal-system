@@ -23,6 +23,7 @@ const createPatient_Service = async (dataPatient, dataRepresentative) => {
 		if (dataRepresentative.id) await representative.update(dataRepresentative);
 
 		await patient.setRepresentative(representative);
+		await representative.addPatient(patient);
 
 		// return {};
 		return patient;
@@ -108,6 +109,8 @@ const updatePatient_Service = async (
 	const data = dataPatient;
 	const id = patientId;
 
+	data.representative = undefined;
+	dataRepresentative.id = undefined;
 	try {
 		const patient = await Patient.findByPk(id, { include: { all: true } });
 
@@ -122,15 +125,16 @@ const updatePatient_Service = async (
 		if (!representative) {
 			console.log("no existe el representante");
 			let newRepresentative = await Representative.create(dataRepresentative);
-			await patient.setRepresentative({ newRepresentative });
+			await patient.setRepresentative(newRepresentative);
+			await newRepresentative.addPatient(patient);
+
 			return;
 		}
 
 		if (dataRepresentative.ci === representative.ci) {
-			console.log("repreentante modificado");
+			console.log("representante modificado");
 			await representative.update(dataRepresentative);
 		} else {
-
 			console.log("cambio de representante");
 
 			// primero vemos si esta en la base de datos
@@ -139,7 +143,7 @@ const updatePatient_Service = async (
 			});
 
 			// quitamos el id para evitar conflictos
-			const newDataRepresentative = { ...dataRepresentative, id: undefined };
+			const newDataRepresentative = dataRepresentative;
 
 			// sino esta en la base de datos creamos un nuevo registro
 			if (!newRepresentative)
@@ -148,16 +152,17 @@ const updatePatient_Service = async (
 			// le asignamos el nuevo representante al paciente
 			// si esta lo asignamos al paciente
 
-			await patient.setRepresentative({ newRepresentative });
+			await patient.setRepresentative(newRepresentative);
+			await newRepresentative.addPatient(patient);
 
 			// si el viejo representante no tiene paciente se elimina
 
+			await representative.removePatient(patient);
 			const num = await representative.countPatients();
 
 			console.log(num);
 
 			if (num <= 0) await representative.destroy();
-
 		}
 
 		return patient;
