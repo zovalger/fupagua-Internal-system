@@ -14,7 +14,7 @@ const createPatient_Service = async (dataPatient, dataRepresentative) => {
 	// 	data = { ...data, representative: dataRepresentative };
 
 	try {
-		const patient = await Patient.create(data);
+		const patient = await Patient.create(data,{include:{all:true}});
 
 		const representative = !dataRepresentative.id
 			? await Representative.create(dataRepresentative)

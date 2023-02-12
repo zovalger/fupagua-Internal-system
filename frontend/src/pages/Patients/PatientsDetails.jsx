@@ -72,7 +72,7 @@ export function PatientsDetails() {
 			<div className="container scrollInSpacework">
 				{patientData ? (
 					<>
-						<h3>{patientData.name}</h3>
+						<h3 className="mt-4">{patientData.name}</h3>
 						<div>
 							Fecha de nacimiento: {patientData.dateBirth.toLocaleDateString()}
 						</div>

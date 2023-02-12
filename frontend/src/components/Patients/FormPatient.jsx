@@ -210,6 +210,8 @@ export function FormPatient({
 
 										console.log(data);
 
+										setnameSugerido("");
+
 										return setRepresentativeData(data);
 									}
 

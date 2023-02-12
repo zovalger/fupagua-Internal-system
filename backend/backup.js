@@ -10,8 +10,8 @@ const backupAll = async () => {
 
 	const data = {};
 
-	data.Book = await Book.findAll({ include: { all: true } });
-	data.Patient = await Patient.findAll({ include: { all: true } });
+	data.Books = await Book.findAll({ include: { all: true } });
+	data.Patients = await Patient.findAll({ include: { all: true } });
 
 	await fs.writeJSON(backupPath, data);
 
