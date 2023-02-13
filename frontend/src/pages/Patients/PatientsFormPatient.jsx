@@ -131,10 +131,10 @@ export function PatientsFormPatient({ create }) {
 				success: (res) => {
 					console.log(res);
 					setTimeout(() => {
-						navigate("/biblioteca");
+						navigate("/pacientes");
 					}, 1000);
 					// navigate("/biblioteca");
-					return "libro eliminado";
+					return "Registro eliminado";
 				},
 				error: (err) => `This just happened: ${err.toString()}`,
 			});

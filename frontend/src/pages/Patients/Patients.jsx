@@ -23,12 +23,10 @@ export function Patients() {
 		try {
 			const myPromise = getPatientsRequest(query);
 
-			// e.preventDefault();
-
 			toast.promise(
 				myPromise,
 				{
-					id: "refreshDataBiblioteca",
+					id: "refreshDataPatients",
 					loading: "cargando datos",
 					success: (res) => {
 						console.log(res);
@@ -106,7 +104,11 @@ export function Patients() {
 			*********************************************************************/}
 
 			<div className="container scrollInSpacework">
-				<PatientSeachForm />
+				<PatientSeachForm
+					makeQuery={makeQuery}
+					setInQuery={setInQuery}
+					onClearValue={setPatientsQuery}
+				/>
 
 				{inQuery && patientsQuery.length > 0
 					? patientsQuery.map(insertarItemInList)

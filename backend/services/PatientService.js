@@ -14,7 +14,7 @@ const createPatient_Service = async (dataPatient, dataRepresentative) => {
 	// 	data = { ...data, representative: dataRepresentative };
 
 	try {
-		const patient = await Patient.create(data,{include:{all:true}});
+		const patient = await Patient.create(data, { include: { all: true } });
 
 		const representative = !dataRepresentative.id
 			? await Representative.create(dataRepresentative)
@@ -38,32 +38,73 @@ const createPatient_Service = async (dataPatient, dataRepresentative) => {
 // ****************************************************************************
 
 const getPatients_Service = async (query) => {
-	const { name, ci, historyNumber } = query;
-
-	const datos = [];
-	const where = {};
-	const ids = [];
-
-	if (name) datos.push({ name: { [Op.substring]: name } });
-	if (ci) datos.push({ ci: { [Op.substring]: ci } });
-	if (historyNumber)
-		datos.push({ historyNumber: { [Op.substring]: historyNumber } });
-
-	if (datos.length > 0) where[Op.or] = datos;
-
+	const { name = null, ci = null, historyNumber = null } = query;
 	try {
-		const pati = await Patient.findAll({ where });
-		const repre = await Representative.findAll({ where });
+		// **************************** obtener todos los paciente ****************************
 
-		if (pati.length > 0) pati.map((patient) => ids.push(patient.id));
+		if (!name && !ci && !historyNumber) {
+			console.log("obtener todos los pacientes");
+			const patients = await Patient.findAll({
+				where: { status: "a" },
+				order: ["name"],
+				include: Representative,
+			});
 
-		if (repre.length > 0)
-			repre.map((representative) => ids.push(representative.patientId));
+			return patients;
+		}
+
+		// **************************** obtencion por busqueda ****************
+		console.log("obtencion por filtro");
+
+		const caposPatient = [];
+		const caposRepresentative = [];
+		const wherePatient = {};
+		const whereRepresentative = {};
+		const ids = [];
+
+		// vemos si esta cada campo de busqueda
+		if (historyNumber)
+			caposPatient.push({ historyNumber: { [Op.substring]: historyNumber } });
+
+		if (name) {
+			caposRepresentative.push({ name: { [Op.substring]: name } });
+			caposPatient.push({ name: { [Op.substring]: name } });
+		}
+
+		if (ci) {
+			caposRepresentative.push({ ci: { [Op.substring]: ci } });
+			caposPatient.push({ ci: { [Op.substring]: ci } });
+		}
+
+		// si existen los campos de busqueda se anaden al where de cada tipo de registro
+		// hacemos la busqueda en cada tipo de registro
+		if (caposPatient.length > 0) {
+			wherePatient[Op.or] = caposPatient;
+
+			const pati = await Patient.findAll({
+				where: { ...wherePatient, status: "a" },
+			});
+			if (pati.length > 0) pati.map((patient) => ids.push(patient.id));
+		}
+
+		if (caposRepresentative.length > 0) {
+			whereRepresentative[Op.or] = caposRepresentative;
+
+			const repre = await Representative.findAll({
+				where: { whereRepresentative, status: "a" },
+				include: Patient,
+			});
+
+			if (repre.length > 0)
+				repre.map((representative) =>
+					representative.patients.map((pa) => ids.push(pa.id))
+				);
+		}
 
 		const patients = await Patient.findAll({
 			where: { id: { [Op.in]: ids } },
 			order: ["name"],
-			include: { all: true },
+			include: Representative,
 		});
 
 		// console.log(pati);
