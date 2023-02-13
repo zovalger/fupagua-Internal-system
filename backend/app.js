@@ -18,6 +18,7 @@ const activityRoute = require("./routes/activity.route");
 const bookRoute = require("./routes/book.route");
 const bookFichaRoute = require("./routes/bookFicha.route");
 const utilityRoute = require("./routes/utility.route");
+const videolinkRoute = require("./routes/videoLink.route");
 
 const app = express();
 
@@ -39,6 +40,8 @@ app.use("/api/patient", patientRoute);
 app.use("/api/activity", activityRoute);
 app.use("/api/book", bookRoute);
 app.use("/api/bookficha", bookFichaRoute);
+app.use("/api/videolink", videolinkRoute);
+
 app.use("/api/utility", utilityRoute);
 
 // app.use('/api/users', userRoutes)
