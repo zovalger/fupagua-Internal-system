@@ -84,14 +84,17 @@ const getPatients_Service = async (query) => {
 			const pati = await Patient.findAll({
 				where: { ...wherePatient, status: "a" },
 			});
+			console.log(pati);
 			if (pati.length > 0) pati.map((patient) => ids.push(patient.id));
 		}
+
+		console.log(ids);
 
 		if (caposRepresentative.length > 0) {
 			whereRepresentative[Op.or] = caposRepresentative;
 
 			const repre = await Representative.findAll({
-				where: { whereRepresentative, status: "a" },
+				where: { ...whereRepresentative, status: "a" },
 				include: Patient,
 			});
 

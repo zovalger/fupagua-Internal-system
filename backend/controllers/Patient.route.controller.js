@@ -29,6 +29,7 @@ const createPatient_RouteController = async (req, res) => {
 
 const getPatients_RouteController = async (req, res) => {
 	// todo: peticiones diferentes por pacientes y representantes
+	console.log(req.query);
 	try {
 		const patinets = await getPatients_Service(req.query);
 		return res.json(patinets);

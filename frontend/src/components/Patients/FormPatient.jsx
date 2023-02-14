@@ -120,6 +120,19 @@ export function FormPatient({
 				</Form.Select>
 			</Form.Group>
 
+				{/* *********************  Escolaridad  ************************/}
+
+				<Form.Group className="mb-3" controlId="scholarship">
+				<Form.Label>Escolaridad</Form.Label>
+				<Form.Control
+					onChange={onInputChangePatient}
+					type="text"
+					name="scholarship"
+					value={patientData.scholarship}
+					placeholder="preescolar"
+				/>
+			</Form.Group>
+
 			{/* *********************  Peso  ************************/}
 
 			<Form.Group className="mb-3" controlId="weight">
@@ -154,18 +167,7 @@ export function FormPatient({
 				</InputGroup>
 			</Form.Group>
 
-			{/* *********************  Escolaridad  ************************/}
-
-			<Form.Group className="mb-3" controlId="scholarship">
-				<Form.Label>Escolaridad</Form.Label>
-				<Form.Control
-					onChange={onInputChangePatient}
-					type="text"
-					name="scholarship"
-					value={patientData.scholarship}
-					placeholder="preescolar"
-				/>
-			</Form.Group>
+		
 
 			{/* *********************   Numero de historia   ************************/}
 			{/* <Form.Group className="mb-3" controlId="historyNumber">

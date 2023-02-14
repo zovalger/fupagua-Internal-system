@@ -60,7 +60,13 @@ export function PatientSeachForm({ makeQuery, setInQuery, onClearValue }) {
 					id={`defaultcheck`}
 					label={`Numero de historia`}
 					checked={numH}
-					onChange={() => setNumH(!numH)}
+					onChange={() => {
+						setNumH(!numH);
+
+						if (!numH && inputValue.match(/\D/)) {
+							setInputValue("0");
+						}
+					}}
 				/>
 			</InputGroup>
 		</Form>
