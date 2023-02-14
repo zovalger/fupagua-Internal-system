@@ -14,21 +14,17 @@
 
 	button {
 		width: 8rem;
-		// height: 7rem;
-		padding: .3rem;
-
-		div {
-			&:last-child{
-				font-size: 15px;
-			}
-		}
+		height: 8rem;
+		flex-grow: 1;
+		padding: 0.3rem;
+		margin: 0.5rem;
 
 		border: none;
 		border-radius: 10px;
-		margin-bottom: 1rem;
+		// margin-bottom: 1rem;
 		background: #ffffff;
 
-flex-grow: 1;
+		flex-grow: 1;
 
 		transition: transform 0.1s;
 		cursor: pointer;
@@ -47,6 +43,12 @@ flex-grow: 1;
 			// margin: 0;
 		}
 		span {
+		}
+
+		div {
+			&:last-child {
+				font-size: 15px;
+			}
 		}
 	}
 }

@@ -14,6 +14,7 @@ import {
 	Patients,
 	PatientsFormPatient,
 	PatientsDetails,
+	LandingEditMain,
 } from "./pages";
 
 import AsidePanelOptions from "./components/common/AsidePanelOption/AsidePanelOptions";
@@ -64,6 +65,10 @@ function App() {
 						/>
 						<Route path="/pacientes/editar/:id" element={<PatientsFormPatient />} />
 						<Route path="/pacientes/:id" element={<PatientsDetails />} />
+						<Route path="/landing-edit" element={<LandingEditMain />} />
+
+
+						
 
 						
 						{/* <Route path="/:id" element={<PostForm />} />

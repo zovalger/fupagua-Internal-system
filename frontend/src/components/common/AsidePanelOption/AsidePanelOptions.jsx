@@ -3,6 +3,8 @@ import styles from "./AsidePanelOptions.module.scss";
 import { IoLibraryOutline, IoHomeOutline } from "react-icons/io5";
 import { BsCalendarWeek, BsCardText, BsPeopleFill } from "react-icons/bs";
 
+import { RiPagesLine } from "react-icons/ri";
+
 import { RxHamburgerMenu } from "react-icons/rx";
 
 import ListOptionItem from "./ListOption_item";
@@ -34,7 +36,7 @@ function AsidePanelOptions() {
 				<ListOptionItem
 					url={"/pacientes"}
 					icon={<BsPeopleFill />}
-					text="Pacientes"	
+					text="Pacientes"
 					onClick={toggleAsideActive}
 				/>
 
@@ -56,6 +58,13 @@ function AsidePanelOptions() {
 					url={"/biblioteca/imprimir-fichas"}
 					icon={<BsCardText />}
 					text="Fichas"
+					onClick={toggleAsideActive}
+				/>
+
+				<ListOptionItem
+					url={"/landing-edit"}
+					icon={<RiPagesLine />}
+					text="Editor Pagina"
 					onClick={toggleAsideActive}
 				/>
 

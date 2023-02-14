@@ -7,12 +7,8 @@ const VideoLinkCategory = require("../models/VideoLinkCategory.model");
 // ****************************************************************************
 
 const createVideoLink_Service = async (dataVideoLink, dataCategories) => {
-	console.log(dataVideoLink);
-
-	console.log(dataCategories);
-
 	try {
-		const videoLink = await VideoLink.create(dataVideoLink);
+		const videolink = await VideoLink.create(dataVideoLink);
 
 		const videoCategories = [];
 
@@ -26,9 +22,9 @@ const createVideoLink_Service = async (dataVideoLink, dataCategories) => {
 
 		console.log(videoCategories);
 
-		await videoLink.setVideolinkcategories(videoCategories);
+		await videolink.setVideolinkcategories(videoCategories);
 
-		return videoLink;
+		return videolink;
 	} catch (error) {
 		console.log(error);
 		throw new Error(error);
@@ -56,16 +52,16 @@ const getVideoLinks_Service = async (query) => {
 // ****************************************************************************
 
 const getVideoLink_Service = async (videolinkId) => {
-	return console.log("video link get one");
-
 	const id = patientId;
 
 	try {
-		const patient = await VideoLink.findByPk(id, { include: { all: true } });
+		const videolink = await VideoLink.findByPk(id, {
+			include: VideoLinkCategory,
+		});
 
-		if (!patient) return null;
+		if (!videolink) return null;
 
-		return patient;
+		return videolink;
 	} catch (error) {
 		console.log(error);
 		return error;
@@ -76,69 +72,34 @@ const getVideoLink_Service = async (videolinkId) => {
 // 										actualizacion del registro de un solo paciente
 // ****************************************************************************
 
-const updateVideoLink_Service = async (videolinkId, dataVideoLink) => {
-	return console.log("video link put");
-
+const updateVideoLink_Service = async (
+	videolinkId,
+	dataVideoLink,
+	dataCategories
+) => {
 	const data = dataVideoLink;
-	const id = patientId;
+	const id = videolinkId;
 
-	data.representative = undefined;
-	dataRepresentative.id = undefined;
 	try {
-		const patient = await VideoLink.findByPk(id, { include: { all: true } });
+		const videolink = await VideoLink.findByPk(id);
 
-		if (!patient) return;
+		await videolink.update(data);
 
-		await patient.update(data);
+		const videoCategories = [];
 
-		const representative = await Representative.findByPk(
-			patient.representativeId
-		);
-
-		if (!representative) {
-			console.log("no existe el representante");
-			let newRepresentative = await Representative.create(dataRepresentative);
-			await patient.setRepresentative(newRepresentative);
-			await newRepresentative.addVideoLink(patient);
-
-			return;
-		}
-
-		if (dataRepresentative.ci === representative.ci) {
-			console.log("representante modificado");
-			await representative.update(dataRepresentative);
-		} else {
-			console.log("cambio de representante");
-
-			// primero vemos si esta en la base de datos
-			let newRepresentative = await Representative.findOne({
-				where: { ci: dataRepresentative.ci },
+		for (const title of dataCategories) {
+			const category = await VideoLinkCategory.findOrCreate({
+				where: { title },
 			});
 
-			// quitamos el id para evitar conflictos
-			const newDataRepresentative = dataRepresentative;
-
-			// sino esta en la base de datos creamos un nuevo registro
-			if (!newRepresentative)
-				newRepresentative = await Representative.create(newDataRepresentative);
-
-			// le asignamos el nuevo representante al paciente
-			// si esta lo asignamos al paciente
-
-			await patient.setRepresentative(newRepresentative);
-			await newRepresentative.addVideoLink(patient);
-
-			// si el viejo representante no tiene paciente se elimina
-
-			await representative.removeVideoLink(patient);
-			const num = await representative.countVideoLinks();
-
-			console.log(num);
-
-			if (num <= 0) await representative.destroy();
+			videoCategories.push(category[0]);
 		}
 
-		return patient;
+		console.log(videoCategories);
+
+		await videolink.setVideolinkcategories(videoCategories);
+
+		return await videolink.reload();
 	} catch (error) {
 		console.log(error);
 		return error;
@@ -153,20 +114,18 @@ const updateVideoLink_Service = async (videolinkId, dataVideoLink) => {
 // en la segunda consulta se eliminara permanentemente de la base de datos
 
 const deleteVideoLink_Service = async (videolinkId) => {
-	return console.log("video link delete");
+	const id = videolinkId;
 
-	const id = patientId;
+	const videolink = await VideoLink.findByPk(id);
 
-	const patient = await VideoLink.findByPk(id);
+	if (!videolink) return null;
 
-	if (!patient) return null;
-
-	if (patient.status === "a") {
-		patient.status = "d";
-		await patient.save();
-		return patient;
+	if (videolink.status === "a") {
+		videolink.status = "d";
+		await videolink.save();
+		return videolink;
 	} else {
-		await patient.destroy();
+		await videolink.destroy();
 		return { message: "eliminado" };
 	}
 };
