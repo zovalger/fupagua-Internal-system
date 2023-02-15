@@ -171,21 +171,23 @@ export function PatientsFormPatient({ create }) {
 				// }
 			/>
 
-			<div className="container scrollInSpacework">
-				{/* {!create ? <BookImageSlider book={book} /> : null} */}
+			<div className="scrollInSpacework">
+				<div className="container">
+					{/* {!create ? <BookImageSlider book={book} /> : null} */}
 
-				<FormPatient
-					patientData={patientData}
-					representativeData={representativeData}
-					create={create}
-					onSubmit={onSubmit}
-					onInputChangePatient={onInputChangePatient}
-					onInputChangeRepresentative={onInputChangeRepresentative}
-					setRepresentativeData={setRepresentativeData}
-					setPatientData={setPatientData}
-					// setBookData={setPatientData}
-					deleteItem={deleteItem}
-				/>
+					<FormPatient
+						patientData={patientData}
+						representativeData={representativeData}
+						create={create}
+						onSubmit={onSubmit}
+						onInputChangePatient={onInputChangePatient}
+						onInputChangeRepresentative={onInputChangeRepresentative}
+						setRepresentativeData={setRepresentativeData}
+						setPatientData={setPatientData}
+						// setBookData={setPatientData}
+						deleteItem={deleteItem}
+					/>
+				</div>
 			</div>
 		</>
 	);

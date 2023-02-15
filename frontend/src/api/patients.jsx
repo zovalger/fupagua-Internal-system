@@ -23,6 +23,9 @@ export const getPatientsRequest = async (query) =>
 
 export const getPatientRequest = async (id) => await axios.get(`${url}/${id}`);
 
+export const consultPatientHistoryNumberRequest = async (historyNumber) =>
+	await axios.get(`${url}/historyNumber`, { params: { historyNumber } });
+
 export const deletePatientRequest = async (id) =>
 	await axios.delete(`${url}/${id}`);
 

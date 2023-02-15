@@ -141,6 +141,19 @@ const getPatient_Service = async (patientId) => {
 	}
 };
 
+const consultPatientHistoryNumber_Service = async (historyNumber) => {
+	try {
+		const patient = await Patient.findOne({ where: { historyNumber } });
+
+		let r = patient ? true : false;
+		console.log(r);
+		return r;
+	} catch (error) {
+		console.log(error);
+		return error;
+	}
+};
+
 // ****************************************************************************
 // 										actualizacion del registro de un solo paciente
 // ****************************************************************************
@@ -244,6 +257,7 @@ module.exports = {
 	createPatient_Service,
 	getPatient_Service,
 	getPatients_Service,
+	consultPatientHistoryNumber_Service,
 	updatePatient_Service,
 	deletePatient_Service,
 };

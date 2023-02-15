@@ -4,6 +4,7 @@ const {
 	getPatient_Service,
 	updatePatient_Service,
 	deletePatient_Service,
+	consultPatientHistoryNumber_Service,
 } = require("../services/PatientService");
 
 // ****************************************************************************
@@ -56,6 +57,19 @@ const getPatient_RouteController = async (req, res) => {
 	}
 };
 
+const consultPatientHistoryNumber_RouteController = async (req, res) => {
+	const { historyNumber } = req.params;
+	try {
+		const result = await consultPatientHistoryNumber_Service(historyNumber);
+
+		
+		res.status(200).json({ result });
+	} catch (error) {
+		console.log(error);
+		res.status(500).send(error);
+	}
+};
+
 // ****************************************************************************
 // 										actualizacion del registro de un solo paciente
 // ****************************************************************************
@@ -79,33 +93,6 @@ const updatePatient_RouteController = async (req, res) => {
 		console.log(error);
 	}
 };
-
-// // ToDO: crear primero la api de los representantes
-
-// const jointPatientWithRepresentative = async (req, res) => {
-// 	const { id, representativeId } = req.params;
-
-// 	const patient = await Patient.findByPk(id);
-
-// 	const representative = await Representative.findByPk(representativeId);
-
-// 	await patient.addRepresentatives(representative);
-
-// 	res.status(200).json({ message: "was make a join" });
-// };
-
-// const unjointPatientWithRepresentative = async (req, res) => {
-// 	const { id, representativeId } = req.params;
-
-// 	const patient = await Patient.findByPk(id);
-
-// 	const representative = await Representative.findByPk(representativeId);
-
-// 	await patient.removeRepresentatives(representative);
-
-// 	res.status(200).json({ message: "was destroy a join" });
-// };
-
 // ****************************************************************************
 // 				marcado como eliminado (cambio propidad estatus de registro)
 // ****************************************************************************
@@ -121,13 +108,13 @@ const deletePatient_RouteController = async (req, res) => {
 	if (!patient) return res.status(404).json(patient);
 
 	return res.json(patient);
-	
 };
 
 module.exports = {
 	createPatient_RouteController,
 	getPatients_RouteController,
 	getPatient_RouteController,
+	consultPatientHistoryNumber_RouteController,
 	updatePatient_RouteController,
 	deletePatient_RouteController,
 };

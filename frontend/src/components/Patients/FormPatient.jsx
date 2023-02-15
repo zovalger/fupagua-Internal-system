@@ -12,6 +12,7 @@ import {
 } from "../../utility";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { consultPatientHistoryNumberRequest } from "../../api/patients";
 
 export function FormPatient({
 	create,
@@ -25,6 +26,7 @@ export function FormPatient({
 	deleteItem,
 }) {
 	const [nameSugerido, setnameSugerido] = useState();
+	const [historyNumberEnable, sethistoryNumberEnable] = useState(true);
 	const [busquedaTimeout, setBusquedaTimeout] = useState();
 	return (
 		<Form className="mt-3" onSubmit={onSubmit}>
@@ -120,9 +122,9 @@ export function FormPatient({
 				</Form.Select>
 			</Form.Group>
 
-				{/* *********************  Escolaridad  ************************/}
+			{/* *********************  Escolaridad  ************************/}
 
-				<Form.Group className="mb-3" controlId="scholarship">
+			<Form.Group className="mb-3" controlId="scholarship">
 				<Form.Label>Escolaridad</Form.Label>
 				<Form.Control
 					onChange={onInputChangePatient}
@@ -167,21 +169,35 @@ export function FormPatient({
 				</InputGroup>
 			</Form.Group>
 
-		
-
 			{/* *********************   Numero de historia   ************************/}
-			{/* <Form.Group className="mb-3" controlId="historyNumber">
+			<Form.Group className="mb-3" controlId="historyNumber">
 				<Form.Label>Numero de historia</Form.Label>
 				<Form.Control
-					onChange={onInputChangePatient}
+					onChange={async (e) => {
+						onInputChangePatient(e);
+
+						if (e.target.value) {
+							const res = await consultPatientHistoryNumberRequest(
+								e.target.value
+							);
+
+							sethistoryNumberEnable(res.data.result);
+						}
+					}}
 					type="text"
 					name="historyNumber"
 					value={patientData.historyNumber}
 					autoComplete="none"
-					placeholder="00-00-00"
+					placeholder=""
 					required
 				/>
-			</Form.Group> */}
+
+				{!historyNumberEnable ? (
+					<Form.Text className="text-muted clic">
+						este numero de historia ya esta asignado a otra persona
+					</Form.Text>
+				) : null}
+			</Form.Group>
 
 			{/* *****************************************************************
 													inputs para el representante

@@ -29,15 +29,26 @@ const validateCreatePatient = [
 	),
 	// body("patient.address").isString().trim(),
 	body("patient.scholarship").isString().trim(),
-	body("patient.historyNumber").customSanitizer(async (value, { req }) => {
-		const lastPatient = await Patient.findOne({
-			order: [["createdAt", "DESC"]],
-		});
+	body("patient.historyNumber").custom(async (value,{req})=>{
 
-		if (lastPatient) return parseInt(lastPatient.id) + 1;
+		const oldPatient = await
+Patient.findOne({where:{historyNumber:value}})
+		if (oldPatient) {
+			throw new Error("ya hay un numero de historia ");
+		}
+		return true;
 
-		return 1;
-	}),
+	})
+	// .customSanitizer(async (value, { req }) => {
+	// 	const lastPatient = await Patient.findOne({
+	// 		order: [["createdAt", "DESC"]],
+	// 	});
+
+	// 	if (lastPatient) return parseInt(lastPatient.id) + 1;
+
+	// 	return 1;
+	// })
+	,
 	(req, res, next) => {
 		validateResult(req, res, next);
 	},

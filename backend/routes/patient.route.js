@@ -9,10 +9,14 @@ const {
 	createPatient_RouteController,
 	updatePatient_RouteController,
 	deletePatient_RouteController,
+	consultPatientHistoryNumber_RouteController,
 } = require("../controllers/Patient.route.controller");
 
 // obtener datos
 router.get("/", getPatients_RouteController);
+
+router.get("/historyNumber", consultPatientHistoryNumber_RouteController);
+
 router.get("/:id", getPatient_RouteController);
 
 // crear datos
