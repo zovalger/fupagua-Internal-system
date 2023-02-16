@@ -6,23 +6,15 @@ const VideoLinkCategory = require("../models/VideoLinkCategory.model");
 // 										adicion de un nuevo registro
 // ****************************************************************************
 
-const createVideoLink_Service = async (dataVideoLink, dataCategories) => {
+const createVideoLink_Service = async (dataVideoLink, dataCategory) => {
 	try {
 		const videolink = await VideoLink.create(dataVideoLink);
 
-		const videoCategories = [];
+		const category = await VideoLinkCategory.findOrCreate({
+			where: { title: dataCategory },
+		});
 
-		for (const title of dataCategories) {
-			const category = await VideoLinkCategory.findOrCreate({
-				where: { title },
-			});
-
-			videoCategories.push(category[0]);
-		}
-
-		console.log(videoCategories);
-
-		await videolink.setVideolinkcategories(videoCategories);
+		await videolink.setCategoryvideo(category);
 
 		return videolink;
 	} catch (error) {

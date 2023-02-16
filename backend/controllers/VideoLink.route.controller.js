@@ -11,10 +11,10 @@ const {
 // ****************************************************************************
 
 const createVideoLink_RouteController = async (req, res) => {
-	const { videolink, categories } = req.body;
+	const { videolink, category } = req.body;
 
 	try {
-		const newVideoLink = await createVideoLink_Service(videolink, categories);
+		const newVideoLink = await createVideoLink_Service(videolink, category);
 
 		return res.json(newVideoLink);
 	} catch (error) {

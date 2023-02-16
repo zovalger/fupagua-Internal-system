@@ -10,6 +10,7 @@ const VideoLink = db.define(
 		url: DataTypes.STRING,
 		status: { type: DataTypes.CHAR, defaultValue: "a" },
 	},
+	
 	{
 		setterMethods: {
 			// name(value) {
@@ -31,7 +32,7 @@ const VideoLink = db.define(
 	}
 );
 
-VideoLink.belongsToMany(VideoLinkCategory, { through: "videolinktocategory" });
-VideoLinkCategory.belongsToMany(VideoLink, { through: "videolinktocategory" });
+VideoLink.belongsTo(VideoLinkCategory);
+VideoLinkCategory.hasMany(VideoLink);
 
 module.exports = VideoLink;

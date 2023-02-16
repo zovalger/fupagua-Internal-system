@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db");
 
-const VideoLinkCategory = db.define(
-	"videolinkcategory",
+const CategoryVideo = db.define(
+	"categoryvideo",
 	{
 		title: {
 			type: DataTypes.STRING,
@@ -10,6 +10,7 @@ const VideoLinkCategory = db.define(
 			defaultValue: "general",
 			unique: true,
 		},
+
 
 		status: { type: DataTypes.CHAR, defaultValue: "a" },
 	},
@@ -34,4 +35,4 @@ const VideoLinkCategory = db.define(
 	}
 );
 
-module.exports = VideoLinkCategory;
+module.exports = CategoryVideo;
