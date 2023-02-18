@@ -14,7 +14,7 @@ const createVideoLink_Service = async (dataVideoLink, dataCategory) => {
 			where: { title: dataCategory },
 		});
 
-		await videolink.setCategoryvideo(category);
+		if (category[0]) await videolink.setCategoryvideo(category[0]);
 
 		return videolink;
 	} catch (error) {
@@ -40,11 +40,30 @@ const getVideoLinks_Service = async (query) => {
 };
 
 // ****************************************************************************
+// 										obtencion todos las categorias
+// ****************************************************************************
+
+const getCategories_Service = async (query) => {
+	try {
+		// **************************** obtener todos los registros ****************************
+		const categories = await VideoLinkCategory.findAll({ include: VideoLink });
+
+
+		return categories.map((c) => {
+			if (c.videolinks.length > 0) return c;
+		});
+	} catch (error) {
+		console.log(error);
+		return error;
+	}
+};
+
+// ****************************************************************************
 // 										obtencion de un registro
 // ****************************************************************************
 
 const getVideoLink_Service = async (videolinkId) => {
-	const id = patientId;
+	const id = videolinkId;
 
 	try {
 		const videolink = await VideoLink.findByPk(id, {
@@ -75,21 +94,13 @@ const updateVideoLink_Service = async (
 	try {
 		const videolink = await VideoLink.findByPk(id);
 
+		const category = await VideoLinkCategory.findOrCreate({
+			where: { title: dataCategories },
+		});
+
 		await videolink.update(data);
 
-		const videoCategories = [];
-
-		for (const title of dataCategories) {
-			const category = await VideoLinkCategory.findOrCreate({
-				where: { title },
-			});
-
-			videoCategories.push(category[0]);
-		}
-
-		console.log(videoCategories);
-
-		await videolink.setVideolinkcategories(videoCategories);
+		if (category[0]) await videolink.setCategoryvideo(category[0]);
 
 		return await videolink.reload();
 	} catch (error) {
@@ -126,6 +137,7 @@ module.exports = {
 	createVideoLink_Service,
 	getVideoLink_Service,
 	getVideoLinks_Service,
+	getCategories_Service,
 	updateVideoLink_Service,
 	deleteVideoLink_Service,
 };

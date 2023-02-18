@@ -9,11 +9,13 @@ const {
 	createVideoLink_RouteController,
 	updateVideoLink_RouteController,
 	deleteVideoLink_RouteController,
+	getCategories_RouteController,
 } = require("../controllers/VideoLink.route.controller");
 
 // obtener datos
 router.get("/", getVideoLinks_RouteController);
-// router.get("/:id", getVideoLink_RouteController);
+router.get("/categories", getCategories_RouteController);
+router.get("/:id", getVideoLink_RouteController);
 
 // crear datos
 router.post("/", createVideoLink_RouteController);

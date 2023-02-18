@@ -4,6 +4,7 @@ const {
 	getVideoLink_Service,
 	updateVideoLink_Service,
 	deleteVideoLink_Service,
+	getCategories_Service,
 } = require("../services/VideoLinkService");
 
 // ****************************************************************************
@@ -55,16 +56,36 @@ const getVideoLink_RouteController = async (req, res) => {
 	}
 };
 
+
+
+// ****************************************************************************
+// 										obtencion todas las categorias creadas
+// ****************************************************************************
+
+const getCategories_RouteController = async (req, res) => {
+	// const { id } = req.params;
+	try {
+		const categories = await getCategories_Service();
+
+		if (!categories) return res.status(404).json({ message: "no found" });
+
+		res.json(categories);
+	} catch (error) {
+		console.log(error);
+		res.status(500).send(error);
+	}
+};
+
 // ****************************************************************************
 // 										actualizacion del registro de un solo paciente
 // ****************************************************************************
 
 const updateVideoLink_RouteController = async (req, res) => {
 	const { id } = req.params;
-	const data = req.body;
+	const {videolink,category} = req.body;
 
 	try {
-		const updateVideoLink = await updateVideoLink_Service(id, data);
+		const updateVideoLink = await updateVideoLink_Service(id, videolink,category);
 
 		if (!updateVideoLink) return res.status(404).json({ message: "not found" });
 
@@ -94,6 +115,7 @@ const deleteVideoLink_RouteController = async (req, res) => {
 
 module.exports = {
 	createVideoLink_RouteController,
+	getCategories_RouteController,
 	getVideoLinks_RouteController,
 	getVideoLink_RouteController,
 	updateVideoLink_RouteController,
