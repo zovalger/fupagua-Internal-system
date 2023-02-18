@@ -23,7 +23,7 @@ export function VideoLinkForm({
 	create,
 	onCancelButton,
 }) {
-	const { id, title, description, url, categoryvideo } = data;
+	const {id, title, description, url, categoryvideo } = data;
 	const { title: titleC } = categoryvideo;
 
 	const [videoData, setVideoData] = useState({ title, description, url });
