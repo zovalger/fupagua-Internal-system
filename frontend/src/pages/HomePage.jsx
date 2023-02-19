@@ -34,7 +34,7 @@ export function HomePage() {
 								<IoLibraryOutline />
 							</div>
 							<div>Biblioteca</div>
-							<div>Juana Milano de Diaz</div>
+							<div>"Juana Milano de Diaz"</div>
 						</button>
 					</Link>
 

@@ -100,7 +100,7 @@ export function Biblioteca() {
 				title={
 					<>
 						<div>Biblioteca</div>
-						<div>Juana Milano de Diaz</div>
+						<div>"Juana Milano de Diaz"</div>
 					</>
 				}
 				rightButtons={

@@ -30,7 +30,10 @@ const createVideoLink_Service = async (dataVideoLink, dataCategory) => {
 const getVideoLinks_Service = async (query) => {
 	try {
 		// **************************** obtener todos los registros ****************************
-		const videolink = await VideoLink.findAll({ include: VideoLinkCategory });
+		const videolink = await VideoLink.findAll({
+			where: { status: "a" },
+			include: VideoLinkCategory,
+		});
 
 		return videolink;
 	} catch (error) {
@@ -47,7 +50,6 @@ const getCategories_Service = async (query) => {
 	try {
 		// **************************** obtener todos los registros ****************************
 		const categories = await VideoLinkCategory.findAll({ include: VideoLink });
-
 
 		return categories.map((c) => {
 			if (c.videolinks.length > 0) return c;

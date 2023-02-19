@@ -4,7 +4,6 @@ import { Toaster } from "react-hot-toast";
 
 import {
 	HomePage,
-	People,
 	Agenda,
 	AgendaActivity,
 	Biblioteca,
@@ -15,6 +14,8 @@ import {
 	PatientsFormPatient,
 	PatientsDetails,
 	LandingEditMain,
+	VideoLinkList,
+	VideoLinkFormVideo,
 } from "./pages";
 
 import AsidePanelOptions from "./components/common/AsidePanelOption/AsidePanelOptions";
@@ -55,7 +56,8 @@ function App() {
 						<Route path="/biblioteca/:id" element={<BibliotecaBook />} />
 
 						{/* **************************************************************************
-																							gestion de pacientes
+																					gestion de pacientes
+
 						************************************************************************** */}
 
 						<Route path="/pacientes" element={<Patients />} />
@@ -63,14 +65,34 @@ function App() {
 							path="/pacientes/añadir"
 							element={<PatientsFormPatient create={true} />}
 						/>
-						<Route path="/pacientes/editar/:id" element={<PatientsFormPatient />} />
+						<Route
+							path="/pacientes/editar/:id"
+							element={<PatientsFormPatient />}
+						/>
 						<Route path="/pacientes/:id" element={<PatientsDetails />} />
+
+						{/* **************************************************************************
+																							Edicion de landing
+						************************************************************************** */}
+
 						<Route path="/landing-edit" element={<LandingEditMain />} />
 
+						{/* *********************** videos **************************/}
+						<Route path="/landing-edit/videos" element={<VideoLinkList />} />
 
-						
+						<Route
+							path="/landing-edit/videos/añadir"
+							element={<VideoLinkFormVideo create={true} />}
+						/>
+						<Route
+							path="/landing-edit/videos/:id"
+							element={<VideoLinkFormVideo />}
+						/>
+						{/* <Route
+							path="/landing-edit/editar/:id"
+							element={<PatientsFormPatient />}
+						/> */}
 
-						
 						{/* <Route path="/:id" element={<PostForm />} />
 					<Route path="*" element={<NotFoundPage />} /> */}
 					</Routes>
