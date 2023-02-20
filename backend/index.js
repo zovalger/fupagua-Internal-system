@@ -8,6 +8,7 @@ const app = require("./app");
 const { PORT, NODE_ENV } = require("./config");
 const db = require("./db");
 const Seed = require("./utils/seed");
+const { ImageSyncCloud } = require("./services/ImageService");
 
 const conectToDataBase = async () => {
 	try {
@@ -23,7 +24,7 @@ const conectToDataBase = async () => {
 		app.listen(PORT);
 
 		// setInterval(() => backupAll(), 1000 * 60 * 10);
-		setInterval(() => ImageSyncCloud(), 3000);
+		setInterval(() => ImageSyncCloud(), 30000);
 
 
 		console.log(`servidor en el puerto: ${PORT}`);
