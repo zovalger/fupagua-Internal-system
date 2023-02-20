@@ -5,6 +5,7 @@ const CategoryVideo = require("../models/VideoLinkCategory.model");
 
 const syncVideolinks = async () => {
 	const data = { CLOUD_PAGE_SECRET_CODE_SYNC };
+	const url = `${CLOUD_PAGE_URL}/api/sync/videolink`;
 
 	const videolinks = await VideoLink.findAll({
 		where: { status: "a" },
@@ -26,7 +27,7 @@ const syncVideolinks = async () => {
 
 	console.log(data);
 	// todo: poner url de la pagina
-	await axios.post(CLOUD_PAGE_URL, data);
+	await axios.post(url, data);
 };
 
 module.exports = {

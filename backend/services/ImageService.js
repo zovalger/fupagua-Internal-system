@@ -7,10 +7,11 @@ const fs = require("fs-extra");
 const ImageSyncCloud = async () => {
 	const imgs = await ImgFile.findAll({ where: { img_public_id: "" } });
 
-	console.log(imgs);
 	if (imgs.length <= 0) return;
+	console.log(imgs);
 
-	imgs.map((img, index) =>
+	for (let index = 0; index < imgs.length; index++) {
+		const img = imgs[index];
 		setTimeout(async () => {
 			try {
 				const result = await uploadImage(img.img_local_url);
@@ -25,11 +26,10 @@ const ImageSyncCloud = async () => {
 				console.log("error al subir imagen");
 				console.log(error);
 			}
-		}, 500 * (index + 1))
-	);
+		}, 500 * (index + 1));
+	}
 
 	console.log("sync de imagenes iniciada");
-	
 };
 
 const DeleteInstaceImgFile_Book = async (idImgFile) => {

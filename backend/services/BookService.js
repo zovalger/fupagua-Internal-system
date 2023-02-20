@@ -51,7 +51,7 @@ const createBook_Service = async (dataBook, portadaBook, imgExtrasBook) => {
 			}
 		}
 
-		setTimeout(() => ImageSyncCloud(), 3000);
+		// setTimeout(() => ImageSyncCloud(), 3000);
 
 		return await book.reload({ include: { all: true } });
 	} catch (error) {
@@ -94,7 +94,7 @@ const getBooks_Service = async (query) => {
 
 	console.log(where);
 
-	setTimeout(() => ImageSyncCloud(), 3000);
+	// setTimeout(() => ImageSyncCloud(), 3000);
 	try {
 		const books = await Book.findAll({
 			where,
@@ -112,7 +112,7 @@ const getBooks_Service = async (query) => {
 const getBook_Service = async (id) => {
 	// const id = id;
 
-	setTimeout(() => ImageSyncCloud(), 3000);
+	// setTimeout(() => ImageSyncCloud(), 3000);
 
 	try {
 		const book = await Book.findByPk(id, {
@@ -178,7 +178,7 @@ const updateBook_Service = async (
 			}
 		}
 
-		setTimeout(() => ImageSyncCloud(), 3000);
+		// setTimeout(() => ImageSyncCloud(), 3000);
 
 		return book;
 	} catch (error) {

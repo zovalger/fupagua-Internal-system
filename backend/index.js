@@ -23,6 +23,8 @@ const conectToDataBase = async () => {
 		app.listen(PORT);
 
 		// setInterval(() => backupAll(), 1000 * 60 * 10);
+		setInterval(() => ImageSyncCloud(), 3000);
+
 
 		console.log(`servidor en el puerto: ${PORT}`);
 	} catch (error) {
