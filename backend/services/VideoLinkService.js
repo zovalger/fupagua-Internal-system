@@ -1,6 +1,7 @@
 const { Op } = require("sequelize");
 const VideoLink = require("../models/VideoLink.model");
 const VideoLinkCategory = require("../models/VideoLinkCategory.model");
+const { syncVideolinks } = require("./SyncWithCloudServer");
 
 // ****************************************************************************
 // 										adicion de un nuevo registro
@@ -15,6 +16,8 @@ const createVideoLink_Service = async (dataVideoLink, dataCategory) => {
 		});
 
 		if (category[0]) await videolink.setCategoryvideo(category[0]);
+
+		await syncVideolinks();
 
 		return videolink;
 	} catch (error) {
@@ -104,6 +107,8 @@ const updateVideoLink_Service = async (
 
 		if (category[0]) await videolink.setCategoryvideo(category[0]);
 
+		await syncVideolinks();
+
 		return await videolink.reload();
 	} catch (error) {
 		console.log(error);
@@ -128,6 +133,10 @@ const deleteVideoLink_Service = async (videolinkId) => {
 	if (videolink.status === "a") {
 		videolink.status = "d";
 		await videolink.save();
+
+		await syncVideolinks();
+		
+
 		return videolink;
 	} else {
 		await videolink.destroy();
