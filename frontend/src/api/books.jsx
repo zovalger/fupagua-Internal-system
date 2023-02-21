@@ -3,6 +3,7 @@ import axios from "axios";
 const url = "/api/book";
 
 export const createBookRequest = async (data) => {
+	console.log(data);
 	const form = new FormData();
 
 	for (const key in data) {
@@ -11,6 +12,15 @@ export const createBookRequest = async (data) => {
 			form.append(key, element);
 		}
 	}
+
+	for (const key in data.imgExtras) {
+		if (Object.hasOwnProperty.call(data.imgExtras, key)) {
+			const f = data.imgExtras[key];
+
+			form.append("imgExtras", f);
+		}
+	}
+
 	return await axios.post(url, form, {
 		headers: { "Content-Type": "multiplart/form-data" },
 	});
@@ -27,6 +37,7 @@ export const deleteBookRequest = async (id) =>
 export const updateBookRequest = async (id, data) => {
 	const form = new FormData();
 
+
 	for (const key in data) {
 		if (Object.hasOwnProperty.call(data, key)) {
 			const element = data[key];
@@ -34,6 +45,13 @@ export const updateBookRequest = async (id, data) => {
 		}
 	}
 
+	for (const key in data.imgExtras) {
+		if (Object.hasOwnProperty.call(data.imgExtras, key)) {
+			const f = data.imgExtras[key];
+
+			form.append("imgExtras", f);
+		}
+	}
 	return await axios.put(`${url}/${id}`, form, {
 		headers: { "Content-Type": "multiplart/form-data" },
 	});

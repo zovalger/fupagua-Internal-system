@@ -3,11 +3,11 @@ import styles from "./BookImageSlider.module.scss";
 import Carousel from "react-bootstrap/Carousel";
 
 const BookImageSlider = ({ book }) => {
-	const { portada, imgExtras } = book;
+	const { portada, book_extra_img } = book;
 
-	if (!portada && !imgExtras) return;
+	if (!portada && !book_extra_img) return;
 
-	if (!portada.img_local_url_original && !imgExtras.img_local_url_original)
+	if (!portada.img_local_url_original && !book_extra_img.img_local_url_original)
 		return;
 
 	return (
@@ -15,7 +15,13 @@ const BookImageSlider = ({ book }) => {
 			{portada ? (
 				<Carousel.Item>
 					<img
-						src={portada.img_cloudinary_url}
+						src={
+							portada.img_cloudinary_url
+								? portada.img_cloudinary_url
+								: portada.img_local_url
+								? portada.img_local_url
+								: portada.img_local_url_original
+						}
 						className="d-block w-100"
 						alt="imagen de libro"
 					/>
@@ -27,11 +33,17 @@ const BookImageSlider = ({ book }) => {
 				</Carousel.Item>
 			) : null}
 
-			{imgExtras && imgExtras instanceof Array
-				? imgExtras.map((img) => (
+			{book_extra_img && book_extra_img instanceof Array
+				? book_extra_img.map((img) => (
 						<Carousel.Item key={img.id}>
 							<img
-								src={img.img_cloudinary_url}
+								src={
+									img.img_cloudinary_url
+										? img.img_cloudinary_url
+										: img.img_local_url
+										? img.img_local_url
+										: img.img_local_url_original
+								}
 								className="d-block w-100"
 								alt="imagen de extra"
 							/>

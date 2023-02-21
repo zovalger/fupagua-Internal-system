@@ -1,14 +1,19 @@
+const fs = require("fs-extra");
+const { Op } = require("sequelize");
+
 const { uploadImage, deleteImage } = require("../libs/cloudinary");
 const ImgFile = require("../models/ImgFile.model");
 const { bookResizeImg } = require("../utils/helperImg");
 
-const fs = require("fs-extra");
-
 const ImageSyncCloud = async () => {
-	const imgs = await ImgFile.findAll({ where: { img_public_id: "" } });
+	const imgs = await ImgFile.findAll({
+		where: {
+			img_public_id: "",
+			[Op.or]: [{ img_local_url: { [Op.ne]: "" } }],
+		},
+	});
 
 	if (imgs.length <= 0) return;
-	console.log(imgs);
 
 	for (let index = 0; index < imgs.length; index++) {
 		const img = imgs[index];
@@ -26,10 +31,25 @@ const ImageSyncCloud = async () => {
 				console.log("error al subir imagen");
 				console.log(error);
 			}
-		}, 500 * (index + 1));
+		}, 1000 * (index + 1));
 	}
 
 	console.log("sync de imagenes iniciada");
+};
+
+const ImageResizeAll = async () => {
+	const imgs = await ImgFile.findAll({
+		where: { img_local_url: "" },
+	});
+
+	if (imgs.length <= 0) return;
+
+	await imgs.map(async (img) => {
+		const resize = await bookResizeImg(img.img_local_url_original, 350);
+
+		img.img_local_url = resize;
+		img.save();
+	});
 };
 
 const DeleteInstaceImgFile_Book = async (idImgFile) => {
@@ -106,4 +126,5 @@ module.exports = {
 	ImageSyncCloud,
 	DeleteInstaceImgFile_Book,
 	ImgFileOptimiceAndFormate,
+	ImageResizeAll,
 };

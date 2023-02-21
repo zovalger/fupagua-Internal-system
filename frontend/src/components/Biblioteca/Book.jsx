@@ -12,6 +12,8 @@ export default function Book({ dataBook }) {
 							? portada.img_cloudinary_url
 								? portada.img_cloudinary_url
 								: portada.img_local_url
+								? portada.img_local_url
+								: portada.img_local_url_original
 							: "/"
 					}
 					alt="foto de portada"

@@ -12,15 +12,16 @@ const createBook_RouteController = async (req, res) => {
 	let portada_Img = null,
 		extraImg_Img = null;
 
-	console.log(req.files);
-
 	if (req.files) {
+		// console.log("********************************************");
+		// console.log(req.files);
+		// console.log("********************************************");
+
 		const { portada, imgExtras } = req.files;
 		portada_Img = portada ? portada : null;
 		extraImg_Img = imgExtras ? imgExtras : null;
 	}
 
-	
 	try {
 		const book = await createBook_Service(data, portada_Img, extraImg_Img);
 
@@ -69,7 +70,6 @@ const updateBook_RouteController = async (req, res) => {
 		const { portada, imgExtras } = req.files;
 		portada_Img = portada ? portada : null;
 		extraImg_Img = imgExtras ? imgExtras : null;
-
 	}
 
 	try {
@@ -77,7 +77,6 @@ const updateBook_RouteController = async (req, res) => {
 
 		return res.json(book);
 	} catch (error) {
-		
 		console.log(error);
 		return res.status(500).send(error);
 	}

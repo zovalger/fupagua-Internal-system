@@ -57,9 +57,47 @@ const Book = db.define(
 	}
 );
 
+// Book.belongsTo(ImgFile, {
+// 	through: "book_portada",
+// 	as: "bookportada",
+// 	foreignKey: "portadaId",
+// });
 
-Book.belongsTo(ImgFile, { through: "books_imgs", as: "portada" });
-Book.belongsToMany(ImgFile, { through: "books_imgs", as: "imgExtras" });
+// ImgFile.hasOne(Book, {
+// 	through: "book_portada",
+// 	as: "bookportada",
+// 	foreignKey: "imgfileId",
+// });
 
+Book.belongsTo(ImgFile, {
+as:'portada',
+	foreignKey: {
+		name: "portadaId",
+		// allowNull: false,
+		// unique: true,
+	},
+});
+
+ImgFile.hasOne(Book, {
+	as:'portada',
+
+	foreignKey: {
+		name: "portadaId",
+		// allowNull: false,
+		// unique: true,
+	},
+});
+
+Book.belongsToMany(ImgFile, {
+	through: "book_imgextra",
+	as: "book_extra_img",
+	foreignKey: "bookId",
+});
+
+ImgFile.belongsToMany(Book, {
+	through: "book_imgextra",
+	as: "book_extra_img",
+	foreignKey: "imgfileId",
+});
 
 module.exports = Book;

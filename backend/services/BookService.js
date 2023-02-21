@@ -10,6 +10,7 @@ const {
 	ImgFileOptimiceAndFormate,
 	DeleteInstaceImgFile_Book,
 	ImageSyncCloud,
+	ImageResizeAll,
 } = require("./ImageService");
 
 const createBook_Service = async (dataBook, portadaBook, imgExtrasBook) => {
@@ -20,7 +21,18 @@ const createBook_Service = async (dataBook, portadaBook, imgExtrasBook) => {
 	let data = dataBook;
 
 	try {
-		const book = await Book.create(data, { include: ["portada", "imgExtras"] });
+		const book = await Book.create(data, {
+			include: [
+				{
+					model: ImgFile,
+					as: "portada",
+				},
+				{
+					model: ImgFile,
+					as: "book_extra_img",
+				},
+			],
+		});
 
 		await createBookFicha_Service(book.id, {
 			autors: book.autor,
@@ -30,28 +42,45 @@ const createBook_Service = async (dataBook, portadaBook, imgExtrasBook) => {
 		// imagen de portada del libro
 
 		if (portadaBook) {
-			const format = await ImgFileOptimiceAndFormate(portadaBook);
-			await ImgFile.create({ ...format, portadaId: book.id });
+			const portada = await ImgFile.create({
+				img_local_url_original: portadaBook.tempFilePath,
+			});
+
+			console.log(book.setBookportada);
+			await book.setPortada(portada);
+
+			// todo: optimizar la imagen
+
+			// const format = await ImgFileOptimiceAndFormate(portadaBook);
+			// await ImgFile.create({ ...format, portadaId: book.id });
 		}
 
 		// imagenes extra del libro
 
 		if (imgExtrasBook) {
+			const allExtraImg = [];
 			if (imgExtrasBook instanceof Array) {
-				await imgExtrasBook.map(async (img) => {
-					const format = await ImgFileOptimiceAndFormate(img);
-					await ImgFile.create({
-						...format,
-						bookId: book.id,
+				for (let i = 0; i < imgExtrasBook.length; i++) {
+					const imgf = imgExtrasBook[i];
+
+					const imginstace = await ImgFile.create({
+						img_local_url_original: imgf.tempFilePath,
 					});
-				});
+
+					allExtraImg.push(imginstace);
+				}
 			} else {
-				const format = await ImgFileOptimiceAndFormate(imgExtrasBook);
-				await ImgFile.create({ ...format, bookId: book.id });
+				const imginstace = await ImgFile.create({
+					img_local_url_original: imgExtrasBook.tempFilePath,
+				});
+
+				allExtraImg.push(imginstace);
 			}
+			console.log(allExtraImg);
+			await book.setBook_extra_img(allExtraImg);
 		}
 
-		// setTimeout(() => ImageSyncCloud(), 3000);
+		await ImageResizeAll();
 
 		return await book.reload({ include: { all: true } });
 	} catch (error) {
@@ -140,17 +169,20 @@ const updateBook_Service = async (
 		const book = await Book.findByPk(id, { include: { all: true } });
 		await book.update(data);
 
-		// * vemos si hay una nueva imagen para insertar
-		// si es asi vemos si el libro tiene una imagen anterior
-		// si es asi a eliminamos
-
 		if (portadaBook) {
 			if (book.portada) await DeleteInstaceImgFile_Book(book.portada.id);
 
-			await ImgFileOptimiceAndFormate(portadaBook).then(
-				async (format) =>
-					await ImgFile.create({ ...format, portadaId: book.id })
-			);
+			const portada = await ImgFile.create({
+				img_local_url_original: portadaBook.tempFilePath,
+			});
+
+			console.log(book.setBookportada);
+			await book.setPortada(portada);
+
+			// todo: optimizar la imagen
+
+			// const format = await ImgFileOptimiceAndFormate(portadaBook);
+			// await ImgFile.create({ ...format, portadaId: book.id });
 		}
 
 		// imagenes extra del libro
@@ -161,22 +193,29 @@ const updateBook_Service = async (
 					async (img) => await DeleteInstaceImgFile_Book(img.id)
 				);
 
+			const allExtraImg = [];
 			if (imgExtrasBook instanceof Array) {
-				await imgExtrasBook.map(async (img) => {
-					await ImgFileOptimiceAndFormate(img).then(
-						async (format) =>
-							await ImgFile.create({
-								...format,
-								bookId: book.id,
-							})
-					);
-				});
+				for (let i = 0; i < imgExtrasBook.length; i++) {
+					const imgf = imgExtrasBook[i];
+
+					const imginstace = await ImgFile.create({
+						img_local_url_original: imgf.tempFilePath,
+					});
+
+					allExtraImg.push(imginstace);
+				}
 			} else {
-				await ImgFileOptimiceAndFormate(imgExtrasBook).then(
-					async (format) => await ImgFile.create({ ...format, bookId: book.id })
-				);
+				const imginstace = await ImgFile.create({
+					img_local_url_original: imgExtrasBook.tempFilePath,
+				});
+
+				allExtraImg.push(imginstace);
 			}
+			console.log(allExtraImg);
+			await book.setBook_extra_img(allExtraImg);
 		}
+
+		await ImageResizeAll();
 
 		// setTimeout(() => ImageSyncCloud(), 3000);
 
@@ -205,20 +244,6 @@ const deleteBook_Service = async (idBook) => {
 				async (img) => await DeleteInstaceImgFile_Book(img.id)
 			);
 
-		// const { img_public_id } = book;
-		// // eliminar la imagen
-		// if (img_public_id) {
-		// 	try {
-		// 		console.log(await deleteImage(img_public_id));
-		// 	} catch (error) {
-		// 		console.log("error al tratar de eliminar la imagen en cloudinary");
-		// 		console.log(error);
-		// 	}
-		// }
-
-		// ver si tiene imagen primero
-
-		// deleteImage(id)
 		console.log(await book.destroy());
 
 		return "elemento en eliminado";
