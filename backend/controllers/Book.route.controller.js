@@ -46,6 +46,7 @@ const createBook_RouteController = async (req, res) => {
 		collection,
 		type,
 	};
+	
 	let portada_Img = null,
 		extraImg_Img = null;
 

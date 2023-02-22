@@ -1,6 +1,6 @@
 const { DataTypes, STRING } = require("sequelize");
 const db = require("../db");
-const FupaguaService = require("./FupaguaService");
+const FupaguaService = require("./FupaguaService.model");
 const ImgFile = require("./ImgFile.model");
 
 const FupaguaEmpleado = db.define("fupaguaempleado", {

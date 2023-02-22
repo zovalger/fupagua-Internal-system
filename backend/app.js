@@ -8,7 +8,6 @@ const cors = require("cors");
 
 const { NODE_ENV } = require("./config");
 
-
 // ****************************************************************************
 // 										importacion de rutas
 // ****************************************************************************
@@ -20,7 +19,7 @@ const bookRoute = require("./routes/book.route");
 const bookFichaRoute = require("./routes/bookFicha.route");
 const utilityRoute = require("./routes/utility.route");
 const videolinkRoute = require("./routes/videoLink.route");
-const FupaguaServiceRoute =require("./routes/fupaguaService.route")
+const FupaguaServiceRoute = require("./routes/fupaguaService.route");
 
 const app = express();
 
@@ -43,7 +42,7 @@ app.use("/api/activity", activityRoute);
 app.use("/api/book", bookRoute);
 app.use("/api/bookficha", bookFichaRoute);
 app.use("/api/videolink", videolinkRoute);
-app.use("/api/fupaguaservice",FupaguaServiceRoute)
+app.use("/api/fupaguaservice", FupaguaServiceRoute);
 
 app.use("/api/utility", utilityRoute);
 
