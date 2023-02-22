@@ -10,7 +10,7 @@ import {
 	AiOutlineSearch,
 } from "react-icons/ai";
 
-import formateToEmbeLinkYotube from "../../utility/formateToEmbeLinkYotube";
+import formateToEmbeLinkYotube from "../../../utility/formateToEmbeLinkYotube";
 
 export function FormVideoLink({
 	create,
@@ -39,16 +39,16 @@ export function FormVideoLink({
 			</div>
 
 			<Form.Group className="mb-1">
-					<Form.Control
-						onChange={onChangeVideoData}
-						type="text"
-						name="url"
-						placeholder="link de youtube"
-						value={videolinkData.url}
-						autoComplete="none"
-						required
-					/>
-				</Form.Group>
+				<Form.Control
+					onChange={onChangeVideoData}
+					type="text"
+					name="url"
+					placeholder="link de youtube"
+					value={videolinkData.url}
+					autoComplete="none"
+					required
+				/>
+			</Form.Group>
 
 			<Form onSubmit={onSubmit} className="col-12">
 				<Form.Group className="mb-1">
@@ -62,8 +62,6 @@ export function FormVideoLink({
 						required
 					/>
 				</Form.Group>
-
-		
 
 				<InputGroup>
 					<Form.Control

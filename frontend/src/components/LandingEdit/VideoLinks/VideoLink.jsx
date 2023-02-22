@@ -1,6 +1,6 @@
 import styles from "./VideoLink.module.scss";
 import { useNavigate } from "react-router-dom";
-import formateToEmbeLinkYotube from "../../utility/formateToEmbeLinkYotube";
+import formateToEmbeLinkYotube from "../../../utility/formateToEmbeLinkYotube";
 
 export function VideoLink({ data }) {
 	const navigate = useNavigate();
@@ -9,6 +9,7 @@ export function VideoLink({ data }) {
 
 	const toEdit = () => navigate(`/landing-edit/videos/${id}`);
 
+	
 	return (
 		<div className={styles.container}>
 			<div className="row">

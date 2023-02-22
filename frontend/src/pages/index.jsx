@@ -10,11 +10,15 @@ export { Patients } from "./Patients/Patients";
 export { PatientsFormPatient } from "./Patients/PatientsFormPatient";
 export { PatientsDetails } from "./Patients/PatientsDetails";
 
-
 // edicion de Landing
 export { LandingEditMain } from "./LandingEdit/LandingEditMain";
-export { VideoLinkList } from "./LandingEdit/VideoLinkList";
-export { VideoLinkFormVideo } from "./LandingEdit/VideoLinkFormVideo";
 
+// videos
+export { VideoLinkList } from "./LandingEdit/VideoLinks/VideoLinkList";
+export { VideoLinkFormVideo } from "./LandingEdit/VideoLinks/VideoLinkFormVideo";
 
+// servicios
+export { FupaguaServiceList } from "./LandingEdit/FupaguaServicios/FupaguaServiceList";
+export { FupaguaServiceFormService } from "./LandingEdit/FupaguaServicios/FupaguaServiceFormService";
 
+// empleados

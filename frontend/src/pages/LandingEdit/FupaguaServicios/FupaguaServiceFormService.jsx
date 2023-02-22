@@ -3,46 +3,33 @@ import { useEffect, useState } from "react";
 import { BiChevronLeft, BiTrash } from "react-icons/bi";
 import toast from "react-hot-toast";
 
-import Nav from "../../components/common/Nav";
+import Nav from "../../../components/common/Nav";
 
-import {
-	createVideoLinkRequest,
-	deleteVideoLinkRequest,
-	getVideoLinkCategoriesRequest,
-	getVideoLinkRequest,
-	updateVideoLinkRequest,
-} from "../../api/videoLinks";
 
-import { FormVideoLink } from "../../components/LandingEdit/FormVideoLink";
+import { FormFupaguaService } from "../../../components/LandingEdit/FupaguaServicios/FormFupaguaService";
+import { createFupaguaServiceRequest, getFupaguaServiceRequest, updateFupaguaServiceRequest } from "../../../api/fupaguaService";
 
-export function VideoLinkFormVideo({ create }) {
+export function FupaguaServiceFormService({ create }) {
 	const navigate = useNavigate();
 	const params = useParams();
 	const [isSubmiting, setIsSubmitin] = useState(false);
 
-	const [categoriesList, setCategoriesList] = useState([]);
-	const [categoryData, setCategoryData] = useState("");
-	const [videolinkData, setVideolinkData] = useState({
+	const [fupaguaserviceData, setFupaguaserviceData] = useState({
 		title: "",
 		description: "",
 		url: "",
 	});
 
 	const getData = async () => {
-		const res = await getVideoLinkRequest(params.id);
+		const res = await getFupaguaServiceRequest(params.id);
 
-		const { title, description, url, categoryvideo } = res.data;
+		const { title, description,  } = res.data;
 
-		setVideolinkData({ title, description, url });
-		setCategoryData(categoryvideo.title);
+		setFupaguaserviceData({ title, description, url });
 	};
 
 	useEffect(() => {
 		// si estamos en el modo crear no se ejecuta, si no buscamos los datos del registro
-		(async () => {
-			const resCategoriesList = await getVideoLinkCategoriesRequest();
-			setCategoriesList(resCategoriesList.data.map((c) => c.title));
-		})();
 
 		if (create) return;
 
@@ -55,13 +42,12 @@ export function VideoLinkFormVideo({ create }) {
 		setIsSubmitin(true);
 
 		const body = {};
-		body.videolink = videolinkData;
-		body.category = categoryData;
+		body.videolink = fupaguaserviceData;
 
 		try {
 			const myPromise = create
-				? createVideoLinkRequest(body)
-				: updateVideoLinkRequest(params.id, body);
+				? createFupaguaServiceRequest(body)
+				: updateFupaguaServiceRequest(params.id, body);
 
 			console.log(myPromise);
 
@@ -88,8 +74,8 @@ export function VideoLinkFormVideo({ create }) {
 	};
 
 	const onChangeVideoData = ({ target: { name, value } }) =>
-		setVideolinkData({
-			...videolinkData,
+		setFupaguaserviceData({
+			...fupaguaserviceData,
 			[name]: value,
 		});
 
@@ -127,19 +113,15 @@ export function VideoLinkFormVideo({ create }) {
 			"seguro que quiere salir? se perderan todos los cambios realizados"
 		);
 
-		if (op) navigate("/landing-edit/videos");
+		if (op) navigate("/landing-edit/servicios");
 	};
 
 	return (
 		<>
 			<Nav
-				leftIcon={
-					<button onClick={onExit}>
-						<BiChevronLeft />
-					</button>
-				}
-				// leftFuctionOnClick={toggleAsideActive}
-				title={create ? "Añadir video" : "Editar video"}
+				leftIcon={<BiChevronLeft />}
+				leftFuctionOnClick={onExit}
+				title={create ? "Añadir servicio" : "Editar servicio"}
 				// rightButtons={
 
 				// }
@@ -149,10 +131,10 @@ export function VideoLinkFormVideo({ create }) {
 				<div className="container">
 					{/* {!create ? <BookImageSlider book={book} /> : null} */}
 
-					<FormVideoLink
+					<FormFupaguaService
 						create={create}
 						// datos
-						videolinkData={videolinkData}
+						videolinkData={fupaguaserviceData}
 						categoryData={categoryData}
 						categoriesList={categoriesList}
 						// metodos

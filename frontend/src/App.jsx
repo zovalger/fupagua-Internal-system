@@ -16,6 +16,8 @@ import {
 	LandingEditMain,
 	VideoLinkList,
 	VideoLinkFormVideo,
+	FupaguaServiceList,
+	FupaguaServiceFormService,
 } from "./pages";
 
 import AsidePanelOptions from "./components/common/AsidePanelOption/AsidePanelOptions";
@@ -88,6 +90,22 @@ function App() {
 							path="/landing-edit/videos/:id"
 							element={<VideoLinkFormVideo />}
 						/>
+						{/* *********************** Fupagua Servicios **************************/}
+
+						<Route
+							path="/landing-edit/servicios"
+							element={<FupaguaServiceList />}
+						/>
+
+						<Route
+							path="/landing-edit/servicios/añadir"
+							element={<FupaguaServiceFormService create={true} />}
+						/>
+						<Route
+							path="/landing-edit/servicios/:id"
+							element={<FupaguaServiceFormService />}
+						/>
+
 						{/* <Route
 							path="/landing-edit/editar/:id"
 							element={<PatientsFormPatient />}

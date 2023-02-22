@@ -1,31 +1,25 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { RxHamburgerMenu } from "react-icons/rx";
 import { AiOutlinePlus, AiOutlineReload } from "react-icons/ai";
 import toast from "react-hot-toast";
 
-import { useAppData } from "../../context/AppContext";
+import Nav from "../../../components/common/Nav";
 
-import Nav from "../../components/common/Nav";
-import { PatientSeachForm } from "../../components/Patients/PatientSeachForm";
-import { PatientListItem } from "../../components/Patients/PatientListItem";
-import { getPatientsRequest } from "../../api/patients";
-import {
-	getVideoLinkRequest,
-	getVideoLinksRequest,
-} from "../../api/videoLinks";
-import { VideoLink } from "../../components/LandingEdit/VideoLink";
+import { BiChevronLeft } from "react-icons/bi";
+import { FupaguaServiceItem } from "../../../components/LandingEdit/FupaguaServicios/FupaguaServiceItem";
+import { getFupaguaServicesRequest } from "../../../api/fupaguaService";
 
-export function VideoLinkList() {
-	const { toggleAsideActive } = useAppData();
-	const [videoLinks, setVideoLinks] = useState([]);
+export function FupaguaServiceList() {
+	const navigate = useNavigate();
+
+	const [services, setServices] = useState([]);
 
 	// const [patientsQuery, setPatientsQuery] = useState([]);
 	// const [inQuery, setInQuery] = useState(false);
 
 	const findData = async (query) => {
 		try {
-			const myPromise = getVideoLinksRequest(query);
+			const myPromise = getFupaguaServicesRequest(query);
 
 			toast.promise(
 				myPromise,
@@ -35,12 +29,7 @@ export function VideoLinkList() {
 					success: (res) => {
 						console.log(res);
 
-						// if (query) {
-						// 	setInQuery(true);
-						// 	setPatientsQuery(res.data);
-						// } else {
-						setVideoLinks(res.data);
-						// }
+						setServices(res.data);
 
 						if (res.data.length <= 0)
 							return toast.error(
@@ -59,7 +48,7 @@ export function VideoLinkList() {
 						duration: 10,
 					},
 					error: {
-						duration: 4,
+						duration: 3,
 					},
 				}
 			);
@@ -76,23 +65,19 @@ export function VideoLinkList() {
 		findData();
 	}, []);
 
-	// const insertarItemInList = (patient) => (
-	// 	<PatientListItem data={patient} key={patient.id} />
-	// );
-
 	return (
 		<>
 			<Nav
-				leftIcon={<RxHamburgerMenu />}
-				leftFuctionOnClick={toggleAsideActive}
-				title={<div>Videos</div>}
+				leftIcon={<BiChevronLeft />}
+				leftFuctionOnClick={() => navigate("/landing-edit")}
+				title={"FUPAGUA Servicios"}
 				rightButtons={
 					<>
 						<button onClick={() => findData()}>
 							<AiOutlineReload />
 						</button>
 
-						<Link to={"/landing-edit/videos/añadir"}>
+						<Link to={"/landing-edit/servicios/añadir"}>
 							<button>
 								<AiOutlinePlus />
 							</button>
@@ -109,8 +94,8 @@ export function VideoLinkList() {
 						onClearValue={setPatientsQuery}
 					/> */}
 
-					{videoLinks.map((v) => (
-						<VideoLink data={v} key={v.id} />
+					{services.map((i) => (
+						<FupaguaServiceItem data={i} key={i.id} />
 					))}
 
 					{/* {inQuery && patientsQuery.length > 0

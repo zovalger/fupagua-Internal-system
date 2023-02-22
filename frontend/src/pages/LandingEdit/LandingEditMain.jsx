@@ -7,6 +7,7 @@ import { IoLibraryOutline } from "react-icons/io5";
 import { BsCalendarWeek, BsPeopleFill } from "react-icons/bs";
 
 import { useAppData } from "../../context/AppContext";
+import { RiCustomerService2Line } from "react-icons/ri";
 
 export function LandingEditMain() {
 	const { toggleAsideActive } = useAppData();
@@ -21,12 +22,17 @@ export function LandingEditMain() {
 			<div className="scrollInSpacework">
 				<div className="container">
 					<Link to={`/landing-edit/videos`}>
-						<button>
-							<div className="">
-								<IoLibraryOutline />
-							</div>
-							<div>Videos</div>
-						</button>
+						<div className="">
+							<IoLibraryOutline />
+						</div>
+						<div>Videos</div>
+					</Link>
+
+					<Link to={`/landing-edit/servicios`}>
+						<div className="">
+							<RiCustomerService2Line />
+						</div>
+						<div>Servicios</div>
 					</Link>
 				</div>
 			</div>
