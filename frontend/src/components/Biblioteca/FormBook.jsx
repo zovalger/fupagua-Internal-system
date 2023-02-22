@@ -231,9 +231,9 @@ const FormBook = ({
 					type="file"
 					onChange={(e) => {
 						console.log(e.target.files);
-						setBookData({ ...bookData, imgExtras: e.target.files });
+						setBookData({ ...bookData, book_extra_img: e.target.files });
 					}}
-					name="imgExtras"
+					name="book_extra_img"
 					accept="image/*"
 					multiple
 				/>

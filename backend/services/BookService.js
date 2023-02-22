@@ -11,6 +11,7 @@ const {
 	DeleteInstaceImgFile_Book,
 	ImageSyncCloud,
 	ImageResizeAll,
+	markToDeleteImgFile,
 } = require("./ImageService");
 
 const createBook_Service = async (dataBook, portadaBook, imgExtrasBook) => {
@@ -167,31 +168,38 @@ const updateBook_Service = async (
 	try {
 		// * buscamos y actualizamos datos del libro
 		const book = await Book.findByPk(id, { include: { all: true } });
+
+		console.log("*****************************************************");
+		console.log(book);
+		console.log("*****************************************************");
+
 		await book.update(data);
 
+		console.log(data);
+
+		console.log("*****************************************************");
+		console.log(book);
+		console.log("*****************************************************");
+
 		if (portadaBook) {
-			if (book.portada) await DeleteInstaceImgFile_Book(book.portada.id);
+			if (book.portada) await markToDeleteImgFile(book.portada.id);
 
 			const portada = await ImgFile.create({
 				img_local_url_original: portadaBook.tempFilePath,
 			});
 
-			console.log(book.setBookportada);
 			await book.setPortada(portada);
-
-			// todo: optimizar la imagen
-
-			// const format = await ImgFileOptimiceAndFormate(portadaBook);
-			// await ImgFile.create({ ...format, portadaId: book.id });
 		}
 
 		// imagenes extra del libro
 
 		if (imgExtrasBook) {
-			if (book.imgExtras.length > 0)
-				await book.imgExtras.map(
-					async (img) => await DeleteInstaceImgFile_Book(img.id)
-				);
+			if (book.book_extra_img.length > 0) 
+			await book.book_extra_img.map(async (img) => {
+	
+
+				await markToDeleteImgFile(img.id);
+			});
 
 			const allExtraImg = [];
 			if (imgExtrasBook instanceof Array) {
@@ -211,7 +219,6 @@ const updateBook_Service = async (
 
 				allExtraImg.push(imginstace);
 			}
-			console.log(allExtraImg);
 			await book.setBook_extra_img(allExtraImg);
 		}
 
@@ -232,22 +239,21 @@ const deleteBook_Service = async (idBook) => {
 	try {
 		const book = await Book.findByPk(id, { include: { all: true } });
 
+		console.log(book);
+
 		if (!book) return null;
 
 		// eliminamos las imagenes
-		if (book.portada) await DeleteInstaceImgFile_Book(book.portada.id);
+		if (book.portada) await markToDeleteImgFile(book.portada.id);
 
 		//  eliminamos las imagenes extra
 
-		if (book.imgExtras.length > 0)
-			await book.imgExtras.map(
-				async (img) => await DeleteInstaceImgFile_Book(img.id)
-			);
+		if (book.book_extra_img.length > 0)
+			book.book_extra_img.map(async (i) => await markToDeleteImgFile(i.id));
 
-		console.log(await book.destroy());
+		await book.destroy();
 
 		return "elemento en eliminado";
-		// res.send("a Book move to trash");
 	} catch (error) {
 		console.log(error);
 

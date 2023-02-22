@@ -7,8 +7,45 @@ const {
 } = require("../services/BookService");
 
 const createBook_RouteController = async (req, res) => {
-	const data = req.body;
+	const {
+		title,
+		subtitle,
+		description,
+		cota,
+		autor,
+		editionDate,
+		city,
+		editors,
+		materia,
+		height,
+		numberCopies,
+		numberCopiesAvailable,
+		numberPages,
+		typeAdquisition,
+		observations,
+		collection,
+		type,
+	} = req.body;
 
+	const data = {
+		title,
+		subtitle,
+		description,
+		cota,
+		autor,
+		editionDate,
+		city,
+		editors,
+		materia,
+		height,
+		numberCopies,
+		numberCopiesAvailable,
+		numberPages,
+		typeAdquisition,
+		observations,
+		collection,
+		type,
+	};
 	let portada_Img = null,
 		extraImg_Img = null;
 
@@ -17,9 +54,9 @@ const createBook_RouteController = async (req, res) => {
 		// console.log(req.files);
 		// console.log("********************************************");
 
-		const { portada, imgExtras } = req.files;
+		const { portada, book_extra_img } = req.files;
 		portada_Img = portada ? portada : null;
-		extraImg_Img = imgExtras ? imgExtras : null;
+		extraImg_Img = book_extra_img ? book_extra_img : null;
 	}
 
 	try {
@@ -59,17 +96,53 @@ const getBook_RouteController = async (req, res) => {
 
 const updateBook_RouteController = async (req, res) => {
 	const { id } = req.params;
-	const data = req.body;
+	const {
+		title,
+		subtitle,
+		description,
+		cota,
+		autor,
+		editionDate,
+		city,
+		editors,
+		materia,
+		height,
+		numberCopies,
+		numberCopiesAvailable,
+		numberPages,
+		typeAdquisition,
+		observations,
+		collection,
+		type,
+	} = req.body;
+
+	const data = {
+		title,
+		subtitle,
+		description,
+		cota,
+		autor,
+		editionDate,
+		city,
+		editors,
+		materia,
+		height,
+		numberCopies,
+		numberCopiesAvailable,
+		numberPages,
+		typeAdquisition,
+		observations,
+		collection,
+		type,
+	};
 
 	let portada_Img = null,
 		extraImg_Img = null;
 
-	console.log(req.files);
-
 	if (req.files) {
-		const { portada, imgExtras } = req.files;
+		const { portada, book_extra_img } = req.files;
 		portada_Img = portada ? portada : null;
-		extraImg_Img = imgExtras ? imgExtras : null;
+		extraImg_Img = book_extra_img ? book_extra_img : null;
 	}
 
 	try {

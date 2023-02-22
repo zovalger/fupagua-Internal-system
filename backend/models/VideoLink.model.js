@@ -6,8 +6,8 @@ const VideoLink = db.define(
 	"videolink",
 	{
 		title: { type: DataTypes.STRING, allowNull: false },
-		description: DataTypes.STRING,
-		url: DataTypes.STRING,
+		description: {type: DataTypes.STRING, defaultValue:""},
+		url:{type: DataTypes.STRING,defaultValue:""},
 		status: { type: DataTypes.CHAR, defaultValue: "a" },
 	},
 	

@@ -42,14 +42,27 @@ const ImageResizeAll = async () => {
 		where: { img_local_url: "" },
 	});
 
+	console.log(imgs);
+
 	if (imgs.length <= 0) return;
 
 	await imgs.map(async (img) => {
 		const resize = await bookResizeImg(img.img_local_url_original, 350);
 
 		img.img_local_url = resize;
-		img.save();
+		await img.save();
 	});
+};
+
+// marcar para eliminar despues
+const markToDeleteImgFile = async (idImgFile) => {
+	try {
+		const imgFile = await ImgFile.findByPk(idImgFile);
+
+		await imgFile.update({ status: "d" });
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 const DeleteInstaceImgFile_Book = async (idImgFile) => {
@@ -124,6 +137,7 @@ const ImgFileOptimiceAndFormate = async (file) => {
 
 module.exports = {
 	ImageSyncCloud,
+	markToDeleteImgFile,
 	DeleteInstaceImgFile_Book,
 	ImgFileOptimiceAndFormate,
 	ImageResizeAll,

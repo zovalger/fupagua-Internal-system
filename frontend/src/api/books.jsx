@@ -9,15 +9,16 @@ export const createBookRequest = async (data) => {
 	for (const key in data) {
 		if (Object.hasOwnProperty.call(data, key)) {
 			const element = data[key];
+
 			form.append(key, element);
 		}
 	}
 
-	for (const key in data.imgExtras) {
-		if (Object.hasOwnProperty.call(data.imgExtras, key)) {
-			const f = data.imgExtras[key];
+	for (const key in data.book_extra_img) {
+		if (Object.hasOwnProperty.call(data.book_extra_img, key)) {
+			const f = data.book_extra_img[key];
 
-			form.append("imgExtras", f);
+			form.append("book_extra_img", f);
 		}
 	}
 
@@ -37,7 +38,6 @@ export const deleteBookRequest = async (id) =>
 export const updateBookRequest = async (id, data) => {
 	const form = new FormData();
 
-
 	for (const key in data) {
 		if (Object.hasOwnProperty.call(data, key)) {
 			const element = data[key];
@@ -45,11 +45,11 @@ export const updateBookRequest = async (id, data) => {
 		}
 	}
 
-	for (const key in data.imgExtras) {
-		if (Object.hasOwnProperty.call(data.imgExtras, key)) {
-			const f = data.imgExtras[key];
+	for (const key in data.book_extra_img) {
+		if (Object.hasOwnProperty.call(data.book_extra_img, key)) {
+			const f = data.book_extra_img[key];
 
-			form.append("imgExtras", f);
+			form.append("book_extra_img", f);
 		}
 	}
 	return await axios.put(`${url}/${id}`, form, {
