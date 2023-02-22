@@ -5,9 +5,11 @@ const ImgFile = require("./ImgFile.model");
 
 const FupaguaEmpleado = db.define("fupaguaempleado", {
 	name: { type: DataTypes.STRING, allowNull: false, default: "" },
+	ci: { type: DataTypes.STRING },
 	FPV: { type: DataTypes.STRING, default: "" },
 	email: { type: DataTypes.STRING, default: "" },
 	description: { type: DataTypes.STRING, default: "" },
+	status: { type: DataTypes.CHAR, defaultValue: "a" },
 });
 
 FupaguaEmpleado.belongsTo(FupaguaService);

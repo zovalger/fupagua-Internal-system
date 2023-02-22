@@ -1,4 +1,5 @@
 const { Op } = require("sequelize");
+const FupaguaEmpleado = require("../models/FupaguaEmpleado.model");
 const FupaguaService = require("../models/FupaguaService.model");
 const ImgFile = require("../models/ImgFile.model");
 const { ImageResizeAll, markToDeleteImgFile } = require("./ImageService");
@@ -7,22 +8,22 @@ const { ImageResizeAll, markToDeleteImgFile } = require("./ImageService");
 // 										adicion de un nuevo registro
 // ****************************************************************************
 
-const createFupaguaService_Service = async (
-	dataFupaguaService,
-	imgFupaguaService
+const createFupaguaEmpleado_Service = async (
+	dataFupaguaEmpleado,
+	imgFupaguaEmpleado
 ) => {
 	try {
-		const fupaguaservice = await FupaguaService.create(dataFupaguaService);
+		const fupaguaempleado = await FupaguaEmpleado.create(dataFupaguaEmpleado);
 
-		if (imgFupaguaService) {
+		if (imgFupaguaEmpleado) {
 			const imgfile = await ImgFile.create({
-				img_local_url_original: imgFupaguaService.tempFilePath,
+				img_local_url_original: imgFupaguaEmpleado.tempFilePath,
 			});
-			await fupaguaservice.setImgfile(imgfile);
+			await fupaguaempleado.setImgfile(imgfile);
 			await ImageResizeAll();
 		}
 
-		return fupaguaservice;
+		return fupaguaempleado;
 	} catch (error) {
 		console.log(error);
 		throw new Error(error);
@@ -33,15 +34,15 @@ const createFupaguaService_Service = async (
 // 										obtencion todos los registros añadidos
 // ****************************************************************************
 
-const getFupaguaServices_Service = async (query) => {
+const getFupaguaEmpleados_Service = async (query) => {
 	try {
 		// **************************** obtener todos los registros ****************************
-		const fupaguaservice = await FupaguaService.findAll({
+		const fupaguaempleado = await FupaguaEmpleado.findAll({
 			where: { status: "a" },
-			include: ImgFile,
+			include: [ImgFile, FupaguaService],
 		});
 
-		return fupaguaservice;
+		return fupaguaempleado;
 	} catch (error) {
 		console.log(error);
 		return error;
@@ -52,17 +53,17 @@ const getFupaguaServices_Service = async (query) => {
 // 										obtencion de un registro
 // ****************************************************************************
 
-const getFupaguaService_Service = async (fupaguaserviceId) => {
-	const id = fupaguaserviceId;
+const getFupaguaEmpleado_Service = async (fupaguaempleadoId) => {
+	const id = fupaguaempleadoId;
 
 	try {
-		const fupaguaservice = await FupaguaService.findByPk(id, {
-			include: ImgFile,
+		const fupaguaempleado = await FupaguaEmpleado.findByPk(id, {
+			include: [ImgFile, FupaguaService],
 		});
 
-		if (!fupaguaservice) return null;
+		if (!fupaguaempleado) return null;
 
-		return fupaguaservice;
+		return fupaguaempleado;
 	} catch (error) {
 		console.log(error);
 		return error;
@@ -73,34 +74,34 @@ const getFupaguaService_Service = async (fupaguaserviceId) => {
 // 										actualizacion del registro de un solo paciente
 // ****************************************************************************
 
-const updateFupaguaService_Service = async (
-	fupaguaserviceId,
-	dataFupaguaService,
-	imgFupaguaService
+const updateFupaguaEmpleado_Service = async (
+	fupaguaempleadoId,
+	dataFupaguaEmpleado,
+	imgFupaguaEmpleado
 ) => {
-	const data = dataFupaguaService;
-	const id = fupaguaserviceId;
+	const data = dataFupaguaEmpleado;
+	const id = fupaguaempleadoId;
 
 	try {
-		const fupaguaservice = await FupaguaService.findByPk(id);
+		const fupaguaempleado = await FupaguaEmpleado.findByPk(id);
 
-		await fupaguaservice.update(data);
+		await fupaguaempleado.update(data);
 
-		if (imgFupaguaService) {
-			if (fupaguaservice.imgfileId)
-				await markToDeleteImgFile(fupaguaservice.imgfileId);
+		if (imgFupaguaEmpleado) {
+			if (fupaguaempleado.imgfileId)
+				await markToDeleteImgFile(fupaguaempleado.imgfileId);
 
 			const imgfile = await ImgFile.create({
-				img_local_url_original: imgFupaguaService.tempFilePath,
+				img_local_url_original: imgFupaguaEmpleado.tempFilePath,
 			});
 
-			await fupaguaservice.setImgfile(imgfile);
+			await fupaguaempleado.setImgfile(imgfile);
 
 			// todo: hacer que el resize all sea en la corrutina de imagens
 			await ImageResizeAll();
 		}
 
-		return await fupaguaservice.reload();
+		return await fupaguaempleado.reload();
 	} catch (error) {
 		console.log(error);
 		return error;
@@ -114,28 +115,25 @@ const updateFupaguaService_Service = async (
 // la primera peticion marca como eliminado el registro
 // en la segunda consulta se eliminara permanentemente de la base de datos
 
-const deleteFupaguaService_Service = async (fupaguaserviceId) => {
-	const id = fupaguaserviceId;
+const deleteFupaguaEmpleado_Service = async (fupaguaempleadoId) => {
+	const id = fupaguaempleadoId;
 
-	const fupaguaservice = await FupaguaService.findByPk(id);
+	const fupaguaempleado = await FupaguaEmpleado.findByPk(id);
 
-	if (!fupaguaservice) return null;
+	if (!fupaguaempleado) return null;
 
-	if (fupaguaservice.status === "a") {
-		fupaguaservice.status = "d";
-		await fupaguaservice.save();
+	if (fupaguaempleado.status === "a")
+		return await fupaguaempleado.update({ status: "d" });
 
-		return fupaguaservice;
-	} else {
-		await fupaguaservice.destroy();
-		return { message: "eliminado" };
-	}
+	await fupaguaempleado.destroy();
+	
+	return { message: "eliminado" };
 };
 
 module.exports = {
-	createFupaguaService_Service,
-	getFupaguaService_Service,
-	getFupaguaServices_Service,
-	updateFupaguaService_Service,
-	deleteFupaguaService_Service,
+	createFupaguaEmpleado_Service,
+	getFupaguaEmpleado_Service,
+	getFupaguaEmpleados_Service,
+	updateFupaguaEmpleado_Service,
+	deleteFupaguaEmpleado_Service,
 };

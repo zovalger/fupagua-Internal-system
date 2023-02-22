@@ -1,37 +1,36 @@
-const FupaguaEmpleado = require("../models/FupaguaEmpleado.model");
-const FupaguaService = require("../models/FupaguaService.model");
 const {
-	createFupaguaService_Service,
-	getFupaguaServices_Service,
-	getFupaguaService_Service,
-	updateFupaguaService_Service,
-	deleteFupaguaService_Service,
+	createFupaguaEmpleado_Service,
+	getFupaguaEmpleados_Service,
+	getFupaguaEmpleado_Service,
+	updateFupaguaEmpleado_Service,
+	deleteFupaguaEmpleado_Service,
 	getCategories_Service,
-} = require("../services/FupaguaService_Service");
+} = require("../services/FupaguaEmpleado_Service");
 
 // ****************************************************************************
 // 										creacion de registro
 // ****************************************************************************
 
-const createFupaguaService_RouteController = async (req, res) => {
-	const { title, description } = req.body;
+const createFupaguaEmpleado_RouteController = async (req, res) => {
+	const { name, ci, FPV, email, description, fupaguaserviceId } = req.body;
 
 	let img = null;
 
 	try {
 		img = req.files.img;
 	} catch (error) {
+		console.log("*******************************************************");
+		console.log("no se proporciono imagen del empleado");
 		console.log(error);
 	}
 
-	
 	try {
-		const newFupaguaService = await createFupaguaService_Service(
-			{ title, description },
+		const newFupaguaEmpleado = await createFupaguaEmpleado_Service(
+			{ name, ci, FPV, email, description, fupaguaserviceId },
 			img
 		);
 
-		return res.json(newFupaguaService);
+		return res.json(newFupaguaEmpleado);
 	} catch (error) {
 		console.log(error);
 		return res.status(500).send(error);
@@ -42,10 +41,10 @@ const createFupaguaService_RouteController = async (req, res) => {
 // 										obtencion de varios paciente con busqueda incluida
 // ****************************************************************************
 
-const getFupaguaServices_RouteController = async (req, res) => {
+const getFupaguaEmpleados_RouteController = async (req, res) => {
 	try {
-		const fupaguaservice = await getFupaguaServices_Service(req.query);
-		return res.json(fupaguaservice);
+		const fupaguaempleado = await getFupaguaEmpleados_Service(req.query);
+		return res.json(fupaguaempleado);
 	} catch (error) {
 		res.status(500).send(error);
 		console.log(error);
@@ -56,14 +55,14 @@ const getFupaguaServices_RouteController = async (req, res) => {
 // 										obtencion de un solo paciente
 // ****************************************************************************
 
-const getFupaguaService_RouteController = async (req, res) => {
+const getFupaguaEmpleado_RouteController = async (req, res) => {
 	const { id } = req.params;
 	try {
-		const fupaguaservice = await getFupaguaService_Service(id);
+		const fupaguaempleado = await getFupaguaEmpleado_Service(id);
 
-		if (!fupaguaservice) return res.status(404).json({ message: "no found" });
+		if (!fupaguaempleado) return res.status(404).json({ message: "no found" });
 
-		res.json(fupaguaservice);
+		res.json(fupaguaempleado);
 	} catch (error) {
 		console.log(error);
 		res.status(500).send(error);
@@ -74,29 +73,31 @@ const getFupaguaService_RouteController = async (req, res) => {
 // 										actualizacion del registro de un solo paciente
 // ****************************************************************************
 
-const updateFupaguaService_RouteController = async (req, res) => {
+const updateFupaguaEmpleado_RouteController = async (req, res) => {
 	const { id } = req.params;
-	const { title, description } = req.body;
+	const { name, ci, FPV, email, description, fupaguaserviceId } = req.body;
 
 	let img = null;
 
 	try {
 		img = req.files.img;
 	} catch (error) {
+		console.log("*******************************************************");
+		console.log("no se proporciono imagen del empleado");
 		console.log(error);
 	}
 
 	try {
-		const updateFupaguaService = await updateFupaguaService_Service(
+		const updateFupaguaEmpleado = await updateFupaguaEmpleado_Service(
 			id,
-			{ title, description },
+			{ name, ci, FPV, email, description, fupaguaserviceId },
 			img
 		);
 
-		if (!updateFupaguaService)
+		if (!updateFupaguaEmpleado)
 			return res.status(404).json({ message: "not found" });
 
-		return res.json(updateFupaguaService);
+		return res.json(updateFupaguaEmpleado);
 	} catch (error) {
 		res.status(500).send(error);
 		console.log(error);
@@ -110,20 +111,20 @@ const updateFupaguaService_RouteController = async (req, res) => {
 // la primera peticion marca como eliminado el registro
 // en la segunda consulta se eliminara permanentemente de la base de datos
 
-const deleteFupaguaService_RouteController = async (req, res) => {
+const deleteFupaguaEmpleado_RouteController = async (req, res) => {
 	const { id } = req.params;
 
-	const fupaguaservice = await deleteFupaguaService_Service(id);
+	const fupaguaempleado = await deleteFupaguaEmpleado_Service(id);
 
-	if (!fupaguaservice) return res.status(404).json(fupaguaservice);
+	if (!fupaguaempleado) return res.status(404).json(fupaguaempleado);
 
-	return res.json(fupaguaservice);
+	return res.json(fupaguaempleado);
 };
 
 module.exports = {
-	createFupaguaService_RouteController,
-	getFupaguaServices_RouteController,
-	getFupaguaService_RouteController,
-	updateFupaguaService_RouteController,
-	deleteFupaguaService_RouteController,
+	createFupaguaEmpleado_RouteController,
+	getFupaguaEmpleados_RouteController,
+	getFupaguaEmpleado_RouteController,
+	updateFupaguaEmpleado_RouteController,
+	deleteFupaguaEmpleado_RouteController,
 };
