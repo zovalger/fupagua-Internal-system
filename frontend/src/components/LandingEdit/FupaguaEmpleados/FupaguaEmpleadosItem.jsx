@@ -1,12 +1,12 @@
-import styles from "./FupaguaServiceItem.module.scss";
+import styles from "./FupaguaEmpleadosItem.module.scss";
 import { useNavigate } from "react-router-dom";
 
-export function FupaguaServiceItem({ data }) {
+export function FupaguaEmpleadosItem({ data }) {
 	const navigate = useNavigate();
 
-	const { id, title, description, imgfile } = data;
+	const { id, name, ci, FPV, description, email, imgfile } = data;
 
-	const toEdit = () => navigate(`/landing-edit/servicios/${id}`);
+	const toEdit = () => navigate(`/landing-edit/empleados/${id}`);
 
 	return (
 		<div className={styles.container} onClick={toEdit}>
@@ -31,8 +31,11 @@ export function FupaguaServiceItem({ data }) {
 
 				<div className="col-lg-8 col-sm-12">
 					<div className="p-2">
-						<div>{title}</div>
-						<div className="small">{description}</div>
+						<div>{name}</div>
+						<div>{description}</div>
+						<div>{ci}</div>
+						<div>{FPV}</div>
+						<div>{email}</div>
 					</div>
 				</div>
 			</div>

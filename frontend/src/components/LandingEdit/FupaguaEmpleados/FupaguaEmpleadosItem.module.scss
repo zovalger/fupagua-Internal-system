@@ -1,0 +1,33 @@
+.container {
+	background: white;
+	border-radius: 0.7rem;
+	overflow: hidden;
+	// padding: 1rem;
+	// padding-top: 2rem;
+	position: relative;
+	margin-top: 0.5rem;
+}
+
+.image {
+	// background: gray;
+	display: inline-flex;
+	height: 100%;
+	width: 100%;
+
+	align-items: center;
+	justify-content: center;
+}
+
+// .btnEdit{
+//   position: absolute;
+//   width: 2rem;
+//   height: 2rem;
+//   display:  flex;
+//   justify-content: center;
+//   align-items: center;
+//   border: none;
+//   // background-color: none;
+
+//   right: 0 ;
+//   top: 0;
+// }

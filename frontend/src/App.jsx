@@ -18,6 +18,8 @@ import {
 	VideoLinkFormVideo,
 	FupaguaServiceList,
 	FupaguaServiceFormService,
+	FupaguaEmpleadosList,
+	FupaguaEmpleadosFormEmpleados,
 } from "./pages";
 
 import AsidePanelOptions from "./components/common/AsidePanelOption/AsidePanelOptions";
@@ -104,6 +106,22 @@ function App() {
 						<Route
 							path="/landing-edit/servicios/:id"
 							element={<FupaguaServiceFormService />}
+						/>
+
+						{/* *********************** Fupagua Servicios **************************/}
+
+						<Route
+							path="/landing-edit/empleados"
+							element={<FupaguaEmpleadosList />}
+						/>
+
+						<Route
+							path="/landing-edit/empleados/añadir"
+							element={<FupaguaEmpleadosFormEmpleados create={true} />}
+						/>
+						<Route
+							path="/landing-edit/empleados/:id"
+							element={<FupaguaEmpleadosFormEmpleados />}
 						/>
 
 						{/* <Route

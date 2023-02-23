@@ -8,6 +8,7 @@ import { BsCalendarWeek, BsPeopleFill } from "react-icons/bs";
 
 import { useAppData } from "../../context/AppContext";
 import { RiCustomerService2Line } from "react-icons/ri";
+import { GrUserWorker } from "react-icons/gr";
 
 export function LandingEditMain() {
 	const { toggleAsideActive } = useAppData();
@@ -33,6 +34,13 @@ export function LandingEditMain() {
 							<RiCustomerService2Line />
 						</div>
 						<div>Servicios</div>
+					</Link>
+
+					<Link to={`/landing-edit/empleados`}>
+						<div className="">
+							<GrUserWorker />
+						</div>
+						<div>Empleados</div>
 					</Link>
 				</div>
 			</div>

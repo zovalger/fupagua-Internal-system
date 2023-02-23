@@ -2,6 +2,7 @@ const { Op } = require("sequelize");
 const FupaguaService = require("../models/FupaguaService.model");
 const ImgFile = require("../models/ImgFile.model");
 const { ImageResizeAll, markToDeleteImgFile } = require("./ImageService");
+const { syncFupaguaService } = require("./SyncWithCloudServer");
 
 // ****************************************************************************
 // 										adicion de un nuevo registro
@@ -21,6 +22,8 @@ const createFupaguaService_Service = async (
 			await fupaguaservice.setImgfile(imgfile);
 			await ImageResizeAll();
 		}
+
+		await syncFupaguaService();
 
 		return fupaguaservice;
 	} catch (error) {
@@ -100,6 +103,8 @@ const updateFupaguaService_Service = async (
 			await ImageResizeAll();
 		}
 
+		await syncFupaguaService();
+
 		return await fupaguaservice.reload();
 	} catch (error) {
 		console.log(error);
@@ -124,6 +129,8 @@ const deleteFupaguaService_Service = async (fupaguaserviceId) => {
 	if (fupaguaservice.status === "a") {
 		fupaguaservice.status = "d";
 		await fupaguaservice.save();
+
+		await syncFupaguaService();
 
 		return fupaguaservice;
 	} else {

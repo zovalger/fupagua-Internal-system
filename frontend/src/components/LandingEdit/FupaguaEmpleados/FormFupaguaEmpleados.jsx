@@ -1,7 +1,7 @@
 import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
 
-import styles from "./FormFupaguaService.module.scss";
+import styles from "./FormFupaguaEmpleados.module.scss";
 
 import {
 	AiOutlineClose,
@@ -10,10 +10,11 @@ import {
 	AiOutlineSearch,
 } from "react-icons/ai";
 
-export function FormFupaguaService({
+export function FormFupaguaEmpleados({
 	create,
 	Data,
 	setData,
+	serviceList,
 	onSubmit,
 	onChange,
 	onDelete,
@@ -38,17 +39,70 @@ export function FormFupaguaService({
 			) : null}
 
 			<Form onSubmit={onSubmit} className="col-12">
+				<Form.Label>Servicio</Form.Label>
+
+				<Form.Select
+					onChange={onChange}
+					name="fupaguaserviceId"
+					value={Data.fupaguaserviceId}
+				>
+					<option value={null}>selecciones un servicio</option>
+
+					{serviceList.map((i) => (
+						<option value={i.id}>{i.title}</option>
+					))}
+				</Form.Select>
+
 				<Form.Group className="mb-1">
-					<Form.Label>titulo</Form.Label>
+					<Form.Label>Nombre</Form.Label>
 
 					<Form.Control
 						onChange={onChange}
 						type="text"
-						name="title"
-						placeholder="titulo"
-						value={Data.title}
+						name="name"
+						placeholder=""
+						value={Data.name}
 						autoComplete="none"
 						required
+					/>
+				</Form.Group>
+
+				<Form.Group className="mb-1">
+					<Form.Label>Cedula</Form.Label>
+
+					<Form.Control
+						onChange={onChange}
+						type="text"
+						name="ci"
+						placeholder=""
+						value={Data.ci}
+						autoComplete="none"
+					/>
+				</Form.Group>
+
+				<Form.Group className="mb-1">
+					<Form.Label>FPV</Form.Label>
+
+					<Form.Control
+						onChange={onChange}
+						type="text"
+						name="FPV"
+						placeholder=""
+						value={Data.FPV}
+						autoComplete="none"
+					/>
+				</Form.Group>
+
+				<Form.Group className="mb-1">
+					<Form.Label>Correo electronico</Form.Label>
+
+					<Form.Control
+						onChange={onChange}
+						type="text"
+						name="email"
+						placeholder=""
+						value={Data.email}
+						autoComplete="none"
 					/>
 				</Form.Group>
 
@@ -64,12 +118,12 @@ export function FormFupaguaService({
 						autoComplete="none"
 						maxLength={255}
 						as="textarea"
-						placeholder="descripcion"
+						placeholder=""
 					/>
 				</Form.Group>
 
 				<Form.Group controlId="formFile" className="">
-					<Form.Label>Icono</Form.Label>
+					<Form.Label>Imagen de perfil</Form.Label>
 					<Form.Control
 						type="file"
 						onChange={(e) => {
@@ -80,6 +134,7 @@ export function FormFupaguaService({
 						}}
 						name="img"
 						accept="image/*"
+						required
 						// placeholder="icono"
 					/>
 				</Form.Group>

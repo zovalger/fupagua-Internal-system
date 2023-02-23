@@ -22,3 +22,5 @@ export { FupaguaServiceList } from "./LandingEdit/FupaguaServicios/FupaguaServic
 export { FupaguaServiceFormService } from "./LandingEdit/FupaguaServicios/FupaguaServiceFormService";
 
 // empleados
+export { FupaguaEmpleadosList } from "./LandingEdit/FupaguaEmpleados/FupaguaEmpleadosList";
+export { FupaguaEmpleadosFormEmpleados } from "./LandingEdit/FupaguaEmpleados/FupaguaEmpleadosFormEmpleados";

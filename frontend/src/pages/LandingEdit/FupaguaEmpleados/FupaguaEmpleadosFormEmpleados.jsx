@@ -10,27 +10,38 @@ import {
 	createFupaguaServiceRequest,
 	deleteFupaguaServiceRequest,
 	getFupaguaServiceRequest,
+	getFupaguaServicesRequest,
 	updateFupaguaServiceRequest,
 } from "../../../api/fupaguaService";
+import { FormFupaguaEmpleados } from "../../../components/LandingEdit/FupaguaEmpleados/FormFupaguaEmpleados";
+import {
+	createFupaguaEmpleadoRequest,
+	deleteFupaguaEmpleadoRequest,
+	getFupaguaEmpleadoRequest,
+	updateFupaguaEmpleadoRequest,
+} from "../../../api/fupaguaEmpleado";
 
-export function FupaguaServiceFormService({ create }) {
+export function FupaguaEmpleadosFormEmpleados({ create }) {
 	const navigate = useNavigate();
 	const params = useParams();
 	const [isSubmiting, setIsSubmitin] = useState(false);
 
 	const [Data, setData] = useState({
-		title: "",
 		description: "",
 	});
 
+	const [serviceList, setServiceList] = useState([]);
+
 	const getData = async () => {
-		const res = await getFupaguaServiceRequest(params.id);
+		const res = await getFupaguaEmpleadoRequest(params.id);
 
 		setData(res.data);
 	};
 
 	useEffect(() => {
-		// si estamos en el modo crear no se ejecuta, si no buscamos los datos del registro
+		getFupaguaServicesRequest().then((resService) =>
+			setServiceList(resService.data)
+		);
 
 		if (create) return;
 
@@ -46,8 +57,8 @@ export function FupaguaServiceFormService({ create }) {
 
 		try {
 			const myPromise = create
-				? createFupaguaServiceRequest(body)
-				: updateFupaguaServiceRequest(params.id, body);
+				? createFupaguaEmpleadoRequest(body)
+				: updateFupaguaEmpleadoRequest(params.id, body);
 
 			console.log(myPromise);
 
@@ -57,7 +68,7 @@ export function FupaguaServiceFormService({ create }) {
 					console.log(res);
 
 					setTimeout(() => {
-						navigate("/landing-edit/servicios");
+						navigate("/landing-edit/empleados");
 					}, 500);
 
 					return create ? "Añadido correctamente" : "cambios guardados";
@@ -80,19 +91,19 @@ export function FupaguaServiceFormService({ create }) {
 		});
 
 	const onDelete = async () => {
-		if (!window.confirm("Seguro que quiere eliminar el libro?")) return;
+		if (!window.confirm("Seguro que quiere eliminar?")) return;
 
 		try {
 			// const d = confirm("esta seguro de elminar el libro?");
 
-			const myPromise = deleteFupaguaServiceRequest(params.id);
+			const myPromise = deleteFupaguaEmpleadoRequest(params.id);
 
 			toast.promise(myPromise, {
 				loading: "eliminando",
 				success: (res) => {
 					console.log(res);
 					setTimeout(() => {
-						navigate("/landing-edit/servicios");
+						navigate("/landing-edit/empleados");
 					}, 1000);
 					// navigate("/biblioteca");
 					return "Registro eliminado";
@@ -113,7 +124,7 @@ export function FupaguaServiceFormService({ create }) {
 			"seguro que quiere salir? se perderan todos los cambios realizados"
 		);
 
-		if (op) navigate("/landing-edit/servicios");
+		if (op) navigate("/landing-edit/empleados");
 	};
 
 	return (
@@ -121,7 +132,7 @@ export function FupaguaServiceFormService({ create }) {
 			<Nav
 				leftIcon={<BiChevronLeft />}
 				leftFuctionOnClick={onExit}
-				title={create ? "Añadir servicio" : "Editar servicio"}
+				title={create ? "Añadir Empleado" : "Editar Empleado"}
 				// rightButtons={
 
 				// }
@@ -131,11 +142,12 @@ export function FupaguaServiceFormService({ create }) {
 				<div className="container pt-2">
 					{/* {!create ? <BookImageSlider book={book} /> : null} */}
 
-					<FormFupaguaService
+					<FormFupaguaEmpleados
 						create={create}
 						// datos
 						Data={Data}
 						setData={setData}
+						serviceList={serviceList}
 						// metodos
 						onSubmit={onSubmit}
 						onChange={onChange}

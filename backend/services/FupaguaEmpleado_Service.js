@@ -3,6 +3,7 @@ const FupaguaEmpleado = require("../models/FupaguaEmpleado.model");
 const FupaguaService = require("../models/FupaguaService.model");
 const ImgFile = require("../models/ImgFile.model");
 const { ImageResizeAll, markToDeleteImgFile } = require("./ImageService");
+const { syncFupaguaService } = require("./SyncWithCloudServer");
 
 // ****************************************************************************
 // 										adicion de un nuevo registro
@@ -22,6 +23,8 @@ const createFupaguaEmpleado_Service = async (
 			await fupaguaempleado.setImgfile(imgfile);
 			await ImageResizeAll();
 		}
+
+		await syncFupaguaService();
 
 		return fupaguaempleado;
 	} catch (error) {
@@ -101,6 +104,8 @@ const updateFupaguaEmpleado_Service = async (
 			await ImageResizeAll();
 		}
 
+		await syncFupaguaService();
+
 		return await fupaguaempleado.reload();
 	} catch (error) {
 		console.log(error);
@@ -122,11 +127,14 @@ const deleteFupaguaEmpleado_Service = async (fupaguaempleadoId) => {
 
 	if (!fupaguaempleado) return null;
 
-	if (fupaguaempleado.status === "a")
+	if (fupaguaempleado.status === "a") {
+		await syncFupaguaService();
 		return await fupaguaempleado.update({ status: "d" });
+	}
 
+	await syncFupaguaService();
 	await fupaguaempleado.destroy();
-	
+
 	return { message: "eliminado" };
 };
 
