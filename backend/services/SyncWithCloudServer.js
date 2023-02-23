@@ -76,7 +76,7 @@ const verific = async () => {
 const syncFupaguaService = async () => {
 	console.log("syncFupaguaService");
 	const data = { CLOUD_PAGE_SECRET_CODE_SYNC };
-	const url = `${CLOUD_PAGE_URL}/api/sync/service`;
+	const url = `${CLOUD_PAGE_URL}/api/sync/fupaguaservice`;
 
 	const servicios = await verific();
 	if (!servicios) return console.log("no se envio");

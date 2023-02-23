@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { BiChevronLeft } from "react-icons/bi";
+
 import {
 	AiOutlinePlus,
 	AiOutlineSearch,
@@ -95,8 +97,10 @@ export function Biblioteca() {
 	return (
 		<>
 			<Nav
-				leftIcon={<RxHamburgerMenu />}
-				leftFuctionOnClick={toggleAsideActive}
+						leftIcon={<BiChevronLeft />}
+						leftFuctionOnClick={() => navigate("/")}
+				// leftIcon={<RxHamburgerMenu />}
+				// leftFuctionOnClick={toggleAsideActive}
 				title={
 					<>
 						<div>Biblioteca</div>

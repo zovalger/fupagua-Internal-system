@@ -11,9 +11,12 @@ import Nav from "../../components/common/Nav";
 import { PatientSeachForm } from "../../components/Patients/PatientSeachForm";
 import { PatientListItem } from "../../components/Patients/PatientListItem";
 import { getPatientsRequest } from "../../api/patients";
+import { BiChevronLeft } from "react-icons/bi";
 
 export function Patients() {
 	const { toggleAsideActive } = useAppData();
+	const navigate = useNavigate();
+
 	const [patients, setPatients] = useState([]);
 
 	const [patientsQuery, setPatientsQuery] = useState([]);
@@ -79,8 +82,10 @@ export function Patients() {
 	return (
 		<>
 			<Nav
-				leftIcon={<RxHamburgerMenu />}
-				leftFuctionOnClick={toggleAsideActive}
+						leftIcon={<BiChevronLeft />}
+						leftFuctionOnClick={() => navigate("/")}
+				// leftIcon={<RxHamburgerMenu />}
+				// leftFuctionOnClick={toggleAsideActive}
 				title={<div>Pacientes</div>}
 				rightButtons={
 					<>
