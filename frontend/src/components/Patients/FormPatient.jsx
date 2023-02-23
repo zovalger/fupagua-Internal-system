@@ -49,7 +49,7 @@ export function FormPatient({
 			</Form.Group>
 			{/* *********************       Cedula        ************************/}
 			<Form.Group className="mb-3" controlId="ci">
-				<Form.Label>Cedula</Form.Label>
+				<Form.Label>Cédula</Form.Label>
 				<Form.Control
 					onChange={onInputChangePatient}
 					type="number"
@@ -171,7 +171,7 @@ export function FormPatient({
 
 			{/* *********************   Numero de historia   ************************/}
 			<Form.Group className="mb-3" controlId="historyNumber">
-				<Form.Label>Numero de historia</Form.Label>
+				<Form.Label>Número de historia</Form.Label>
 				<Form.Control
 					onChange={async (e) => {
 						onInputChangePatient(e);
@@ -194,7 +194,7 @@ export function FormPatient({
 
 				{!historyNumberEnable ? (
 					<Form.Text className="text-muted clic">
-						este numero de historia ya esta asignado a otra persona
+						Este numero de historia ya esta asignado a otra persona
 					</Form.Text>
 				) : null}
 			</Form.Group>
@@ -208,7 +208,7 @@ export function FormPatient({
 			{/* *********************       Cedula        ************************/}
 
 			<Form.Group className="my-3" controlId="ci-r">
-				<Form.Label>Cedula</Form.Label>
+				<Form.Label>Cédula</Form.Label>
 				<Form.Control
 					onChange={(e) => {
 						onInputChangeRepresentative(e);
@@ -259,7 +259,7 @@ export function FormPatient({
 					type="text"
 					name="name"
 					value={representativeData.name}
-					placeholder="nombre y apellidos"
+					placeholder="Nombre y apellidos"
 					autoComplete="none"
 					list="nameSugerido"
 					required
@@ -309,7 +309,7 @@ export function FormPatient({
 			{/* *********************  edad ************************/}
 
 			<Form.Group className="mb-3" controlId="age-r">
-				<Form.Label>edad</Form.Label>
+				<Form.Label>Edad</Form.Label>
 				<Form.Control
 					onChange={onInputChangeRepresentative}
 					type="number"
@@ -324,7 +324,7 @@ export function FormPatient({
 			{/* *********************  numero de telefono ************************/}
 
 			<Form.Group className="mb-3" controlId="phoneNumber">
-				<Form.Label>Numero de telefono</Form.Label>
+				<Form.Label>Número de teléfono</Form.Label>
 				<Form.Control
 					onChange={onInputChangeRepresentative}
 					type="text"
@@ -339,7 +339,7 @@ export function FormPatient({
 			{/* *********************  email ************************/}
 
 			<Form.Group className="mb-3" controlId="email">
-				<Form.Label>Correo electronico</Form.Label>
+				<Form.Label>Correo electrónico</Form.Label>
 				<Form.Control
 					onChange={onInputChangeRepresentative}
 					type="email"

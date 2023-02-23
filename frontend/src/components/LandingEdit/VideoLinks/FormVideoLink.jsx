@@ -43,7 +43,7 @@ export function FormVideoLink({
 					onChange={onChangeVideoData}
 					type="text"
 					name="url"
-					placeholder="link de youtube"
+					placeholder="Link de youtube"
 					value={videolinkData.url}
 					autoComplete="none"
 					required
@@ -56,7 +56,7 @@ export function FormVideoLink({
 						onChange={onChangeVideoData}
 						type="text"
 						name="title"
-						placeholder="titulo"
+						placeholder="Título"
 						value={videolinkData.title}
 						autoComplete="none"
 						required
@@ -85,7 +85,7 @@ export function FormVideoLink({
 						autoComplete="none"
 						maxLength={255}
 						as="textarea"
-						placeholder="descripcion"
+						placeholder="Descripción"
 					/>
 				</Form.Group>
 

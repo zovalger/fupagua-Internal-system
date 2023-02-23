@@ -34,7 +34,7 @@ export function HomePage() {
 			url: "/pacientes",
 		},
 		{
-			name: "Editor Pagina",
+			name: "Editor Página",
 			icon: <RiPagesLine />,
 			url: "/landing-edit",
 		},

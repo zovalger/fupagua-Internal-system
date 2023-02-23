@@ -39,13 +39,13 @@ export function FormFupaguaService({
 
 			<Form onSubmit={onSubmit} className="col-12">
 				<Form.Group className="mb-1">
-					<Form.Label>titulo</Form.Label>
+					<Form.Label>Título</Form.Label>
 
 					<Form.Control
 						onChange={onChange}
 						type="text"
 						name="title"
-						placeholder="titulo"
+						placeholder=""
 						value={Data.title}
 						autoComplete="none"
 						required
@@ -53,7 +53,7 @@ export function FormFupaguaService({
 				</Form.Group>
 
 				<Form.Group className="mt-1">
-					<Form.Label>descripcion</Form.Label>
+					<Form.Label>Descripción</Form.Label>
 
 					<Form.Control
 						onChange={onChange}
@@ -64,7 +64,7 @@ export function FormFupaguaService({
 						autoComplete="none"
 						maxLength={255}
 						as="textarea"
-						placeholder="descripcion"
+						placeholder=""
 					/>
 				</Form.Group>
 

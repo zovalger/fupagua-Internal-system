@@ -7,6 +7,7 @@ const { syncVideolinks } = require("./SyncWithCloudServer");
 // 										adicion de un nuevo registro
 // ****************************************************************************
 
+
 const createVideoLink_Service = async (dataVideoLink, dataCategory) => {
 	try {
 		const videolink = await VideoLink.create(dataVideoLink);

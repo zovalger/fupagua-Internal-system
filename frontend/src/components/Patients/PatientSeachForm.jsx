@@ -58,7 +58,7 @@ export function PatientSeachForm({ makeQuery, setInQuery, onClearValue }) {
 				<Form.Check
 					type="checkbox"
 					id={`defaultcheck`}
-					label={`Numero de historia`}
+					label={`Número de historia`}
 					checked={numH}
 					onChange={() => {
 						setNumH(!numH);

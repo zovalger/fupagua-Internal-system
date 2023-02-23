@@ -111,18 +111,18 @@ export function BibliotecaBook() {
 								</Campo>
 
 								<Campo
-									title="tipo de adquisicion"
+									title="Tipo de adquisicion"
 									validation={book.typeAdquisition}
 								>
 									{book.typeAdquisition}
 								</Campo>
 
-								<Campo title="observaciones" validation={book.observations}>
+								<Campo title="Observaciones" validation={book.observations}>
 									{book.observations}
 								</Campo>
 
 								<Campo
-									title="Número de paginas"
+									title="Número de páginas"
 									validation={typeof book.numberPages === "number"}
 								>
 									{book.numberPages}

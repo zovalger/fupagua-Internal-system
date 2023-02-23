@@ -68,7 +68,7 @@ export function FormFupaguaEmpleados({
 				</Form.Group>
 
 				<Form.Group className="mb-1">
-					<Form.Label>Cedula</Form.Label>
+					<Form.Label>Cédula</Form.Label>
 
 					<Form.Control
 						onChange={onChange}
@@ -94,7 +94,7 @@ export function FormFupaguaEmpleados({
 				</Form.Group>
 
 				<Form.Group className="mb-1">
-					<Form.Label>Correo electronico</Form.Label>
+					<Form.Label>Correo electrónico</Form.Label>
 
 					<Form.Control
 						onChange={onChange}
@@ -107,7 +107,7 @@ export function FormFupaguaEmpleados({
 				</Form.Group>
 
 				<Form.Group className="mt-1">
-					<Form.Label>descripcion</Form.Label>
+					<Form.Label>Descripción</Form.Label>
 
 					<Form.Control
 						onChange={onChange}

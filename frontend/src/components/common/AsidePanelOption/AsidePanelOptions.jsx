@@ -20,7 +20,7 @@ function AsidePanelOptions() {
 		{},
 
 		{
-			name: "inicio",
+			name: "Inicio",
 			icon: <IoHomeOutline />,
 			url: "/",
 		},
@@ -51,7 +51,7 @@ function AsidePanelOptions() {
 		{},
 
 		{
-			name: "Editor Pagina",
+			name: "Editor Página",
 			icon: <RiPagesLine />,
 			url: "/landing-edit",
 		},

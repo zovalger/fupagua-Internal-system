@@ -32,7 +32,7 @@ const FormBook = ({
 			***************************************************************** */}
 
 			<Form.Group className="mb-3" controlId="title">
-				<Form.Label>Titulo</Form.Label>
+				<Form.Label>Título</Form.Label>
 				<Form.Control
 					onChange={onInputChange}
 					type="text"
@@ -44,7 +44,7 @@ const FormBook = ({
 			</Form.Group>
 
 			<Form.Group className="mb-3" controlId="subtitle">
-				<Form.Label>Subtitulo</Form.Label>
+				<Form.Label>Subtítulo</Form.Label>
 				<Form.Control
 					onChange={onInputChange}
 					type="text"
@@ -68,7 +68,7 @@ const FormBook = ({
 			<Form.Group className="mb-3" controlId="cota">
 				<Form.Label>
 					{bookData.type !== "book" && bookData.type !== "audiobook"
-						? "Numero"
+						? "Número"
 						: "Cota"}
 				</Form.Label>
 				<Form.Control
@@ -84,7 +84,7 @@ const FormBook = ({
 				<Form.Label>
 					{bookData.type !== "book" || bookData.type !== "audiobook"
 						? "Año"
-						: "Fecha de edicion"}
+						: "Fecha de edición"}
 				</Form.Label>
 				<Form.Control
 					onChange={onInputChange}
@@ -144,7 +144,7 @@ const FormBook = ({
 			</Form.Group>
 
 			<Form.Group className="mb-3" controlId="numberPages">
-				<Form.Label> Numero de paginas</Form.Label>
+				<Form.Label> Número de páginas</Form.Label>
 				<Form.Control
 					onChange={onInputChange}
 					type="number"
@@ -154,7 +154,7 @@ const FormBook = ({
 				/>
 			</Form.Group>
 			<Form.Group className="mb-3" controlId="numberCopies">
-				<Form.Label> Numero de ejemplares</Form.Label>
+				<Form.Label> Número de ejemplares</Form.Label>
 				<Form.Control
 					onChange={onInputChange}
 					type="number"
@@ -174,7 +174,7 @@ const FormBook = ({
 				/>
 			</Form.Group>
 			<Form.Group className="mb-3" controlId="collection">
-				<Form.Label>Coleccion</Form.Label>
+				<Form.Label>Colección</Form.Label>
 				<Form.Control
 					onChange={onInputChange}
 					type="text"
@@ -195,7 +195,7 @@ const FormBook = ({
 			</Form.Group>
 
 			<Form.Group className="mb-3" controlId="description">
-				<Form.Label>Descripcion</Form.Label>
+				<Form.Label>Descripción</Form.Label>
 				<Form.Control
 					onChange={onInputChange}
 					name="description"

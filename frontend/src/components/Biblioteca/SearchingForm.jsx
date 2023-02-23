@@ -97,11 +97,11 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 	return (
 		<form className={styles.container} onSubmit={onsubmit}>
 			<div>
-				<div>{!avanzado ? "buscar" : "titulo"}</div>
+				<div>{!avanzado ? "Buscar" : "Título"}</div>
 				<input
 					name="title"
 					type="text"
-					placeholder={!avanzado ? "buscar" : "titulo"}
+					placeholder={!avanzado ? "Buscar" : "Título"}
 					onChange={onInputChange}
 					autoComplete="none"
 					value={query.title}
@@ -115,12 +115,12 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 				<span>Ordenar por</span>
 
 				<select name="sortBy" onChange={SortByOnChange} value={sortBy}>
-					<option value="title">titulo</option>
-					<option value="subtitle">subtitulo</option>
-					<option value="description">descripcion</option>
-					<option value="cota">cota</option>
-					<option value="autor">autor</option>
-					<option value="materia">materia</option>
+					<option value="title">Título</option>
+					<option value="subtitle">Subtítulo</option>
+					<option value="description">Descripción</option>
+					<option value="cota">Cota</option>
+					<option value="autor">Autor</option>
+					<option value="materia">Materia</option>
 				</select>
 
 				<span>Tipo</span>
@@ -148,38 +148,38 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 			<div
 				className={`${styles.extraInputs} ${!avanzado ? "" : styles.active}`}
 			>
-				<div>subtitulo</div>
+				<div>Subtítulo</div>
 				<input
 					name="subtitle"
 					type="search"
-					placeholder="subtitle"
+					placeholder=""
 					onChange={onInputChange}
 					autoComplete="none"
 					value={query.subtitle}
 				/>
 
-				<div>descripcion</div>
+				<div>Descripción</div>
 				<input
 					name="description"
 					type="search"
-					placeholder="description"
+					placeholder=""
 					onChange={onInputChange}
 					autoComplete="none"
 					value={query.description}
 				/>
 
-				<div>cota</div>
+				<div>Cota</div>
 
 				<input
 					name="cota"
 					type="search"
-					placeholder="cota"
+					placeholder=""
 					onChange={onInputChange}
 					autoComplete="none"
 					value={query.cota}
 				/>
 
-				<div>autor</div>
+				<div>Autor</div>
 
 				<input
 					name="autor"
@@ -189,11 +189,11 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 					autoComplete="none"
 					value={query.autor}
 				/>
-				<div>materia</div>
+				<div>Materia</div>
 				<input
 					name="materia"
 					type="search"
-					placeholder="materia"
+					placeholder=""
 					onChange={onInputChange}
 					autoComplete="none"
 					value={query.subtitle}
