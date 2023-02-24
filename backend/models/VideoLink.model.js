@@ -9,26 +9,7 @@ const VideoLink = db.define(
 		description: {type: DataTypes.STRING, defaultValue:""},
 		url:{type: DataTypes.STRING,defaultValue:""},
 		status: { type: DataTypes.CHAR, defaultValue: "a" },
-	},
-	
-	{
-		setterMethods: {
-			// name(value) {
-			//   this.setDataValue("name", value.trim());
-			// },
-			// ci(value) {
-			//   if (!value) return;
-			//   this.setDataValue("ci", value.trim());
-			// },
-			// dateBirth(value) {
-			//   if (!value) return;
-			//   this.setDataValue("dateBirth", value.trim());
-			// },
-			// school(value) {
-			//   if (!value) return;
-			//   this.setDataValue("school", value.trim());
-			// },
-		},
+		syncCloud: {type:DataTypes.BOOLEAN, defaultValue:false}
 	}
 );
 

@@ -1,11 +1,16 @@
 export { HomePage } from "./HomePage";
+
+// agenda
 export { Agenda } from "./Agenda";
 export { AgendaActivity } from "./AgendaActivity";
+
+// biblioteca
 export { Biblioteca } from "./Biblioteca/Biblioteca";
 export { BibliotecaFormBook } from "./Biblioteca/BibliotecaFormBook";
 export { BibliotecaFichaPrint } from "./Biblioteca/BibliotecaFichaPrint";
 export { BibliotecaBook } from "./Biblioteca/BibliotecaBook";
 
+// pacientes
 export { Patients } from "./Patients/Patients";
 export { PatientsFormPatient } from "./Patients/PatientsFormPatient";
 export { PatientsDetails } from "./Patients/PatientsDetails";
@@ -24,3 +29,7 @@ export { FupaguaServiceFormService } from "./LandingEdit/FupaguaServicios/Fupagu
 // empleados
 export { FupaguaEmpleadosList } from "./LandingEdit/FupaguaEmpleados/FupaguaEmpleadosList";
 export { FupaguaEmpleadosFormEmpleados } from "./LandingEdit/FupaguaEmpleados/FupaguaEmpleadosFormEmpleados";
+
+// libros recomendados
+export { BookRecommendedFormBook } from "./LandingEdit/BookRecommended/BookRecommendedFormBook";
+export { BookRecommendedList } from "./LandingEdit/BookRecommended/BookRecommendedList";

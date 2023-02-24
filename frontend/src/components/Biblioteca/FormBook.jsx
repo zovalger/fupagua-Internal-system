@@ -14,31 +14,7 @@ const FormBook = ({
 	onInputFichaChange,
 	deleteBook,
 }) => {
-	const d = bookData.duration.split(":");
 
-	{ h: d[0], m: d[1], s: d[2] }
-
-	console.log(d);
-
-	const [duration, setDuration] = useState(
-		{}
-	);
-
-	const durationChange = ({ target: { name, value } }) => {
-		let v = duration;
-
-		v = { ...duration, [name]: value };
-
-		setDuration(v);
-
-		const { h, m, s } = v;
-
-		const t = `${h ? h : 0}:${m ? m : 0}:${s ? s : 0}`;
-
-		console.log(t);
-
-		setBookData({ ...bookData, duration: t });
-	};
 
 	return (
 		<Form onSubmit={onSubmit}>
@@ -179,29 +155,29 @@ const FormBook = ({
 					<InputGroup className="mb-3">
 						<Form.Control
 							className=""
-							onChange={durationChange}
+							onChange={onInputChange}
 							type="number"
 							name="h"
-							value={duration.h}
+							value={bookData.h}
 							autoComplete="none"
 						/>
 						<InputGroup.Text>H</InputGroup.Text>
 						<Form.Control
 							className=""
-							onChange={durationChange}
+							onChange={onInputChange}
 							type="number"
 							name="m"
-							value={duration.m}
+							value={bookData.m}
 							autoComplete="none"
 						/>
 						<InputGroup.Text>M</InputGroup.Text>
 
 						<Form.Control
 							className=""
-							onChange={durationChange}
+							onChange={onInputChange}
 							type="number"
 							name="s"
-							value={duration.s}
+							value={bookData.s}
 							autoComplete="none"
 						/>
 						<InputGroup.Text>S</InputGroup.Text>

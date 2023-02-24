@@ -20,6 +20,8 @@ import {
 	FupaguaServiceFormService,
 	FupaguaEmpleadosList,
 	FupaguaEmpleadosFormEmpleados,
+	BookRecommendedList,
+	BookRecommendedFormBook,
 } from "./pages";
 
 import AsidePanelOptions from "./components/common/AsidePanelOption/AsidePanelOptions";
@@ -92,8 +94,8 @@ function App() {
 							path="/landing-edit/videos/:id"
 							element={<VideoLinkFormVideo />}
 						/>
-						{/* *********************** Fupagua Servicios **************************/}
 
+						{/* *********************** Fupagua Servicios **************************/}
 						<Route
 							path="/landing-edit/servicios"
 							element={<FupaguaServiceList />}
@@ -109,7 +111,6 @@ function App() {
 						/>
 
 						{/* *********************** Fupagua Servicios **************************/}
-
 						<Route
 							path="/landing-edit/empleados"
 							element={<FupaguaEmpleadosList />}
@@ -122,6 +123,21 @@ function App() {
 						<Route
 							path="/landing-edit/empleados/:id"
 							element={<FupaguaEmpleadosFormEmpleados />}
+						/>
+
+						{/* *********************** libros_recomendados **************************/}
+						<Route
+							path="/landing-edit/libros_recomendados"
+							element={<BookRecommendedList />}
+						/>
+
+						<Route
+							path="/landing-edit/libros_recomendados/añadir"
+							element={<BookRecommendedFormBook create={true} />}
+						/>
+						<Route
+							path="/landing-edit/libros_recomendados/:id"
+							element={<BookRecommendedFormBook />}
 						/>
 
 						{/* <Route

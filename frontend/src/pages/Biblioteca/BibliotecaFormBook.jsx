@@ -34,6 +34,9 @@ export function BibliotecaFormBook({ create }) {
 		materia: "",
 		height: 0,
 		duration: "0:0:0",
+		h: 0,
+		m: 0,
+		s: 0,
 
 		typeAdquisition: "",
 		observations: "",
@@ -56,6 +59,12 @@ export function BibliotecaFormBook({ create }) {
 		const fillInputs = async () => {
 			const res = await getBookRequest(params.id);
 
+			const d = res.data.duration.split(":");
+
+			res.data.h = d[0];
+			res.data.m = d[1];
+			res.data.s = d[2];
+
 			setBookData(res.data);
 			setFichaData(res.data.bookfichas);
 		};
@@ -76,6 +85,10 @@ export function BibliotecaFormBook({ create }) {
 		if (isSubmiting) return;
 
 		setIsSubmitin(true);
+
+		// transformamos las horas en un string
+		const t = `${book.h}:${book.m}:${book.s}`;
+		book.duration = t;
 
 		try {
 			const myPromise = create ? createBookRequest(book) : savePutDataBook();
@@ -163,7 +176,7 @@ export function BibliotecaFormBook({ create }) {
 									"seguro que quiere salir? se perderan todos los cambios realizados"
 								)
 							)
-								navigate("/biblioteca");
+								navigate(create ? "/biblioteca" : `/biblioteca/${params.id}`);
 						}}
 					>
 						<BiChevronLeft />

@@ -9,7 +9,7 @@ import { BsCalendarWeek, BsPeopleFill } from "react-icons/bs";
 import { useAppData } from "../../context/AppContext";
 import { RiCustomerService2Line } from "react-icons/ri";
 import { GrUserWorker } from "react-icons/gr";
-import { AiOutlineYoutube } from "react-icons/ai";
+import { AiOutlineBook, AiOutlineYoutube } from "react-icons/ai";
 import { BiChevronLeft } from "react-icons/bi";
 
 export function LandingEditMain() {
@@ -28,6 +28,14 @@ export function LandingEditMain() {
 			icon: <GrUserWorker />,
 			url: "/landing-edit/empleados",
 		},
+		{
+			name: "Libros Recomendados",
+			icon: <AiOutlineBook />,
+			url: "/landing-edit/libros_recomendados",
+		},
+
+
+		
 	];
 	return (
 		<>

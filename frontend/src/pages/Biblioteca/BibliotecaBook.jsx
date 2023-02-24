@@ -111,7 +111,7 @@ export function BibliotecaBook() {
 								</Campo>
 
 								<Campo
-									title="Tipo de adquisicion"
+									title="Tipo de adquisición"
 									validation={book.typeAdquisition}
 								>
 									{book.typeAdquisition}
@@ -121,12 +121,20 @@ export function BibliotecaBook() {
 									{book.observations}
 								</Campo>
 
-								<Campo
-									title="Número de páginas"
-									validation={typeof book.numberPages === "number"}
-								>
-									{book.numberPages}
-								</Campo>
+								{book.type === "audiobook" ||
+								book.type === "video" ||
+								book.type === "fonoteca" ? (
+									<Campo title="Duración" validation={true}>
+										{book.duration}
+									</Campo>
+								) : (
+									<Campo
+										title="Número de páginas"
+										validation={typeof book.numberPages === "number"}
+									>
+										{book.numberPages}
+									</Campo>
+								)}
 
 								<Campo
 									title="Número de ejemplares"

@@ -10,6 +10,8 @@ const FupaguaEmpleado = db.define("fupaguaempleado", {
 	email: { type: DataTypes.STRING, default: "" },
 	description: { type: DataTypes.STRING, default: "" },
 	status: { type: DataTypes.CHAR, defaultValue: "a" },
+	syncCloud: {type:DataTypes.BOOLEAN, defaultValue:false}
+
 });
 
 FupaguaEmpleado.belongsTo(FupaguaService);

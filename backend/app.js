@@ -21,6 +21,7 @@ const utilityRoute = require("./routes/utility.route");
 const videolinkRoute = require("./routes/videoLink.route");
 const FupaguaServiceRoute = require("./routes/fupaguaService.route");
 const FupaguaEmpleadoRoute = require("./routes/fupaguaEmpleado.route");
+const BookRecommendedRoute = require("./routes/bookRecommended.route");
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use("/api/bookficha", bookFichaRoute);
 app.use("/api/videolink", videolinkRoute);
 app.use("/api/fupaguaservice", FupaguaServiceRoute);
 app.use("/api/fupaguaempleados", FupaguaEmpleadoRoute);
+app.use("/api/book_recommended", BookRecommendedRoute);
 
 app.use("/api/utility", utilityRoute);
 

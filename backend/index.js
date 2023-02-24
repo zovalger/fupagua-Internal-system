@@ -16,8 +16,10 @@ const conectToDataBase = async () => {
 		console.log("conexion exitosa a la base de datos");
 
 		if (NODE_ENV === "development") {
-			await db.sync({ alter: true, force: true });
-			await Seed();
+			await db.sync();
+
+			// await db.sync({ alter: true, force: true });
+			// await Seed();
 			// await backupRestore();
 		}
 
@@ -25,7 +27,6 @@ const conectToDataBase = async () => {
 
 		// setInterval(() => backupAll(), 1000 * 60 * 10);
 		setInterval(() => ImageSyncCloud(), 30000);
-
 
 		console.log(`servidor en el puerto: ${PORT}`);
 	} catch (error) {
