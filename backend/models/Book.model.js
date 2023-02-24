@@ -24,6 +24,7 @@ const Book = db.define(
 		numberCopiesAvailable: { type: DataTypes.INTEGER, defaultValue: 1 },
 
 		numberPages: { type: DataTypes.INTEGER, defaultValue: 1 },
+		duration: { type: DataTypes.STRING, defaultValue: "0:0:0" },
 
 		typeAdquisition: { type: DataTypes.STRING, defaultValue: "" },
 		observations: { type: DataTypes.STRING, defaultValue: "" },
@@ -70,7 +71,7 @@ const Book = db.define(
 // });
 
 Book.belongsTo(ImgFile, {
-as:'portada',
+	as: "portada",
 	foreignKey: {
 		name: "portadaId",
 		// allowNull: false,
@@ -79,7 +80,7 @@ as:'portada',
 });
 
 ImgFile.hasOne(Book, {
-	as:'portada',
+	as: "portada",
 
 	foreignKey: {
 		name: "portadaId",

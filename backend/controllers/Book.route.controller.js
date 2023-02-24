@@ -25,6 +25,7 @@ const createBook_RouteController = async (req, res) => {
 		observations,
 		collection,
 		type,
+		duration
 	} = req.body;
 
 	const data = {
@@ -45,6 +46,7 @@ const createBook_RouteController = async (req, res) => {
 		observations,
 		collection,
 		type,
+		duration
 	};
 	
 	let portada_Img = null,
@@ -115,6 +117,7 @@ const updateBook_RouteController = async (req, res) => {
 		observations,
 		collection,
 		type,
+		duration
 	} = req.body;
 
 	const data = {
@@ -135,6 +138,7 @@ const updateBook_RouteController = async (req, res) => {
 		observations,
 		collection,
 		type,
+		duration
 	};
 
 	let portada_Img = null,

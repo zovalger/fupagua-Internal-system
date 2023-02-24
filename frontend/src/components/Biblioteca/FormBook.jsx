@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -13,6 +14,32 @@ const FormBook = ({
 	onInputFichaChange,
 	deleteBook,
 }) => {
+	const d = bookData.duration.split(":");
+
+	{ h: d[0], m: d[1], s: d[2] }
+
+	console.log(d);
+
+	const [duration, setDuration] = useState(
+		{}
+	);
+
+	const durationChange = ({ target: { name, value } }) => {
+		let v = duration;
+
+		v = { ...duration, [name]: value };
+
+		setDuration(v);
+
+		const { h, m, s } = v;
+
+		const t = `${h ? h : 0}:${m ? m : 0}:${s ? s : 0}`;
+
+		console.log(t);
+
+		setBookData({ ...bookData, duration: t });
+	};
+
 	return (
 		<Form onSubmit={onSubmit}>
 			<Form.Group className="my-3" controlId="formBasicEmail">
@@ -143,16 +170,56 @@ const FormBook = ({
 				</InputGroup>
 			</Form.Group>
 
-			<Form.Group className="mb-3" controlId="numberPages">
-				<Form.Label> Número de páginas</Form.Label>
-				<Form.Control
-					onChange={onInputChange}
-					type="number"
-					name="numberPages"
-					value={bookData.numberPages}
-					autoComplete="none"
-				/>
-			</Form.Group>
+			{bookData.type === "audiobook" ||
+			bookData.type === "video" ||
+			bookData.type === "fonoteca" ? (
+				<Form.Group className="mb-3" controlId="height">
+					<Form.Label>Duración</Form.Label>
+
+					<InputGroup className="mb-3">
+						<Form.Control
+							className=""
+							onChange={durationChange}
+							type="number"
+							name="h"
+							value={duration.h}
+							autoComplete="none"
+						/>
+						<InputGroup.Text>H</InputGroup.Text>
+						<Form.Control
+							className=""
+							onChange={durationChange}
+							type="number"
+							name="m"
+							value={duration.m}
+							autoComplete="none"
+						/>
+						<InputGroup.Text>M</InputGroup.Text>
+
+						<Form.Control
+							className=""
+							onChange={durationChange}
+							type="number"
+							name="s"
+							value={duration.s}
+							autoComplete="none"
+						/>
+						<InputGroup.Text>S</InputGroup.Text>
+					</InputGroup>
+				</Form.Group>
+			) : (
+				<Form.Group className="mb-3" controlId="numberPages">
+					<Form.Label> Número de páginas</Form.Label>
+					<Form.Control
+						onChange={onInputChange}
+						type="number"
+						name="numberPages"
+						value={bookData.numberPages}
+						autoComplete="none"
+					/>
+				</Form.Group>
+			)}
+
 			<Form.Group className="mb-3" controlId="numberCopies">
 				<Form.Label> Número de ejemplares</Form.Label>
 				<Form.Control
@@ -184,6 +251,7 @@ const FormBook = ({
 					autoComplete="none"
 				/>
 			</Form.Group>
+
 			<Form.Group className="mb-3" controlId="observations">
 				<Form.Label>Observaciones</Form.Label>
 				<Form.Control

@@ -33,6 +33,7 @@ export function BibliotecaFormBook({ create }) {
 		editors: "",
 		materia: "",
 		height: 0,
+		duration: "0:0:0",
 
 		typeAdquisition: "",
 		observations: "",
