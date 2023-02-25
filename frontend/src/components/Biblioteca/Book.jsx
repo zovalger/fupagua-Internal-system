@@ -1,10 +1,10 @@
 import styles from "./Book.module.scss";
 
-export default function Book({ dataBook }) {
+export default function Book({ dataBook, onClick }) {
 	const { title, subtitle, autor, description, cota, portada } = dataBook;
 
 	return (
-		<div className={styles.container}>
+		<div className={styles.container} onClick={onClick}>
 			<div className={styles.imgContainer}>
 				<img
 					src={

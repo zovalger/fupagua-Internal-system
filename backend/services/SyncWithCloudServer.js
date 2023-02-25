@@ -40,95 +40,104 @@ const syncVideolinks = async () => {
 };
 
 const verific = async () => {
-	let enviar = true;
-	const servicios = await FupaguaService.findAll({
-		where: { status: "a" },
-		include: [ImgFile, FupaguaEmpleado],
-	});
+	try {
+		let enviar = true;
+		const servicios = await FupaguaService.findAll({
+			where: { status: "a" },
+			include: [ImgFile, FupaguaEmpleado],
+		});
 
-	await Promise.all(
-		servicios.map(async (service) => {
-			if (!service.imgfile) return;
+		await Promise.all(
+			servicios.map(async (service) => {
+				if (!service.imgfile) return;
 
-			if (!service.imgfile.img_cloudinary_url) return (enviar = false);
+				if (!service.imgfile.img_cloudinary_url) return (enviar = false);
 
-			await Promise.all(
-				service.fupaguaempleados.map(async (e) => {
-					const empleado = await FupaguaEmpleado.findByPk(e.id, {
-						include: ImgFile,
-					});
+				await Promise.all(
+					service.fupaguaempleados.map(async (e) => {
+						const empleado = await FupaguaEmpleado.findByPk(e.id, {
+							include: ImgFile,
+						});
 
-					if (!empleado.imgfile) return;
+						if (!empleado.imgfile) return;
 
-					if (!empleado.imgfile.img_cloudinary_url) return (enviar = false);
-				})
-			);
-		})
-	);
+						if (!empleado.imgfile.img_cloudinary_url) return (enviar = false);
+					})
+				);
+			})
+		);
 
-	if (!enviar)
-		setTimeout(async () => {
-			await syncFupaguaService();
-		}, 3000);
+		if (!enviar)
+			setTimeout(async () => {
+				await syncFupaguaService();
+			}, 3000);
 
-	return enviar ? servicios : false;
+		return enviar ? servicios : false;
+	} catch (error) {
+		console.log(error);
+	}
 };
+
 const syncFupaguaService = async () => {
-	console.log("syncFupaguaService");
-	const data = { CLOUD_PAGE_SECRET_CODE_SYNC };
-	const url = `${CLOUD_PAGE_URL}/api/sync/fupaguaservice`;
+	try {
+		console.log("syncFupaguaService");
+		const data = { CLOUD_PAGE_SECRET_CODE_SYNC };
+		const url = `${CLOUD_PAGE_URL}/api/sync/fupaguaservice`;
 
-	const servicios = await verific();
-	if (!servicios) return console.log("no se envio");
+		const servicios = await verific();
+		if (!servicios) return console.log("no se envio");
 
-	data.Services = await Promise.all(
-		servicios.map(async (service) => {
-			const { id, title, description, imgfile, fupaguaempleados } = service;
+		data.Services = await Promise.all(
+			servicios.map(async (service) => {
+				const { id, title, description, imgfile, fupaguaempleados } = service;
 
-			const empleados = await Promise.all(
-				fupaguaempleados.map(async (e) => {
-					const empleado = await FupaguaEmpleado.findByPk(e.id, {
-						include: ImgFile,
-					});
-					const {
-						id: ide,
-						name,
-						FPV,
-						description: dese,
-						email,
-						imgfile: imgf,
-					} = empleado;
+				const empleados = await Promise.all(
+					fupaguaempleados.map(async (e) => {
+						const empleado = await FupaguaEmpleado.findByPk(e.id, {
+							include: ImgFile,
+						});
+						const {
+							id: ide,
+							name,
+							FPV,
+							description: dese,
+							email,
+							imgfile: imgf,
+						} = empleado;
 
-					return {
-						id: ide,
-						name,
-						FPV,
-						description: dese,
-						email,
-						img: imgf ? imgf.img_cloudinary_url : "",
-					};
-				})
-			);
+						return {
+							id: ide,
+							name,
+							FPV,
+							description: dese,
+							email,
+							img: imgf ? imgf.img_cloudinary_url : "",
+						};
+					})
+				);
 
-			return {
-				id,
-				title,
-				description,
-				img: imgfile ? imgfile.img_cloudinary_url : "",
-				empleados,
-			};
-		})
-	);
+				return {
+					id,
+					title,
+					description,
+					img: imgfile ? imgfile.img_cloudinary_url : "",
+					empleados,
+				};
+			})
+		);
 
-	console.log("se estan enviando los datos");
+		console.log("se estan enviando los datos");
 
-	console.log(data);
+		console.log(data);
 
-	console.log(JSON.stringify(data));
-	if (!CLOUD_PAGE_URL) return;
+		console.log(JSON.stringify(data));
+		if (!CLOUD_PAGE_URL) return;
 
-	console.log(data);
-	await axios.post(url, data);
+		console.log(data);
+		await axios.post(url, data);
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 module.exports = {

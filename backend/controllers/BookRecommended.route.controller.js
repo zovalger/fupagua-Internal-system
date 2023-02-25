@@ -83,12 +83,12 @@ const getCategories_RouteController = async (req, res) => {
 
 const updateBookRecommended_RouteController = async (req, res) => {
 	const { id } = req.params;
-	const { bookrecommended, category } = req.body;
+	const { bookId, category } = req.body;
 
 	try {
 		const updateBookRecommended = await updateBookRecommended_Service(
 			id,
-			bookrecommended,
+			{ bookId },
 			category
 		);
 

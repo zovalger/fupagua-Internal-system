@@ -63,7 +63,7 @@ export function BookRecommendedList() {
 			const { response: res } = error;
 
 			if (res.status === 404)
-				return toast.error(res.data.message, { duration: 2000 });
+				return toast.error(res.data.message, { duration: 5 });
 		}
 	};
 
@@ -93,7 +93,7 @@ export function BookRecommendedList() {
 			/>
 
 			<div className="scrollInSpacework">
-				<div className="container">
+				<div className="container pt-2">
 					{/* <PatientSeachForm
 						makeQuery={findData}
 						setInQuery={setInQuery}

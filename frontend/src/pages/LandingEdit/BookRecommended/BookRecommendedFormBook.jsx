@@ -14,33 +14,47 @@ import {
 } from "../../../api/videoLinks";
 
 import { FormVideoLink } from "../../../components/LandingEdit/VideoLinks/FormVideoLink";
+import { FormBookRecommended } from "../../../components/LandingEdit/BookRecommended/FormBookRecommended";
+import {
+	createBookRecommendedRequest,
+	deleteBookRecommendedRequest,
+	getBookRecommendedCategoriesRequest,
+	getBookRecommendedRequest,
+	updateBookRecommendedRequest,
+} from "../../../api/bookRecommended";
+import { BookRecommendedSelectBook } from "../../../components/LandingEdit/BookRecommended/BookRecommendedSelectBook";
 
 export function BookRecommendedFormBook({ create }) {
 	const navigate = useNavigate();
 	const params = useParams();
-	const [isSubmiting, setIsSubmitin] = useState(false);
 
-	const [categoriesList, setCategoriesList] = useState([]);
+	// datos principales
+	const [data, setData] = useState({});
+	const [book, setBook] = useState({});
 	const [categoryData, setCategoryData] = useState("");
-	const [videolinkData, setVideolinkData] = useState({
-		title: "",
-		description: "",
-		url: "",
-	});
+
+	// datos logicos
+	const [isSubmiting, setIsSubmitin] = useState(false);
+	const [categoriesList, setCategoriesList] = useState([]);
+	const [selectingBook, setSelectingBook] = useState(false);
 
 	const getData = async () => {
-		const res = await getVideoLinkRequest(params.id);
+		const res = await getBookRecommendedRequest(params.id);
+		console.log(res);
 
-		const { title, description, url, categoryvideo } = res.data;
+		const { book, bookrecommendedcategory } = res.data;
 
-		setVideolinkData({ title, description, url });
-		setCategoryData(categoryvideo.title);
+		// setData({ title, description, url });
+
+		setBook(book);
+		setCategoryData(bookrecommendedcategory.title);
 	};
 
 	useEffect(() => {
 		// si estamos en el modo crear no se ejecuta, si no buscamos los datos del registro
 		(async () => {
-			const resCategoriesList = await getVideoLinkCategoriesRequest();
+			const resCategoriesList = await getBookRecommendedCategoriesRequest();
+			console.log(resCategoriesList);
 			setCategoriesList(resCategoriesList.data.map((c) => c.title));
 		})();
 
@@ -55,13 +69,14 @@ export function BookRecommendedFormBook({ create }) {
 		setIsSubmitin(true);
 
 		const body = {};
-		body.videolink = videolinkData;
+
+		body.bookId = book.id;
 		body.category = categoryData;
 
 		try {
 			const myPromise = create
-				? createVideoLinkRequest(body)
-				: updateVideoLinkRequest(params.id, body);
+				? createBookRecommendedRequest(body)
+				: updateBookRecommendedRequest(params.id, body);
 
 			console.log(myPromise);
 
@@ -71,7 +86,7 @@ export function BookRecommendedFormBook({ create }) {
 					console.log(res);
 
 					setTimeout(() => {
-						navigate("/landing-edit/videos");
+						navigate("/landing-edit/libros_recomendados");
 					}, 500);
 
 					return create ? "Añadido correctamente" : "cambios guardados";
@@ -87,26 +102,20 @@ export function BookRecommendedFormBook({ create }) {
 		}
 	};
 
-	const onChangeVideoData = ({ target: { name, value } }) =>
-		setVideolinkData({
-			...videolinkData,
-			[name]: value,
-		});
-
 	const deleteItem = async () => {
 		if (!window.confirm("Seguro que quiere eliminar el libro?")) return;
 
 		try {
 			// const d = confirm("esta seguro de elminar el libro?");
 
-			const myPromise = deleteVideoLinkRequest(params.id);
+			const myPromise = deleteBookRecommendedRequest(params.id);
 
 			toast.promise(myPromise, {
 				loading: "eliminando",
 				success: (res) => {
 					console.log(res);
 					setTimeout(() => {
-						navigate("/landing-edit/videos");
+						navigate("/landing-edit/libros_recomendados");
 					}, 1000);
 					// navigate("/biblioteca");
 					return "Registro eliminado";
@@ -123,11 +132,23 @@ export function BookRecommendedFormBook({ create }) {
 	};
 
 	const onExit = () => {
+		if (selectingBook) return openSearchBook(false);
+
 		const op = window.confirm(
 			"seguro que quiere salir? se perderan todos los cambios realizados"
 		);
 
-		if (op) navigate("/landing-edit/videos");
+		if (op) navigate("/landing-edit/libros_recomendados");
+	};
+
+	const openSearchBook = (open) => {
+		setSelectingBook(open ? open : !selectingBook);
+	};
+
+	const onClickBook = (bookData) => {
+		openSearchBook(false);
+		setBook(bookData);
+		console.log(`click en el libro ${bookData.id}`);
 	};
 
 	return (
@@ -135,29 +156,45 @@ export function BookRecommendedFormBook({ create }) {
 			<Nav
 				leftIcon={<BiChevronLeft />}
 				leftFuctionOnClick={onExit}
-				title={create ? "Añadir video" : "Editar video"}
+				title={
+					selectingBook ? (
+						<>
+							<div>Biblioteca</div>
+							<div>"Juana Milano de Diaz"</div>
+						</>
+					) : create ? (
+						"Añadir libro recomendado"
+					) : (
+						"Editar libro recomendado"
+					)
+				}
 				// rightButtons={
 
 				// }
 			/>
 
 			<div className="scrollInSpacework">
-				<div className="container">
+				<div className="container pt-2">
 					{/* {!create ? <BookImageSlider book={book} /> : null} */}
 
-					<FormVideoLink
-						create={create}
-						// datos
-						videolinkData={videolinkData}
-						categoryData={categoryData}
-						categoriesList={categoriesList}
-						// metodos
-						onSubmit={onSubmit}
-						onChangeVideoData={onChangeVideoData}
-						setCategoryData={setCategoryData}
-						deleteItem={deleteItem}
-						onExit={onExit}
-					/>
+					{!selectingBook ? (
+						<FormBookRecommended
+							create={create}
+							// datos
+
+							categoryData={categoryData}
+							categoriesList={categoriesList}
+							// metodos
+							book={book}
+							openSearchBook={openSearchBook}
+							onSubmit={onSubmit}
+							setCategoryData={setCategoryData}
+							deleteItem={deleteItem}
+							onExit={onExit}
+						/>
+					) : (
+						<BookRecommendedSelectBook onClickBook={onClickBook} />
+					)}
 				</div>
 			</div>
 		</>

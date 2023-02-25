@@ -69,9 +69,10 @@ const getCategories_Service = async (query) => {
 	try {
 		// **************************** obtener todos los registros ****************************
 		const categories = await BookRecommendedCategory.findAll({
-			include: [BookRecommendedCategory, Book],
+			include: [BookRecommended],
 		});
 
+		// console.log( caterogi);
 		return categories.map((c) => {
 			if (c.bookrecommendeds.length > 0) return c;
 		});
@@ -92,13 +93,12 @@ const getBookRecommended_Service = async (bookrecommendedId) => {
 		const bookrecommended = await BookRecommended.findByPk(id, {
 			include: [BookRecommendedCategory],
 		});
+		if (!bookrecommended) return null;
 
-		const tosend = JSON.parse(JSON.stringify(b));
-		tosend.book = await getBook_Service(b.bookId);
+		const tosend = JSON.parse(JSON.stringify(bookrecommended));
+		tosend.book = await getBook_Service(bookrecommended.bookId);
 
 		console.log(tosend);
-
-		if (!bookrecommended) return null;
 
 		return tosend;
 	} catch (error) {
