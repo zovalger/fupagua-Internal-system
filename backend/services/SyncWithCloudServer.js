@@ -166,7 +166,7 @@ const syncBook_and_RecommendedBook = async () => {
 			include: [BookRecommendedCategory],
 		});
 
-		let books = await Book.findAll({
+		const books = await Book.findAll({
 			where: { status: "a" },
 			include: [
 				{ model: ImgFile, as: "portada" },
@@ -174,9 +174,9 @@ const syncBook_and_RecommendedBook = async () => {
 			],
 		});
 
-		books = JSON.parse(JSON.stringify(books));
+		booksPlane = JSON.parse(JSON.stringify(books));
 
-		data.books = await books.map((book) => {
+		data.books = await booksPlane.map((book) => {
 			// anadir los atributos category y recommended
 			recommended.map(({ bookId, bookrecommendedcategory }) => {
 				if (bookId != book.id) return;
@@ -198,7 +198,15 @@ const syncBook_and_RecommendedBook = async () => {
 		if (!CLOUD_PAGE_URL) return;
 
 		console.log(data);
-		await axios.post(url, data);
+
+		const res = await axios.post(url, data);
+
+		if (res.data.success) return;
+
+		// todo: cambiar por una consulta de actualizacion
+		await Promise.all(
+			books.map(async (book) => await book.update({ syncCloud: true }))
+		);
 
 		console.log("libros sincronizados");
 	} catch (error) {

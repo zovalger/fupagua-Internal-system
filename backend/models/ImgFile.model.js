@@ -10,6 +10,7 @@ const ImgFile = db.define(
 		img_local_url_original: { type: DataTypes.STRING, defaultValue: "" },
 		img_public_id: { type: DataTypes.STRING, defaultValue: "" },
 		img_cloudinary_url: { type: DataTypes.STRING, defaultValue: "" },
+		// a: activo t:papelera d:eliminado
 		status: { type: DataTypes.CHAR, defaultValue: "a" },
 	},
 	{

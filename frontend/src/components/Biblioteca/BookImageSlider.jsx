@@ -5,8 +5,6 @@ import Carousel from "react-bootstrap/Carousel";
 const BookImageSlider = ({ book }) => {
 	let { portada, book_extra_img } = book;
 
-	
-
 	if (!portada) return;
 	if (!portada.img_local_url_original) return;
 

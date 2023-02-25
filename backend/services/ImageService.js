@@ -61,11 +61,11 @@ const ImageResizeAll = async () => {
 };
 
 // marcar para eliminar despues
-const markToDeleteImgFile = async (idImgFile) => {
+const markToDeleteImgFile = async (idImgFile, noTrash) => {
 	try {
 		const imgFile = await ImgFile.findByPk(idImgFile);
 
-		await imgFile.update({ status: "d" });
+		await imgFile.update({ status: noTrash ? "d" : "t" });
 	} catch (error) {
 		console.log(error);
 	}
@@ -73,6 +73,7 @@ const markToDeleteImgFile = async (idImgFile) => {
 
 const deleteImgFileProcess = async (imgfile) => {
 	const { img_public_id, img_local_url, img_local_url_original } = imgfile;
+	console.log(`eliminando imagen ${img_local_url_original}`);
 	try {
 		// * eliminar imagen de cloudinary
 		if (img_public_id) await deleteImage(img_public_id);
@@ -97,7 +98,7 @@ const deleteImgFile = async (id) => {
 };
 
 const deleteAllImgFileInTrash = async () => {
-	const imgs = await ImgFile.findAll({ where: { status: "b" } });
+	const imgs = await ImgFile.findAll({ where: { status: "d" } });
 	await Promise.all(imgs.map(async (img) => await deleteImgFileProcess(img)));
 };
 

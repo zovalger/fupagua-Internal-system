@@ -8,6 +8,7 @@ const { syncFupaguaService } = require("./SyncWithCloudServer");
 // 										adicion de un nuevo registro
 // ****************************************************************************
 
+
 const createFupaguaService_Service = async (
 	dataFupaguaService,
 	imgFupaguaService
