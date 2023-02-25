@@ -36,6 +36,11 @@ const Book = db.define(
 		// img_local_url: { type: DataTypes.STRING, defaultValue: "" },
 
 		type: { type: DataTypes.STRING, allowNull: false, defaultValue: "book" },
+
+		status: { type: DataTypes.CHAR, defaultValue: "a" },
+
+		syncCloud: {type:DataTypes.BOOLEAN, defaultValue:false}
+
 	},
 	{
 		setterMethods: {

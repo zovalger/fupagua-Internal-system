@@ -9,6 +9,7 @@ const { PORT, NODE_ENV } = require("./config");
 const db = require("./db");
 const Seed = require("./utils/seed");
 const { ImageSyncCloud } = require("./services/ImageService");
+const corrutineSecundPlane = require("./services/SubServices_server");
 
 const conectToDataBase = async () => {
 	try {
@@ -16,7 +17,7 @@ const conectToDataBase = async () => {
 		console.log("conexion exitosa a la base de datos");
 
 		if (NODE_ENV === "development") {
-			await db.sync();
+			// await db.sync();
 
 			// await db.sync({ alter: true, force: true });
 			// await Seed();
@@ -26,7 +27,9 @@ const conectToDataBase = async () => {
 		app.listen(PORT);
 
 		// setInterval(() => backupAll(), 1000 * 60 * 10);
-		setInterval(() => ImageSyncCloud(), 30000);
+
+
+		setInterval(() => corrutineSecundPlane(), 30000);
 
 		console.log(`servidor en el puerto: ${PORT}`);
 	} catch (error) {

@@ -3,7 +3,9 @@ import styles from "./BookImageSlider.module.scss";
 import Carousel from "react-bootstrap/Carousel";
 
 const BookImageSlider = ({ book }) => {
-	const { portada, book_extra_img } = book;
+	let { portada, book_extra_img } = book;
+
+	
 
 	if (!portada) return;
 	if (!portada.img_local_url_original) return;

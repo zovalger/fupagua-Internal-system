@@ -2,7 +2,7 @@ const { Op } = require("sequelize");
 const FupaguaEmpleado = require("../models/FupaguaEmpleado.model");
 const FupaguaService = require("../models/FupaguaService.model");
 const ImgFile = require("../models/ImgFile.model");
-const { ImageResizeAll, markToDeleteImgFile } = require("./ImageService");
+const { markToDeleteImgFile } = require("./ImageService");
 const { syncFupaguaService } = require("./SyncWithCloudServer");
 
 // ****************************************************************************
@@ -21,7 +21,6 @@ const createFupaguaEmpleado_Service = async (
 				img_local_url_original: imgFupaguaEmpleado.tempFilePath,
 			});
 			await fupaguaempleado.setImgfile(imgfile);
-			await ImageResizeAll();
 		}
 
 		await syncFupaguaService();
@@ -99,9 +98,6 @@ const updateFupaguaEmpleado_Service = async (
 			});
 
 			await fupaguaempleado.setImgfile(imgfile);
-
-			// todo: hacer que el resize all sea en la corrutina de imagens
-			await ImageResizeAll();
 		}
 
 		await syncFupaguaService();

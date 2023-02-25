@@ -3,16 +3,8 @@ const { uploadImage, deleteImage } = require("../libs/cloudinary");
 const Book = require("../models/Book.model");
 const BookFicha = require("../models/BookFicha.model");
 const ImgFile = require("../models/ImgFile.model");
-const { bookResizeImg } = require("../utils/helperImg");
 const { createBookFicha_Service } = require("./BookFichaService");
-const {
-	ImageAndOptimizationSync,
-	ImgFileOptimiceAndFormate,
-	DeleteInstaceImgFile_Book,
-	ImageSyncCloud,
-	ImageResizeAll,
-	markToDeleteImgFile,
-} = require("./ImageService");
+const { markToDeleteImgFile } = require("./ImageService");
 
 const createBook_Service = async (dataBook, portadaBook, imgExtrasBook) => {
 	// console.log(dataBook);
@@ -80,8 +72,6 @@ const createBook_Service = async (dataBook, portadaBook, imgExtrasBook) => {
 			console.log(allExtraImg);
 			await book.setBook_extra_img(allExtraImg);
 		}
-
-		await ImageResizeAll();
 
 		return await book.reload({ include: { all: true } });
 	} catch (error) {
@@ -194,12 +184,10 @@ const updateBook_Service = async (
 		// imagenes extra del libro
 
 		if (imgExtrasBook) {
-			if (book.book_extra_img.length > 0) 
-			await book.book_extra_img.map(async (img) => {
-	
-
-				await markToDeleteImgFile(img.id);
-			});
+			if (book.book_extra_img.length > 0)
+				await book.book_extra_img.map(async (img) => {
+					await markToDeleteImgFile(img.id);
+				});
 
 			const allExtraImg = [];
 			if (imgExtrasBook instanceof Array) {
@@ -221,10 +209,6 @@ const updateBook_Service = async (
 			}
 			await book.setBook_extra_img(allExtraImg);
 		}
-
-		await ImageResizeAll();
-
-		// setTimeout(() => ImageSyncCloud(), 3000);
 
 		return book;
 	} catch (error) {

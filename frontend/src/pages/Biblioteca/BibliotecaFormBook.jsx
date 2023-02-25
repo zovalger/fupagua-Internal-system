@@ -65,6 +65,8 @@ export function BibliotecaFormBook({ create }) {
 			res.data.m = d[1];
 			res.data.s = d[2];
 
+			res.data.book_extra_img = res.data.book_extra_img.reverse();
+
 			setBookData(res.data);
 			setFichaData(res.data.bookfichas);
 		};
@@ -89,6 +91,8 @@ export function BibliotecaFormBook({ create }) {
 		// transformamos las horas en un string
 		const t = `${book.h}:${book.m}:${book.s}`;
 		book.duration = t;
+
+		// book.book_extra_img = book.book_extra_img.reverse();
 
 		try {
 			const myPromise = create ? createBookRequest(book) : savePutDataBook();

@@ -25,6 +25,9 @@ export function BibliotecaBook() {
 			toast.dismiss(toastId);
 
 			console.log(res);
+
+			res.data.book_extra_img = res.data.book_extra_img.reverse();
+
 			setBook(res.data);
 		};
 

@@ -9,49 +9,55 @@ const ImageSyncCloud = async () => {
 	const imgs = await ImgFile.findAll({
 		where: {
 			img_public_id: "",
+			status: "a",
 			[Op.or]: [{ img_local_url: { [Op.ne]: "" } }],
 		},
 	});
 
 	if (imgs.length <= 0) return;
+	console.log("sync de imagenes iniciada");
 
-	for (let index = 0; index < imgs.length; index++) {
-		const img = imgs[index];
-		setTimeout(async () => {
+	await Promise.all(
+		imgs.map(async (img) => {
 			try {
 				const result = await uploadImage(img.img_local_url);
 
 				console.log(result);
 				const { public_id, secure_url } = result;
-				img.img_cloudinary_url = secure_url;
-				img.img_public_id = public_id;
 
-				await img.save();
+				await img.update({
+					img_cloudinary_url: secure_url,
+					img_public_id: public_id,
+				});
+
+				console.log(`imagen "${img.img_local_url}" subida a cloudinary`);
 			} catch (error) {
 				console.log("error al subir imagen");
 				console.log(error);
 			}
-		}, 1000 * (index + 1));
-	}
+		})
+	);
 
-	console.log("sync de imagenes iniciada");
+	console.log("sync de imagenes terminada ");
 };
 
 const ImageResizeAll = async () => {
 	const imgs = await ImgFile.findAll({
-		where: { img_local_url: "" },
+		where: { img_local_url: "", status: "a" },
 	});
 
 	console.log(imgs);
 
 	if (imgs.length <= 0) return;
 
-	await imgs.map(async (img) => {
-		const resize = await bookResizeImg(img.img_local_url_original, 350);
-
-		img.img_local_url = resize;
-		await img.save();
-	});
+	await Promise.all(
+		imgs.map(
+			async (img) =>
+				await img.update({
+					img_local_url: await bookResizeImg(img.img_local_url_original, 350),
+				})
+		)
+	);
 };
 
 // marcar para eliminar despues
@@ -65,80 +71,40 @@ const markToDeleteImgFile = async (idImgFile) => {
 	}
 };
 
-const DeleteInstaceImgFile_Book = async (idImgFile) => {
-	const imgFile = await ImgFile.findByPk(idImgFile);
-
-	// * eliminar imagen de cloudinary
+const deleteImgFileProcess = async (imgfile) => {
+	const { img_public_id, img_local_url, img_local_url_original } = imgfile;
 	try {
-		await deleteImage(imgFile.img_public_id);
-	} catch (error) {
-		console.log("error al eliminar imagen en cloudinary");
-		console.log(error);
-	}
+		// * eliminar imagen de cloudinary
+		if (img_public_id) await deleteImage(img_public_id);
 
-	// * eliminar imagen local
-	try {
-		if (imgFile.img_local_url) await fs.remove(imgFile.img_local_url);
+		// * eliminar imagen local
+		if (img_local_url) await fs.remove(imgfile.img_local_url);
 
-		if (imgFile.img_local_url_original)
-			await fs.remove(imgFile.img_local_url_original);
-	} catch (error) {
-		console.log("error al eliminar una imagen local");
-		console.log(error);
-	}
+		if (img_local_url_original) await fs.remove(imgfile.img_local_url_original);
 
-	// * eliminar registro de la base de datos
-	try {
-		await imgFile.destroy();
+		// * eliminar registro de la base de datos
+		await imgfile.destroy();
 	} catch (error) {
+		console.log("error al eliminar ImgFile");
 		console.log(error);
 	}
 };
 
-const ImgFileOptimiceAndFormate = async (file) => {
-	const imgFormat = {};
+const deleteImgFile = async (id) => {
+	const imgfile = await ImgFile.findByPk(id);
 
-	imgFormat.img_local_url_original = file.tempFilePath;
+	await deleteImgFileProcess(imgfile);
+};
 
-	// compirmir imagen
-
-	try {
-		imgFormat.img_local_url = await bookResizeImg(
-			imgFormat.img_local_url_original,
-			350
-		);
-	} catch (error) {
-		console.log("error al comprimir la imagen");
-		console.log(error);
-	}
-
-	// subir imagen
-
-	// try {
-	// 	if (!imgFormat.img_public_id) {
-	// 		const result = await uploadImage(imgFormat.img_local_url);
-
-	// 		// console.log(result);
-
-	// 		const { public_id, secure_url } = result;
-
-	// 		imgFormat.img_cloudinary_url = secure_url;
-	// 		imgFormat.img_public_id = public_id;
-	// 	}
-	// } catch (error) {
-	// 	console.log("error al subir imagen");
-	// 	console.log(error);
-	// }
-
-	// devolver formato para imagefile
-
-	return imgFormat;
+const deleteAllImgFileInTrash = async () => {
+	const imgs = await ImgFile.findAll({ where: { status: "b" } });
+	await Promise.all(imgs.map(async (img) => await deleteImgFileProcess(img)));
 };
 
 module.exports = {
 	ImageSyncCloud,
 	markToDeleteImgFile,
-	DeleteInstaceImgFile_Book,
-	ImgFileOptimiceAndFormate,
 	ImageResizeAll,
+	deleteImgFile,
+	deleteAllImgFileInTrash,
 };

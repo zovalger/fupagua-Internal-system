@@ -1,5 +1,8 @@
 const axios = require("axios");
 const { CLOUD_PAGE_URL, CLOUD_PAGE_SECRET_CODE_SYNC } = require("../config");
+const Book = require("../models/Book.model");
+const BookRecommended = require("../models/BookRecommended.model");
+const BookRecommendedCategory = require("../models/BookRecommendedCategory.model");
 const FupaguaEmpleado = require("../models/FupaguaEmpleado.model");
 const FupaguaService = require("../models/FupaguaService.model");
 const ImgFile = require("../models/ImgFile.model");
@@ -11,6 +14,14 @@ const syncVideolinks = async () => {
 	const url = `${CLOUD_PAGE_URL}/api/sync/videolink`;
 
 	try {
+		const noSubmited = await VideoLink.findAll({
+			where: { status: "a", syncCloud: false },
+		});
+
+		if (noSubmited.length <= 0) return;
+
+		console.log("iniciando las sincronizacion de Videolinks");
+
 		const videolinks = await VideoLink.findAll({
 			where: { status: "a" },
 			include: CategoryVideo,
@@ -32,50 +43,53 @@ const syncVideolinks = async () => {
 		if (!CLOUD_PAGE_URL) return;
 
 		console.log(data);
-		// todo: poner url de la pagina
 		await axios.post(url, data);
+
+		console.log("Videolinks sincronizados");
 	} catch (error) {
 		console.log(error);
 	}
 };
 
-const verific = async () => {
-	try {
-		let enviar = true;
-		const servicios = await FupaguaService.findAll({
-			where: { status: "a" },
-			include: [ImgFile, FupaguaEmpleado],
-		});
+const formatearDataServiceToSubmit = async (servicios) => {
+	await Promise.all(
+		servicios.map(async (service) => {
+			const { id, title, description, imgfile, fupaguaempleados } = service;
 
-		await Promise.all(
-			servicios.map(async (service) => {
-				if (!service.imgfile) return;
+			const empleados = await Promise.all(
+				fupaguaempleados.map(async (e) => {
+					const empleado = await FupaguaEmpleado.findByPk(e.id, {
+						include: ImgFile,
+					});
+					const {
+						id: ide,
+						name,
+						FPV,
+						description: dese,
+						email,
+						imgfile: imgf,
+					} = empleado;
 
-				if (!service.imgfile.img_cloudinary_url) return (enviar = false);
+					return {
+						id: ide,
+						name,
+						FPV,
+						description: dese,
+						email,
+						img: imgf ? imgf.img_cloudinary_url : "",
+					};
+				})
+			);
 
-				await Promise.all(
-					service.fupaguaempleados.map(async (e) => {
-						const empleado = await FupaguaEmpleado.findByPk(e.id, {
-							include: ImgFile,
-						});
-
-						if (!empleado.imgfile) return;
-
-						if (!empleado.imgfile.img_cloudinary_url) return (enviar = false);
-					})
-				);
-			})
-		);
-
-		if (!enviar)
-			setTimeout(async () => {
-				await syncFupaguaService();
-			}, 3000);
-
-		return enviar ? servicios : false;
-	} catch (error) {
-		console.log(error);
-	}
+			return {
+				id,
+				title,
+				description,
+				img: imgfile ? imgfile.img_cloudinary_url : "",
+				empleados,
+			};
+		})
+	);
 };
 
 const syncFupaguaService = async () => {
@@ -84,63 +98,126 @@ const syncFupaguaService = async () => {
 		const data = { CLOUD_PAGE_SECRET_CODE_SYNC };
 		const url = `${CLOUD_PAGE_URL}/api/sync/fupaguaservice`;
 
-		const servicios = await verific();
-		if (!servicios) return console.log("no se envio");
+		// verificar si hay registros que no se han subido
 
-		data.Services = await Promise.all(
-			servicios.map(async (service) => {
-				const { id, title, description, imgfile, fupaguaempleados } = service;
+		const noSubmitedService = await FupaguaService.findAll({
+			where: { status: "a", syncCloud: false },
+		});
 
-				const empleados = await Promise.all(
-					fupaguaempleados.map(async (e) => {
-						const empleado = await FupaguaEmpleado.findByPk(e.id, {
-							include: ImgFile,
-						});
-						const {
-							id: ide,
-							name,
-							FPV,
-							description: dese,
-							email,
-							imgfile: imgf,
-						} = empleado;
+		const noSubmitedEmpleado = await FupaguaEmpleado.findAll({
+			where: { status: "a", syncCloud: false },
+		});
 
-						return {
-							id: ide,
-							name,
-							FPV,
-							description: dese,
-							email,
-							img: imgf ? imgf.img_cloudinary_url : "",
-						};
-					})
-				);
+		if (noSubmitedService.length <= 0 && noSubmitedEmpleado.length <= 0) return;
 
-				return {
-					id,
-					title,
-					description,
-					img: imgfile ? imgfile.img_cloudinary_url : "",
-					empleados,
-				};
-			})
-		);
+		// formatear los datos
 
-		console.log("se estan enviando los datos");
+		const servicios = await FupaguaService.findAll({
+			where: { status: "a" },
+			include: [ImgFile, FupaguaEmpleado],
+		});
 
-		console.log(data);
+		if (!servicios.length > 0) return console.log("no se envio");
 
-		console.log(JSON.stringify(data));
+		data.Services = await formatearDataServiceToSubmit(servicios);
+
+		// subir los registros
+
 		if (!CLOUD_PAGE_URL) return;
-
 		console.log(data);
 		await axios.post(url, data);
+
+		// marcarlos como subidos
+		const empleados = await FupaguaEmpleado.findAll({ status: "a" });
+
+		await Promise.all(
+			servicios.map(async (serv) => await serv.update({ syncCloud: true }))
+		);
+
+		await Promise.all(
+			empleados.map(async (emp) => await emp.update({ syncCloud: true }))
+		);
 	} catch (error) {
 		console.log(error);
 	}
 };
 
+// sincronizar libros recomendados
+
+const syncBook_and_RecommendedBook = async () => {
+	const data = { CLOUD_PAGE_SECRET_CODE_SYNC };
+	const url = `${CLOUD_PAGE_URL}/api/sync/book`;
+
+	console.log("iniciando las sincronizacion de libros");
+
+	try {
+		const noSubmitedRecommended = await BookRecommended.findAll({
+			where: { status: "a", syncCloud: false },
+		});
+
+		const noSubmitedBook = await Book.findAll({
+			where: { status: "a", syncCloud: false },
+		});
+
+		if (noSubmitedRecommended.length <= 0 && noSubmitedBook.length <= 0) return;
+
+		const recommended = await BookRecommended.findAll({
+			where: { status: "a" },
+			include: [BookRecommendedCategory],
+		});
+
+		let books = await Book.findAll({
+			where: { status: "a" },
+			include: [
+				{ model: ImgFile, as: "portada" },
+				{ model: ImgFile, as: "book_extra_img" },
+			],
+		});
+
+		books = JSON.parse(JSON.stringify(books));
+
+		data.books = await books.map((book) => {
+			// anadir los atributos category y recommended
+			recommended.map(({ bookId, bookrecommendedcategory }) => {
+				if (bookId != book.id) return;
+
+				book.category = bookrecommendedcategory.title;
+				book.recommended = true;
+			});
+
+			// formatear las imagenes
+
+			book.portada = book.portada.img_cloudinary_url;
+			book.book_extra_img = book.book_extra_img.map(
+				(img) => img.img_cloudinary_url
+			);
+
+			return book;
+		});
+
+		if (!CLOUD_PAGE_URL) return;
+
+		console.log(data);
+		await axios.post(url, data);
+
+		console.log("libros sincronizados");
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const syncAllDataWithCloudServer = async () => {
+	console.log("iniciando sincronizacion con CloudServer");
+
+	await syncVideolinks();
+
+	await syncFupaguaService();
+
+	await syncBook_and_RecommendedBook();
+};
+
 module.exports = {
 	syncVideolinks,
 	syncFupaguaService,
+	syncAllDataWithCloudServer,
 };
