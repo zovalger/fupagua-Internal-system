@@ -41,7 +41,9 @@ export function VideoLinkFormVideo({ create }) {
 		// si estamos en el modo crear no se ejecuta, si no buscamos los datos del registro
 		(async () => {
 			const resCategoriesList = await getVideoLinkCategoriesRequest();
-			setCategoriesList(resCategoriesList.data.map((c) => c.title));
+			setCategoriesList(
+				resCategoriesList.data.map((c) => (c ? c.title : null))
+			);
 		})();
 
 		if (create) return;

@@ -1,12 +1,11 @@
 const { Op } = require("sequelize");
 const VideoLink = require("../models/VideoLink.model");
 const VideoLinkCategory = require("../models/VideoLinkCategory.model");
-const { syncVideolinks } = require("./SyncWithCloudServer");
+// const { syncVideolinks } = require("./SyncWithCloudServer");
 
 // ****************************************************************************
 // 										adicion de un nuevo registro
 // ****************************************************************************
-
 
 const createVideoLink_Service = async (dataVideoLink, dataCategory) => {
 	try {
@@ -16,9 +15,11 @@ const createVideoLink_Service = async (dataVideoLink, dataCategory) => {
 			where: { title: dataCategory },
 		});
 
+		await category[0].update({ title: dataCategory });
+
 		if (category[0]) await videolink.setCategoryvideo(category[0]);
 
-		await syncVideolinks();
+		// await syncVideolinks();
 
 		return videolink;
 	} catch (error) {
@@ -53,7 +54,9 @@ const getVideoLinks_Service = async (query) => {
 const getCategories_Service = async (query) => {
 	try {
 		// **************************** obtener todos los registros ****************************
-		const categories = await VideoLinkCategory.findAll({ include: VideoLink });
+		const categories = await VideoLinkCategory.findAll({
+			include: { model: VideoLink, where: { status: "a" } },
+		});
 
 		return categories.map((c) => {
 			if (c.videolinks.length > 0) return c;
@@ -92,23 +95,25 @@ const getVideoLink_Service = async (videolinkId) => {
 const updateVideoLink_Service = async (
 	videolinkId,
 	dataVideoLink,
-	dataCategories
+	dataCategory
 ) => {
 	const data = dataVideoLink;
 	const id = videolinkId;
+	data.syncCloud = false;
 
 	try {
 		const videolink = await VideoLink.findByPk(id);
 
 		const category = await VideoLinkCategory.findOrCreate({
-			where: { title: dataCategories },
+			where: { title: dataCategory },
 		});
 
 		await videolink.update(data);
+		await category[0].update({ title: dataCategory });
 
 		if (category[0]) await videolink.setCategoryvideo(category[0]);
 
-		await syncVideolinks();
+		// await syncVideolinks();
 
 		return await videolink.reload();
 	} catch (error) {
@@ -133,10 +138,11 @@ const deleteVideoLink_Service = async (videolinkId) => {
 
 	if (videolink.status === "a") {
 		videolink.status = "d";
+		videolink.syncCloud = false;
+
 		await videolink.save();
 
-		await syncVideolinks();
-		
+		// await syncVideolinks();
 
 		return videolink;
 	} else {

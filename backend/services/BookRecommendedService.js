@@ -20,6 +20,8 @@ const createBookRecommended_Service = async (
 			where: { title: dataCategory },
 		});
 
+		await category[0].update({ title: dataCategory });
+
 		if (category[0])
 			await bookrecommended.setBookrecommendedcategory(category[0]);
 
@@ -114,7 +116,7 @@ const getBookRecommended_Service = async (bookrecommendedId) => {
 const updateBookRecommended_Service = async (
 	bookrecommendedId,
 	dataBookRecommended,
-	dataCategories
+	dataCategory
 ) => {
 	const data = dataBookRecommended;
 	const id = bookrecommendedId;
@@ -123,10 +125,11 @@ const updateBookRecommended_Service = async (
 		const bookrecommended = await BookRecommended.findByPk(id);
 
 		const category = await BookRecommendedCategory.findOrCreate({
-			where: { title: dataCategories },
+			where: { title: dataCategory },
 		});
 
 		await bookrecommended.update(data);
+		await category[0].update({ title: dataCategory });
 
 		if (category[0])
 			await bookrecommended.setBookrecommendedcategory(category[0]);

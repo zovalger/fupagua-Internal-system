@@ -1,4 +1,5 @@
 const axios = require("axios");
+const { Op } = require("sequelize");
 const { CLOUD_PAGE_URL, CLOUD_PAGE_SECRET_CODE_SYNC } = require("../config");
 const Book = require("../models/Book.model");
 const BookRecommended = require("../models/BookRecommended.model");
@@ -43,15 +44,39 @@ const syncVideolinks = async () => {
 		if (!CLOUD_PAGE_URL) return;
 
 		console.log(data);
-		await axios.post(url, data);
+		const res = await axios.post(url, data);
+
+		if (!res.data.success) return;
 
 		console.log("Videolinks sincronizados");
+
+		const categoryvideoIds = [];
+
+		await Promise.all(
+			videolinks.map(async (v) => {
+				categoryvideoIds.push(v.categoryvideoId);
+				await v.update({ syncCloud: true });
+			})
+		);
+
+		await CategoryVideo.update(
+			{ syncCloud: true },
+			{
+				where: {
+					id: {
+						[Op.in]: categoryvideoIds,
+					},
+				},
+			}
+		);
+
+		// todo: marcarlos como subidos
 	} catch (error) {
 		console.log(error);
 	}
 };
 
-const formatearDataServiceToSubmit = async (servicios) => {
+const formatearDataServiceToSubmit = async (servicios) =>
 	await Promise.all(
 		servicios.map(async (service) => {
 			const { id, title, description, imgfile, fupaguaempleados } = service;
@@ -90,11 +115,9 @@ const formatearDataServiceToSubmit = async (servicios) => {
 			};
 		})
 	);
-};
 
 const syncFupaguaService = async () => {
 	try {
-		console.log("syncFupaguaService");
 		const data = { CLOUD_PAGE_SECRET_CODE_SYNC };
 		const url = `${CLOUD_PAGE_URL}/api/sync/fupaguaservice`;
 
@@ -112,20 +135,29 @@ const syncFupaguaService = async () => {
 
 		// formatear los datos
 
+		console.log("inicio de de sincronizacion de los servicios y empleados");
+
 		const servicios = await FupaguaService.findAll({
 			where: { status: "a" },
 			include: [ImgFile, FupaguaEmpleado],
 		});
 
-		if (!servicios.length > 0) return console.log("no se envio");
+		if (!servicios.length > 0) return console.log("no hay servicios");
 
 		data.Services = await formatearDataServiceToSubmit(servicios);
 
+		if (!data.Services) return console.log("no hay servicios para sincronizar");
 		// subir los registros
 
-		if (!CLOUD_PAGE_URL) return;
+		if (!CLOUD_PAGE_URL) return console.log("no hay una url del cloud-server");;
+
 		console.log(data);
-		await axios.post(url, data);
+
+		const res = await axios.post(url, data);
+
+		if (!res.data.success) return;
+
+		console.log("servicios y empleados sincronizados");
 
 		// marcarlos como subidos
 		const empleados = await FupaguaEmpleado.findAll({ status: "a" });
@@ -146,9 +178,7 @@ const syncFupaguaService = async () => {
 
 const syncBook_and_RecommendedBook = async () => {
 	const data = { CLOUD_PAGE_SECRET_CODE_SYNC };
-	const url = `${CLOUD_PAGE_URL}/api/sync/book`;
-
-	console.log("iniciando las sincronizacion de libros");
+	const url = `${CLOUD_PAGE_URL}/api/sync/books`;
 
 	try {
 		const noSubmitedRecommended = await BookRecommended.findAll({
@@ -160,6 +190,8 @@ const syncBook_and_RecommendedBook = async () => {
 		});
 
 		if (noSubmitedRecommended.length <= 0 && noSubmitedBook.length <= 0) return;
+
+		console.log("iniciando las sincronizacion de libros");
 
 		const recommended = await BookRecommended.findAll({
 			where: { status: "a" },
@@ -197,15 +229,18 @@ const syncBook_and_RecommendedBook = async () => {
 
 		if (!CLOUD_PAGE_URL) return;
 
-		console.log(data);
-
 		const res = await axios.post(url, data);
 
-		if (res.data.success) return;
+		if (!res.data.success) return;
 
-		// todo: cambiar por una consulta de actualizacion
+		// todo: cambiar por una sola consulta de actualizacion
 		await Promise.all(
 			books.map(async (book) => await book.update({ syncCloud: true }))
+		);
+
+		// todo: cambiar por una sola consulta de actualizacion
+		await Promise.all(
+			recommended.map(async (r) => await r.update({ syncCloud: true }))
 		);
 
 		console.log("libros sincronizados");
@@ -215,8 +250,6 @@ const syncBook_and_RecommendedBook = async () => {
 };
 
 const syncAllDataWithCloudServer = async () => {
-	console.log("iniciando sincronizacion con CloudServer");
-
 	await syncVideolinks();
 
 	await syncFupaguaService();

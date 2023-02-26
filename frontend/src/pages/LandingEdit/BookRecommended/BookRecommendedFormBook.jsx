@@ -55,7 +55,9 @@ export function BookRecommendedFormBook({ create }) {
 		(async () => {
 			const resCategoriesList = await getBookRecommendedCategoriesRequest();
 			console.log(resCategoriesList);
-			setCategoriesList(resCategoriesList.data.map((c) => c.title));
+			setCategoriesList(
+				resCategoriesList.data.map((c) => (c ? c.title : null))
+			);
 		})();
 
 		if (create) return;

@@ -9,7 +9,6 @@ export function VideoLink({ data }) {
 
 	const toEdit = () => navigate(`/landing-edit/videos/${id}`);
 
-	
 	return (
 		<div className={styles.container}>
 			<div className="row">
@@ -22,6 +21,10 @@ export function VideoLink({ data }) {
 									: "https://www.youtube.com/embed/dWFBlfZSkak"
 							}
 							title="YouTube video player"
+
+							frameBorder="0" 
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+							allowFullScreen
 						></iframe>
 					</div>
 				</div>
@@ -31,7 +34,10 @@ export function VideoLink({ data }) {
 						<div>{title}</div>
 						<div className="small">Link: {url}</div>
 						<div className="small">Categoria: {categoryvideo.title}</div>
-						<div className="small">Descripcion: {description}</div>
+
+						{description ? (
+							<div className="small">Descripcion: {description}</div>
+						) : null}
 					</div>
 				</div>
 			</div>

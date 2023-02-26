@@ -21,10 +21,9 @@ const createFupaguaService_RouteController = async (req, res) => {
 	try {
 		img = req.files.img;
 	} catch (error) {
-		console.log(error);
+		console.log("no se proporsiono imagen del servicio");
 	}
 
-	
 	try {
 		const newFupaguaService = await createFupaguaService_Service(
 			{ title, description },
@@ -83,7 +82,7 @@ const updateFupaguaService_RouteController = async (req, res) => {
 	try {
 		img = req.files.img;
 	} catch (error) {
-		console.log(error);
+		console.log("no se proporsiono imagen del servicio");
 	}
 
 	try {

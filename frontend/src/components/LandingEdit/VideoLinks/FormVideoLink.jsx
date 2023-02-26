@@ -35,6 +35,9 @@ export function FormVideoLink({
 							: "https://www.youtube.com/embed/dWFBlfZSkak"
 					}
 					title="YouTube video player"
+					frameBorder="0" 
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+							allowFullScreen
 				></iframe>
 			</div>
 
@@ -67,7 +70,7 @@ export function FormVideoLink({
 					<Form.Control
 						placeholder="Categoria"
 						aria-label="Buscar"
-						type="text"
+						type="search"
 						onChange={(e) => setCategoryData(e.target.value)}
 						value={categoryData}
 						list="categories"
@@ -125,9 +128,9 @@ export function FormVideoLink({
 				{/* // todo: buscar las categorias existentes en la base de datos  */}
 				{/* // todo: mudar esta lista al padre de todos estos formularios  */}
 				<datalist id="categories">
-					{categoriesList.map((c) => (
-						<option value={c} />
-					))}
+					{categoriesList.map((c, index) =>
+						c ? <option value={c} key={index} /> : null
+					)}
 				</datalist>
 			</Form>
 		</>

@@ -89,9 +89,9 @@ export function FormBookRecommended({
 				{/* // todo: buscar las categorias existentes en la base de datos  */}
 				{/* // todo: mudar esta lista al padre de todos estos formularios  */}
 				<datalist id="categories">
-					{categoriesList.map((c, index) => (
-						<option value={c} key={index} />
-					))}
+					{categoriesList.map((c, index) =>
+						c ? <option value={c} key={index} /> : null
+					)}
 				</datalist>
 			</Form>
 		</>

@@ -90,13 +90,14 @@ function AsidePanelOptions() {
 				{links.map((l, index) =>
 					l.name ? (
 						<ListOptionItem
+							key={index}
 							url={l.url}
 							icon={l.icon}
 							text={l.name}
 							onClick={toggleAsideActive}
 						/>
 					) : (
-						<hr />
+						<hr  key={index}/>
 					)
 				)}
 			</div>

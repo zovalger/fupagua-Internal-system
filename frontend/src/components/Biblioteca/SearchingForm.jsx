@@ -196,7 +196,7 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 					placeholder=""
 					onChange={onInputChange}
 					autoComplete="none"
-					value={query.subtitle}
+					value={query.materia}
 				/>
 			</div>
 
