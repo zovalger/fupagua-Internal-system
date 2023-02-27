@@ -134,7 +134,7 @@ export function FormFupaguaEmpleados({
 						}}
 						name="img"
 						accept="image/*"
-						required
+						
 						// placeholder="icono"
 					/>
 				</Form.Group>
