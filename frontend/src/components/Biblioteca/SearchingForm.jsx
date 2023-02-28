@@ -1,3 +1,6 @@
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
 import { useState } from "react";
 import {
 	AiOutlineSearch,
@@ -6,6 +9,7 @@ import {
 	AiOutlineClose,
 	AiFillCaretUp,
 	AiFillCaretDown,
+	AiOutlineFilter,
 } from "react-icons/ai";
 
 import styles from "./SearchingForm.module.scss";
@@ -95,114 +99,143 @@ export default function SearchingForm({ getListOfBooks, cancelQuery }) {
 	};
 
 	return (
-		<form className={styles.container} onSubmit={onsubmit}>
-			<div>
-				<div>{!avanzado ? "Buscar" : "Título"}</div>
-				<input
-					name="title"
-					type="text"
-					placeholder={!avanzado ? "Buscar" : "Título"}
-					onChange={onInputChange}
-					autoComplete="none"
-					value={query.title}
-				/>
-				<button type="button" onClick={dropQuery}>
-					<AiOutlineClose />
-				</button>
-			</div>
+		<div className="container">
+			<Form className="my-3 " onSubmit={onsubmit}>
+				<InputGroup controlId="searchinput">
+					<Form.Control
+						placeholder={!avanzado ? "Buscar" : "Título"}
+						aria-label="Buscar"
+						type="search"
+						onChange={onInputChange}
+						value={query.title}
+						name="title"
+						size="lg"
 
-			<div className={styles.sort}>
-				<span>Ordenar por</span>
+						// aria-describedby="basic-addon2"
+					/>
 
-				<select name="sortBy" onChange={SortByOnChange} value={sortBy}>
-					<option value="title">Título</option>
-					<option value="subtitle">Subtítulo</option>
-					<option value="description">Descripción</option>
-					<option value="cota">Cota</option>
-					<option value="autor">Autor</option>
-					<option value="materia">Materia</option>
-				</select>
+					<button type="button" onClick={AvanzadeMode}></button>
 
-				<span>Tipo</span>
-				<select name="type" onChange={typeOnChange} value={type}>
-					<option value="book">Libro</option>
-					<option value="magazine">Revista</option>
-					<option value="audiobook">Audiolibro</option>
-					<option value="fonoteca">Fonoteca</option>
-					<option value="video">Video</option>
-				</select>
+					<Button
+						className="btn btn-secondary"
+						type="button"
+						onClick={AvanzadeMode}
+					>
+						<AiOutlineFilter />
+						{/* {avanzado ? <AiFillCaretDown /> : <AiFillCaretUp />} */}
+					</Button>
 
-				<button type="button" onClick={ascDESC}>
-					{direction === "ASC" ? (
-						<AiOutlineSortAscending />
-					) : (
-						<AiOutlineSortDescending />
-					)}
-				</button>
+					<Button type="submit">
+						<AiOutlineSearch />
+					</Button>
+				</InputGroup>
 
-				<button type="button" onClick={AvanzadeMode}>
-					{avanzado ? <AiFillCaretDown /> : <AiFillCaretUp />}
-				</button>
-			</div>
+				<div className={`row mt-3 ${!avanzado ? styles.no_active : ""}`}>
+					<div className="col-6">
+						<span></span>
 
-			<div
-				className={`${styles.extraInputs} ${!avanzado ? "" : styles.active}`}
-			>
-				<div>Subtítulo</div>
-				<input
-					name="subtitle"
-					type="search"
-					placeholder=""
-					onChange={onInputChange}
-					autoComplete="none"
-					value={query.subtitle}
-				/>
+						<Form.Group className="mb-3">
+							<Form.Label>Ordenar por</Form.Label>
+							<Form.Select
+								onChange={SortByOnChange}
+								name="sortBy"
+								value={sortBy}
+							>
+								<option value="title">Título</option>
+								<option value="subtitle">Subtítulo</option>
+								<option value="description">Descripción</option>
+								<option value="cota">Cota</option>
+								<option value="autor">Autor</option>
+								<option value="materia">Materia</option>
+							</Form.Select>
+						</Form.Group>
 
-				<div>Descripción</div>
-				<input
-					name="description"
-					type="search"
-					placeholder=""
-					onChange={onInputChange}
-					autoComplete="none"
-					value={query.description}
-				/>
+						<Form.Group className="mb-3">
+							<Form.Label>Autor</Form.Label>
+							<Form.Control
+								name="autor"
+								type="search"
+								// placeholder="Enter email"
+								onChange={onInputChange}
+								autoComplete="none"
+								value={query.autor}
+							/>
+							<Form.Text className="text-muted"></Form.Text>
+						</Form.Group>
 
-				<div>Cota</div>
+						<Form.Group className="mb-3">
+							<Form.Label>Subtítulo</Form.Label>
+							<Form.Control
+								name="subtitle"
+								type="search"
+								// placeholder="Enter email"
+								onChange={onInputChange}
+								autoComplete="none"
+								value={query.subtitle}
+							/>
+							<Form.Text className="text-muted"></Form.Text>
+						</Form.Group>
 
-				<input
-					name="cota"
-					type="search"
-					placeholder=""
-					onChange={onInputChange}
-					autoComplete="none"
-					value={query.cota}
-				/>
+						<Form.Group className="mb-3">
+							<Form.Label>Cota</Form.Label>
+							<Form.Control
+								name="cota"
+								type="search"
+								// placeholder="Enter email"
+								onChange={onInputChange}
+								autoComplete="none"
+								value={query.cota}
+							/>
+							<Form.Text className="text-muted"></Form.Text>
+						</Form.Group>
+					</div>
 
-				<div>Autor</div>
+					<div className="col-6">
+						<Form.Group className="mb-3">
+							<Form.Label>Dirección</Form.Label>
+							<Button
+								className="bg-white text-black text-start w-100"
+								type="button"
+								onClick={ascDESC}
+							>
+								{
+									direction === "ASC"
+										? // <AiOutlineSortAscending />
+										  "Ascendente"
+										: "Descendente"
+									// <AiOutlineSortDescending />
+								}
+							</Button>
+						</Form.Group>
 
-				<input
-					name="autor"
-					type="search"
-					placeholder="autor"
-					onChange={onInputChange}
-					autoComplete="none"
-					value={query.autor}
-				/>
-				<div>Materia</div>
-				<input
-					name="materia"
-					type="search"
-					placeholder=""
-					onChange={onInputChange}
-					autoComplete="none"
-					value={query.materia}
-				/>
-			</div>
+						<Form.Group className="mb-3">
+							<Form.Label>Materia</Form.Label>
+							<Form.Control
+								name="materia"
+								type="search"
+								// placeholder="Enter email"
+								onChange={onInputChange}
+								autoComplete="none"
+								value={query.materia}
+							/>
+							<Form.Text className="text-muted"></Form.Text>
+						</Form.Group>
 
-			<button className={styles.btnSearch}>
-				<AiOutlineSearch />
-			</button>
-		</form>
+						<Form.Group className="mb-3">
+							<Form.Label>Descripción</Form.Label>
+							<Form.Control
+								name="description"
+								type="search"
+								// placeholder="Enter email"
+								onChange={onInputChange}
+								autoComplete="none"
+								value={query.description}
+							/>
+							<Form.Text className="text-muted"></Form.Text>
+						</Form.Group>
+					</div>
+				</div>
+			</Form>
+		</div>
 	);
 }
