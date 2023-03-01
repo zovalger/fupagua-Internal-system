@@ -79,7 +79,6 @@ export function Biblioteca() {
 					},
 				}
 			);
-
 		} catch (error) {
 			console.log(error);
 			const { response: res } = error;
@@ -97,8 +96,8 @@ export function Biblioteca() {
 	return (
 		<>
 			<Nav
-						leftIcon={<BiChevronLeft />}
-						leftFuctionOnClick={() => navigate("/")}
+				leftIcon={<BiChevronLeft />}
+				leftFuctionOnClick={() => navigate("/")}
 				// leftIcon={<RxHamburgerMenu />}
 				// leftFuctionOnClick={toggleAsideActive}
 				title={
@@ -127,9 +126,8 @@ export function Biblioteca() {
 												formulario para buscar libros 
 				
 			*********************************************************************/}
-
-			<div className={styles.container}>
-				<div className={styles.books}>
+			<div className="scrollInSpacework">
+				<div className="container">
 					<SearchingForm
 						getListOfBooks={getListOfBooks}
 						cancelQuery={() => setInQuery(false)}
@@ -145,6 +143,7 @@ export function Biblioteca() {
 						: books.map(llenarLista)}
 				</div>
 			</div>
+		
 		</>
 	);
 }
