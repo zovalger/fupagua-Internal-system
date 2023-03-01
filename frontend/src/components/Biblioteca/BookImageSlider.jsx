@@ -14,9 +14,13 @@ const BookImageSlider = ({ book }) => {
 				<Carousel.Item>
 					<img
 						src={
-							portada.img_cloudinary_url
-								? portada.img_cloudinary_url
-								: portada.img_local_url
+							// portada.img_cloudinary_url
+							// 	? portada.img_cloudinary_url
+							// 	: portada.img_local_url
+							// 	? `/${portada.img_local_url}`
+							// 	: `/${portada.img_local_url_original}`
+
+								portada.img_local_url
 								? `/${portada.img_local_url}`
 								: `/${portada.img_local_url_original}`
 						}

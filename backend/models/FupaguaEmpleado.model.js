@@ -5,7 +5,7 @@ const ImgFile = require("./ImgFile.model");
 
 const FupaguaEmpleado = db.define("fupaguaempleado", {
 	name: { type: DataTypes.STRING, allowNull: false, default: "" },
-	ci: { type: DataTypes.STRING },
+	ci: { type: DataTypes.STRING, default: "" },
 	FPV: { type: DataTypes.STRING, default: "" },
 	email: { type: DataTypes.STRING, default: "" },
 	description: { type: DataTypes.STRING, default: "" },

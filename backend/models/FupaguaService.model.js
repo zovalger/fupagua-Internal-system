@@ -4,7 +4,7 @@ const ImgFile = require("./ImgFile.model");
 
 const FupaguaService = db.define("fupaguaservice", {
 	title: { type: DataTypes.STRING, allowNull: false },
-	description: { type: DataTypes.STRING, defaultValue: "" },
+	description: { type: DataTypes.STRING(500), defaultValue: "" },
 	status: { type: DataTypes.CHAR, defaultValue: "a" },
 	syncCloud: { type: DataTypes.BOOLEAN, defaultValue: false },
 });

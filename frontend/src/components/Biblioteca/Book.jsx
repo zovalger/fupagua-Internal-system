@@ -8,13 +8,17 @@ export default function Book({ dataBook, onClick }) {
 			<div className={styles.imgContainer}>
 				<img
 					src={
-						portada
-							? portada.img_cloudinary_url
-								? portada.img_cloudinary_url
-								: portada.img_local_url
-								? portada.img_local_url
-								: portada.img_local_url_original
-							: "/"
+						// portada
+						// 	? portada.img_cloudinary_url
+						// 		? portada.img_cloudinary_url
+						// 		: portada.img_local_url
+						// 		? portada.img_local_url
+						// 		: portada.img_local_url_original
+						// 	: "/"
+
+						portada.img_local_url
+										? `/${portada.img_local_url}`
+										: `/${portada.img_local_url_original}`
 					}
 					alt="foto de portada"
 				/>

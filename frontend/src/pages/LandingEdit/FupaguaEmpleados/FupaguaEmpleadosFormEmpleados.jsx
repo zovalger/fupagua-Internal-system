@@ -5,13 +5,9 @@ import toast from "react-hot-toast";
 
 import Nav from "../../../components/common/Nav";
 
-import { FormFupaguaService } from "../../../components/LandingEdit/FupaguaServicios/FormFupaguaService";
+
 import {
-	createFupaguaServiceRequest,
-	deleteFupaguaServiceRequest,
-	getFupaguaServiceRequest,
 	getFupaguaServicesRequest,
-	updateFupaguaServiceRequest,
 } from "../../../api/fupaguaService";
 import { FormFupaguaEmpleados } from "../../../components/LandingEdit/FupaguaEmpleados/FormFupaguaEmpleados";
 import {

@@ -16,9 +16,13 @@ export function FupaguaServiceItem({ data }) {
 						{imgfile ? (
 							<img
 								src={
-									imgfile.img_cloudinary_url
-										? imgfile.img_cloudinary_url
-										: imgfile.img_local_url
+									// imgfile.img_cloudinary_url
+									// 	? imgfile.img_cloudinary_url
+									// 	: imgfile.img_local_url
+									// 	? `/${imgfile.img_local_url}`
+									// 	: `/${imgfile.img_local_url_original}`
+
+									imgfile.img_local_url
 										? `/${imgfile.img_local_url}`
 										: `/${imgfile.img_local_url_original}`
 								}
