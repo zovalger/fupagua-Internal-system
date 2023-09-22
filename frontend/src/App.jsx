@@ -1,68 +1,57 @@
 import { Routes, Route } from "react-router-dom";
 import { AppDataProvider } from "./context/AppContext";
-import { Toaster } from "react-hot-toast";
 
-import {
-	HomePage,
-	People,
-	Agenda,
-	AgendaActivity,
-	Biblioteca,
-	BibliotecaFormBook,
-	BibliotecaBook,
-	BibliotecaFichaPrint,
-} from "./pages";
-
-import AsidePanelOptions from "./components/common/AsidePanelOption/AsidePanelOptions";
+import AsidePanelOptions from "./UI/components/AsidePanelOption/AsidePanelOptions";
 import "./App.scss";
 
-
+import { HomePage, Login } from "./pages";
+import PatientsRoutes from "./Patients/routes/PatientsRoutes";
+import BibliotecaRoutes from "./Biblioteca/routes/BibliotecaRoutes";
+import LandingEditRoutes from "./LandingEdit/routes/LandingEditRoutes";
+import AgendaRoutes from "./Agenda/routes/AgendaRoutes";
+import { PatientProvider } from "./Patients/context/PatientContext";
+import { ToastProvider } from "./context/ToastContext";
+import UserRoutes from "./Users/routes/UserRoutes";
+import { UserAccountProvider } from "./Users/context/UserAccountContext";
+import { UserProvider } from "./context/UserContext";
+// import TestRoutes from "./Test/routes/TestRoutes";
 
 function App() {
 	return (
-		<AppDataProvider>
-			
-			<Toaster />
-			<div className="App">
-				<div className="SectionApp">
-					<Routes>
-						<Route path="/" element={<HomePage />} />
-						<Route path="/agenda" element={<Agenda />} />
-						<Route
-							path="/agenda/nueva-actividad"
-							element={<AgendaActivity create={true} />}
-						/>
-						<Route path="/agenda/:id" element={<AgendaActivity />} />
+		<ToastProvider>
+			<UserProvider>
+				<UserAccountProvider>
+					<PatientProvider>
+						<AppDataProvider>
+							<div className="App">
+								<div className="SectionApp">
+									<Routes>
+										<Route path="/" element={<HomePage />} />
+										<Route path="/login" element={<Login />} />
 
-						{/* **************************************************************************
-																							biblioteca
-						************************************************************************** */}
+										<Route
+											path="/*"
+											element={
+												<>
+													<AgendaRoutes />
+													<PatientsRoutes />
+													<BibliotecaRoutes />
+													<LandingEditRoutes />
+													<UserRoutes />
+													{/* <TestRoutes /> */}
+												</>
+											}
+										/>
+									</Routes>
+								</div>
 
-						<Route path="/biblioteca" element={<Biblioteca />} />
-						<Route
-							path="/biblioteca/nuevo_libro"
-							element={<BibliotecaFormBook create={true} />}
-						/>
-						<Route
-							path="/biblioteca/editar/:id"
-							element={<BibliotecaFormBook />}
-						/>
-								<Route
-							path="/biblioteca/imprimir-fichas"
-							element={<BibliotecaFichaPrint />}
-						/>
-						<Route path="/biblioteca/:id" element={<BibliotecaBook />} />
-
-						{/* <Route path="/People" element={<People />} />
-						<Route path="/People/new" element={<PeopleNew />} /> */}
-						{/* <Route path="/:id" element={<PostForm />} />
-					<Route path="*" element={<NotFoundPage />} /> */}
-					</Routes>
-				</div>
-
-				<AsidePanelOptions />
-			</div>
-		</AppDataProvider>
+								<AsidePanelOptions />
+							</div>
+						</AppDataProvider>
+					</PatientProvider>
+				</UserAccountProvider>
+			</UserProvider>
+		</ToastProvider>
 	);
 }
 

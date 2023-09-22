@@ -1,0 +1,13 @@
+.container {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	line-height: 0;
+
+	margin-bottom: 5px;
+
+	span {
+		font-size: 1.7rem;
+		margin-right: 0.5rem;
+	}
+}

@@ -16,4 +16,4 @@ const uploadImage = async (filePath, folder = "fupagua") =>
 
 const deleteImage = async (id) => await cloudinary.uploader.destroy(id);
 
-module.exports = { uploadImage,deleteImage };
+module.exports = { uploadImage, deleteImage };

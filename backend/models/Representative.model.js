@@ -2,24 +2,25 @@ const { DataTypes } = require("sequelize");
 const db = require("../db");
 const Patient = require("./Patient.model");
 
-const Representative = db.define("Representative", {
+const Representative = db.define("representative", {
 	name: { type: DataTypes.STRING, allowNull: false },
+	ci: { type: DataTypes.STRING, allowNull: false, unique: true },
 
-	ci: { type: DataTypes.STRING, unique: true, allowNull: false },
+	age: { type: DataTypes.INTEGER, defaultValue: 0 },
+	dateBirth: { type: DataTypes.DATE, allowNull: false },
+	// email: { type: DataTypes.STRING, unique: true },
+	email: { type: DataTypes.STRING },
 
-	age: DataTypes.INTEGER,
+	phoneNumber: { type: DataTypes.STRING, allowNull: false, defaultValue: "" },
+	address: { type: DataTypes.STRING(500), defaultValue: "" },
 
-	dateBirth: DataTypes.DATE,
-
-	email: { type: DataTypes.STRING, unique: true },
-
-	// status: DataTypes.CHAR, // a: active d:delete
-
-	phoneNumber: { type: DataTypes.STRING, allowNull: false },
+	// a: active d:trash
+	status: { type: DataTypes.CHAR, defaultValue: "a" },
 });
 
-
-Representative.belongsToMany(Patient, { through: "PatientRepresentative" });
-Patient.belongsToMany(Representative, { through: "PatientRepresentative" });
+Patient.belongsTo(Representative, {
+	foreignKey: "representativeId",
+});
+Representative.hasMany(Patient, { foreignKey: "patientId" });
 
 module.exports = Representative;

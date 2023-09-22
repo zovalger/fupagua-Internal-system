@@ -1,3 +1,4 @@
+const ActionsSystem = require("../services/ActionSystemService");
 const {
 	getBook_Service,
 	createBook_Service,
@@ -7,10 +8,65 @@ const {
 } = require("../services/BookService");
 
 const createBook_RouteController = async (req, res) => {
-	const data = req.body;
-	const img = req.files ? (req.files.img ? req.files.img : null) : null;
+	const {
+		title,
+		subtitle,
+		description,
+		cota,
+		autor,
+		editionDate,
+		city,
+		editors,
+		materia,
+		height,
+		numberCopies,
+		numberCopiesAvailable,
+		numberPages,
+		typeAdquisition,
+		observations,
+		collection,
+		type,
+		duration,
+	} = req.body;
+
+	const data = {
+		title,
+		subtitle,
+		description,
+		cota,
+		autor,
+		editionDate,
+		city,
+		editors,
+		materia,
+		height,
+		numberCopies,
+		numberCopiesAvailable,
+		numberPages,
+		typeAdquisition,
+		observations,
+		collection,
+		type,
+		duration,
+	};
+
+	let portada_Img = null,
+		extraImg_Img = null;
+
+	if (req.files) {
+		// console.log("********************************************");
+		// console.log(req.files);
+		// console.log("********************************************");
+
+		const { portada, book_extra_img } = req.files;
+		portada_Img = portada ? portada : null;
+		extraImg_Img = book_extra_img ? book_extra_img : null;
+	}
+
 	try {
-		const book = await createBook_Service(data, img);
+		const book = await createBook_Service(data, portada_Img, extraImg_Img);
+
+		await ActionsSystem.bookCreate(req.user, book);
 
 		return res.json(book);
 	} catch (error) {
@@ -46,11 +102,61 @@ const getBook_RouteController = async (req, res) => {
 
 const updateBook_RouteController = async (req, res) => {
 	const { id } = req.params;
-	const data = req.body;
-	const img = req.files ? (req.files.img ? req.files.img : null) : null;
+	const {
+		title,
+		subtitle,
+		description,
+		cota,
+		autor,
+		editionDate,
+		city,
+		editors,
+		materia,
+		height,
+		numberCopies,
+		numberCopiesAvailable,
+		numberPages,
+		typeAdquisition,
+		observations,
+		collection,
+		type,
+		duration,
+	} = req.body;
+
+	const data = {
+		title,
+		subtitle,
+		description,
+		cota,
+		autor,
+		editionDate,
+		city,
+		editors,
+		materia,
+		height,
+		numberCopies,
+		numberCopiesAvailable,
+		numberPages,
+		typeAdquisition,
+		observations,
+		collection,
+		type,
+		duration,
+	};
+
+	let portada_Img = null,
+		extraImg_Img = null;
+
+	if (req.files) {
+		const { portada, book_extra_img } = req.files;
+		portada_Img = portada ? portada : null;
+		extraImg_Img = book_extra_img ? book_extra_img : null;
+	}
 
 	try {
-		const book = await updateBook_Service(id, data, img);
+		const book = await updateBook_Service(id, data, portada_Img, extraImg_Img);
+
+		await ActionsSystem.bookUpdate(req.user, book);
 
 		return res.json(book);
 	} catch (error) {
@@ -63,10 +169,13 @@ const deleteBook_RouteController = async (req, res) => {
 	const { id } = req.params;
 
 	try {
-		const result = await deleteBook_Service(id);
+		const book = await deleteBook_Service(id);
 
-		if (!result) return res.status(404).send("elemento no encontrado");
-		return res.send(result);
+		if (!book) return res.status(404).send("elemento no encontrado");
+
+		await ActionsSystem.bookDelete(req.user, book);
+
+		return res.send(book);
 	} catch (error) {
 		res.status(500).send(error);
 		console.log(error);

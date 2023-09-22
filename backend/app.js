@@ -12,17 +12,27 @@ const { NODE_ENV } = require("./config");
 // 										importacion de rutas
 // ****************************************************************************
 
-const representativeRoute = require("./routes/representative.route");
+// const representativeRoute = require("./routes/representative.route");
 const patientRoute = require("./routes/patient.route");
+const addressRoute = require("./routes/address.route");
 const activityRoute = require("./routes/activity.route");
 const bookRoute = require("./routes/book.route");
 const bookFichaRoute = require("./routes/bookFicha.route");
+const utilityRoute = require("./routes/utility.route");
+const videolinkRoute = require("./routes/videoLink.route");
+const FupaguaServiceRoute = require("./routes/fupaguaService.route");
+const FupaguaEmpleadoRoute = require("./routes/fupaguaEmpleado.route");
+const BookRecommendedRoute = require("./routes/bookRecommended.route");
+const EventPostRoute = require("./routes/EventPost.route");
+// const authRoutes = require("./routes/auth.route");
+const userRoutes = require("./routes/user.route");
+const userLogsRoutes = require("./routes/userLogs.route");
 
 const app = express();
 
 app.use(cors());
 
-if (NODE_ENV === "development") app.use(logger("dev"));
+if (NODE_ENV !== "production") app.use(logger("dev"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -33,13 +43,22 @@ app.use(fileUpload({ useTempFiles: true, tempFileDir: "./uploads" }));
 // 										rutas para la api
 // ****************************************************************************
 
-app.use("/api/representative", representativeRoute);
+// app.use("/api/representative", representativeRoute);
 app.use("/api/patient", patientRoute);
+app.use("/api/address", addressRoute);
 app.use("/api/activity", activityRoute);
 app.use("/api/book", bookRoute);
 app.use("/api/bookficha", bookFichaRoute);
+app.use("/api/videolink", videolinkRoute);
+app.use("/api/fupaguaservice", FupaguaServiceRoute);
+app.use("/api/fupaguaempleados", FupaguaEmpleadoRoute);
+app.use("/api/book_recommended", BookRecommendedRoute);
+app.use("/api/eventpost", EventPostRoute);
+app.use("/api/user", userRoutes);
+app.use("/api/userlogs", userLogsRoutes);
+// app.use("/api/auth", authRoutes);
+app.use("/api/utility", utilityRoute);
 
-// app.use('/api/users', userRoutes)
 // app.use('/api/orders', orderRoutes)
 // app.use('/api/upload', uploadRoutes)
 

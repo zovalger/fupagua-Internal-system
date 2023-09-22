@@ -4,19 +4,23 @@ sistemar interno de FUPAGUA
 
 ## forma de instalacion
 
-primero tiene que tener corriendo una base de datos mysql con una base de datos ya creada
+iniciar servidor de mysql
+
+crear un base de datos a usar en mysql
 
 cree un archivo para las variables de entorno con las siguientes variables
 
+rellenar las siguientes variables de entorno
 
 DATABASE_NAME=nombreDeLaBaseDeDatos
 DATABASE_USER=UserName
 DATABASE_PASSWORD=YourPassword
 NODE_ENV=production
-PORT=5000
+PORT=5000 (opcional)
 
-
-el puerto es opcional
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
 
 ### instale los paquetes de npm
 

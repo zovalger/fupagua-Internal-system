@@ -8,9 +8,7 @@ const {
 	updateBook_RouteController,
 	deleteBook_RouteController,
 } = require("../controllers/Book.route.controller");
-
-// crear una nueva actividad
-router.post("/", createBook_RouteController);
+const { authUser } = require("../middleware/authUser");
 
 // obtener todas las actividades
 router.get("/", getBooks_RouteController);
@@ -18,11 +16,14 @@ router.get("/", getBooks_RouteController);
 // buscar una actividad
 router.get("/:id", getBook_RouteController);
 
+// crear una nueva actividad
+router.post("/", authUser, createBook_RouteController);
+
 // moduficar una actividad
-router.put("/:id", updateBook_RouteController);
+router.put("/:id", authUser, updateBook_RouteController);
 
 // eliminar una actividad
-router.delete("/:id", deleteBook_RouteController);
+router.delete("/:id", authUser, deleteBook_RouteController);
 // router.delete("/:id", patientMoveToTrash);
 
 module.exports = router;

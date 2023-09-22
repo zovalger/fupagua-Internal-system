@@ -19,18 +19,21 @@ const {
 // router.delete("/trash/:id", deleteRepresentativeInTrash);
 
 // obtener datos
-router.get("/", getRepresentatives);
-router.get("/:id", getRepresentative);
+router.get("/", authUser, getRepresentatives);
+router.get("/:id", authUser, getRepresentative);
 
 // crear datos
-router.post("/", createRepresentative);
+router.post("/", authUser, createRepresentative);
 
 // modificar datos
-router.put("/:id", updateRepresentative);
-router.put("/:id/join-to/:patientId", jointRepresentativeWithPatient);
-router.put("/:id/unjoin-to/:patientId", unjointRepresentativeWithPatient);
+router.put("/:id", authUser, updateRepresentative);
+router.put("/:id/join-to/:patientId", authUser, jointRepresentativeWithPatient);
+router.put(
+	"/:id/unjoin-to/:patientId",
+	authUser,
+	unjointRepresentativeWithPatient
+);
 
-
-router.delete("/:id", deleteRepresentative);
+router.delete("/:id", authUser, deleteRepresentative);
 
 module.exports = router;

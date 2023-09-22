@@ -1,4 +1,7 @@
 uploads/
+backup/
+
+build/
 
 # Logs
 logs

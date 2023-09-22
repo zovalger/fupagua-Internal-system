@@ -1,16 +1,17 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db");
+const ImgFile = require("./ImgFile.model");
 
 const Book = db.define(
 	"book",
 	{
 		title: { type: DataTypes.STRING, allowNull: false },
-		subtitle: DataTypes.STRING,
+		subtitle: { type: DataTypes.STRING, defaultValue: "" },
 
-		description: DataTypes.STRING(500),
+		description: { type: DataTypes.STRING(1000), defaultValue: "" },
 		cota: { type: DataTypes.STRING, defaultValue: "" },
 		autor: { type: DataTypes.STRING, defaultValue: "" },
-		editionDate: { type: DataTypes.INTEGER, defaultValue: 1900 },
+		editionDate: { type: DataTypes.STRING, defaultValue: "" },
 
 		city: { type: DataTypes.STRING, defaultValue: "" },
 		editors: { type: DataTypes.STRING, defaultValue: "" },
@@ -23,23 +24,28 @@ const Book = db.define(
 		numberCopiesAvailable: { type: DataTypes.INTEGER, defaultValue: 1 },
 
 		numberPages: { type: DataTypes.INTEGER, defaultValue: 1 },
+		duration: { type: DataTypes.STRING, defaultValue: "0:0:0" },
 
 		typeAdquisition: { type: DataTypes.STRING, defaultValue: "" },
 		observations: { type: DataTypes.STRING, defaultValue: "" },
 
 		collection: { type: DataTypes.STRING, defaultValue: "" },
 
-		img_public_id: { type: DataTypes.STRING, defaultValue: "" },
-		img_cloudinary_url: { type: DataTypes.STRING, defaultValue: "" },
-		img_local_url: { type: DataTypes.STRING, defaultValue: "" },
+		// img_public_id: { type: DataTypes.STRING, defaultValue: "" },
+		// img_cloudinary_url: { type: DataTypes.STRING, defaultValue: "" },
+		// img_local_url: { type: DataTypes.STRING, defaultValue: "" },
 
 		type: { type: DataTypes.STRING, allowNull: false, defaultValue: "book" },
+
+		status: { type: DataTypes.CHAR, defaultValue: "a" },
+
+		syncCloud: { type: DataTypes.BOOLEAN, defaultValue: false },
 	},
 	{
 		setterMethods: {
-			// name(value) {
-			// 	this.setDataValue("name", value.trim());
-			// },
+			materia(value) {
+				this.setDataValue("materia", value.trim());
+			},
 			// ci(value) {
 			// 	if (!value) return;
 			// 	this.setDataValue("ci", value.trim());
@@ -55,5 +61,48 @@ const Book = db.define(
 		},
 	}
 );
+
+// Book.belongsTo(ImgFile, {
+// 	through: "book_portada",
+// 	as: "bookportada",
+// 	foreignKey: "portadaId",
+// });
+
+// ImgFile.hasOne(Book, {
+// 	through: "book_portada",
+// 	as: "bookportada",
+// 	foreignKey: "imgfileId",
+// });
+
+Book.belongsTo(ImgFile, {
+	as: "portada",
+	foreignKey: {
+		name: "portadaId",
+		// allowNull: false,
+		// unique: true,
+	},
+});
+
+ImgFile.hasOne(Book, {
+	as: "portada",
+
+	foreignKey: {
+		name: "portadaId",
+		// allowNull: false,
+		// unique: true,
+	},
+});
+
+Book.belongsToMany(ImgFile, {
+	through: "book_imgextra",
+	as: "book_extra_img",
+	foreignKey: "bookId",
+});
+
+ImgFile.belongsToMany(Book, {
+	through: "book_imgextra",
+	as: "book_extra_img",
+	foreignKey: "imgfileId",
+});
 
 module.exports = Book;
